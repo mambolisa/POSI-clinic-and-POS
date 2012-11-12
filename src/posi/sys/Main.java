@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package posi.sys;
-
 /**
  *
  * @author Aquarius
@@ -15,5 +14,6 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        new posi.sys.all.inv.inventoryMngt().display("Inventory Management");
     }
 }
