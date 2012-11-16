@@ -106,3 +106,17 @@ public class inventoryJTree{
         
     }
 }
+/*
+ * Get the root of the tree:
+ tree.getModel().getRoot();
+
+then get the number of children of this root node:
+ tree.getModel().getChildCount(rootNode)
+
+then go from 0 to the number of children and call
+tree.getModel().getChild(rootNode, i)
+
+to get the children of the root node.
+ * 
+ * 
+ */
