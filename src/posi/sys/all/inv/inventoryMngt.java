@@ -26,8 +26,12 @@ public class inventoryMngt extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuitem;
     
     private javax.swing.JPanel topToolBarPanel;
+    
+    private posi.sys.all.expeditors.database.db_connect db = null;
     public inventoryMngt(){ //System,Metal, Motif, GTK
         new posi.sys.expeditors.LooknFeel("System");
+        
+        db = new posi.sys.all.expeditors.database.db_connect();
         
         screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         menubar = new javax.swing.JMenuBar();
@@ -264,8 +268,9 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         tabbedPane = new javax.swing.JTabbedPane();
         tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        inventoryMngt.addTabPane("Inventory list", new inventoryTable().table(),"Close inventory");
-        
+                                            
+        addTabPane("Inventory list",posi.sys.all.inv.reports.InvAll(),"Close inventory");
+                
         splitPane.setLeftComponent(new posi.sys.all.inv.inventoryJTree().getContent());
 
         splitPane.setDividerLocation(220);
@@ -482,6 +487,7 @@ public class inventoryMngt extends javax.swing.JFrame {
     class Action implements java.awt.event.ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            System.out.println(e.getActionCommand());
              if("New".equals(e.getActionCommand())){
                 new posi.sys.all.inv.newItem().setVisible(true);
             }else if("Save".equals(e.getActionCommand())){
@@ -505,7 +511,8 @@ public class inventoryMngt extends javax.swing.JFrame {
             } else if("warehouse".equals(e.getActionCommand())){
                 new posi.sys.expeditors.Login();
             } else if("InvAllV".equals(e.getActionCommand())){
-                addTabPane("Inventory list", new inventoryTable().table(),"Close inventory");
+                addTabPane("Inventory list", posi.sys.all.inv.reports.InvAll(),"Close inventory");
+                
             } else if("ReportV".equals(e.getActionCommand()) || "Reports".equals(e.getActionCommand())){                
                 splitPane.setLeftComponent(inventoryJTree.updateTree());
                 splitPane.setDividerLocation(220);

@@ -14,18 +14,20 @@ package posi.sys.all.expeditors.database;
  */
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class db_connect{
 	private Connection con, driver;
 	private Statement stmt, s;
 	private ResultSet rs;
 	// class constructor
-
+        
 	public db_connect(){
 		try {
                     Class.forName("com.mysql.jdbc.Driver");
-                    String dbURL = "jdbc:mysql://localhost:3306/hospitalms";
-                    con = DriverManager.getConnection(dbURL, "root", "");
+                    String dbURL = "jdbc:mysql://localhost:3306/posi";
+                    con = DriverManager.getConnection(dbURL, "root", "stan");
 		}
 		catch (Exception err) {
 			System.out.println( "Error: " + err );
@@ -56,7 +58,58 @@ public class db_connect{
 		}
 		return rs;
 	}
+        
+        public String [][] getArrayQuery(String sql){ 
+            String [][] data = null;            
+            try {
+                s=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
 
+                rs=s.executeQuery(sql);
+
+                int i = 0;
+                int numCols = rs.getMetaData().getColumnCount();
+                
+                while ( rs.next() ){ i++; }
+                
+                rs.beforeFirst();
+                
+                data = new String[i][numCols];
+                int j = 0,k = 0,l = 0;
+                
+                while ( rs.next() ){
+                    while( k < numCols ){
+                       l = k + 1;
+                       data[j][k] = rs.getString(l);
+                    k++;
+                    }
+                j++;
+                }
+              
+            } catch (SQLException ex) {
+                Logger.getLogger(ex.getMessage());
+            }
+        return data;        
+        }
+        
+        public Object[] getRow(ResultSet rs){
+            Object [] row = null;
+            try {
+                int numCols = rs.getMetaData().getColumnCount();
+                
+                row = new Object[numCols];
+                                
+                int colNum = 0,l = 0;
+                while ( colNum < numCols ){
+                    l = colNum+1;
+                    row[colNum] = rs.getObject(l);
+                colNum++;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(db_connect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return row;
+        }
+        
 	public void Delete(String sql){
 		PreparedStatement st;
 		try{

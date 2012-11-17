@@ -80,22 +80,22 @@ public class inventoryJTree{
                 if("Recently removed".equals(node.toString())){
                     c = (java.awt.Component)new javax.swing.JButton("Recently");
                 }else if("Recently updated".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().table();
+                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                     c = (java.awt.Component)scrollpane;
                 }else if("Recently added".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().table();
+                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                     c = (java.awt.Component)scrollpane;
                 }else if("Show by category".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().table();
+                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                     c = (java.awt.Component)scrollpane;
                 }else if("Show by expiry".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().table();
+                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                     c = (java.awt.Component)scrollpane;
                 }else if("Show by reorder".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().table();
+                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                     c = (java.awt.Component)scrollpane;
                 }else if("Show all".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().table();
+                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                     c = (java.awt.Component)scrollpane;
                 }
                 
