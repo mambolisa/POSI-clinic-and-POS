@@ -9,10 +9,12 @@ package posi.sys.expeditors;
  * @author Aquarius
  */
 public class popup extends javax.swing.JDialog {
-    private java.awt.Dimension screen;
+    private java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();;
     
     public popup(){
+        this.setResizable(false);
         
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
     }
     
     public popup(java.awt.Frame parent, boolean modal, java.awt.Dimension d) {
@@ -41,6 +43,7 @@ public class popup extends javax.swing.JDialog {
     
     public void setDimensions(int width, int height){
         this.setSize(width, height);
+        this.setLocation((screen.width - width )/2,((screen.height- height)/2)); 
     }
     
     public void addContent(java.awt.Component c){
@@ -48,9 +51,9 @@ public class popup extends javax.swing.JDialog {
     }
     
     private void setPopup(java.awt.Dimension d){
-        screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        
         this.setSize(d.width, d.height);
+        
+        this.setResizable(false);
         
         this.setLocation((screen.width - this.getWidth())/2,((screen.height-this.getHeight())/2));  
         

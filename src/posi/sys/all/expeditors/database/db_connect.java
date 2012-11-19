@@ -59,55 +59,51 @@ public class db_connect{
 		return rs;
 	}
         
-        public String [][] getArrayQuery(String sql){ 
-            String [][] data = null;            
+        public Object[][] getData(String sql){
+            java.util.List<Object[]> list = new java.util.ArrayList<Object[]>();
+            Object [][] data = null;
             try {
                 s=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-
                 rs=s.executeQuery(sql);
-
-                int i = 0;
+                
                 int numCols = rs.getMetaData().getColumnCount();
                 
-                while ( rs.next() ){ i++; }
-                
-                rs.beforeFirst();
-                
-                data = new String[i][numCols];
-                int j = 0,k = 0,l = 0;
-                
-                while ( rs.next() ){
-                    while( k < numCols ){
-                       l = k + 1;
-                       data[j][k] = rs.getString(l);
-                    k++;
+                while(rs.next()){
+                    Object [] row = new Object[numCols];
+                    
+                    for (int j = 0; j< numCols; j++ ){                        
+                        row[j] = rs.getObject(j+1);
                     }
-                j++;
+                    list.add(row);
                 }
-              
-            } catch (SQLException ex) {
-                Logger.getLogger(ex.getMessage());
-            }
-        return data;        
-        }
-        
-        public Object[] getRow(ResultSet rs){
-            Object [] row = null;
-            try {
-                int numCols = rs.getMetaData().getColumnCount();
                 
-                row = new Object[numCols];
-                                
-                int colNum = 0,l = 0;
-                while ( colNum < numCols ){
-                    l = colNum+1;
-                    row[colNum] = rs.getObject(l);
-                colNum++;
-                }
+                data = (Object[][]) list.toArray(new Object[list.size()][numCols]);
+                
             } catch (SQLException ex) {
                 Logger.getLogger(db_connect.class.getName()).log(Level.SEVERE, null, ex);
             }
-        return row;
+
+        return data;            
+        }
+        
+        public Object[] getRow(String sql){
+            Object [] row = null;
+            try {
+                s=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+                rs=s.executeQuery(sql);
+                
+                int numCols = rs.getMetaData().getColumnCount();
+                
+                row = new Object[numCols];
+                    
+                for (int j = 0; j< numCols; j++ ){                        
+                    row[j] = rs.getObject(j+1);
+                } 
+            } catch (SQLException ex) {
+                Logger.getLogger(db_connect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        return row; 
         }
         
 	public void Delete(String sql){

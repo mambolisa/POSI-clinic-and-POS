@@ -4,6 +4,7 @@
  */
 package posi.sys.all.inv;
 
+import java.awt.FlowLayout;
 import javax.swing.event.TreeSelectionEvent;
 
 /**
@@ -40,7 +41,7 @@ public class inventoryJTree{
         top = new javax.swing.tree.DefaultMutableTreeNode("Reports");
         createNodes("Stock",new String [] {"Recent","Recently ","Recently added"});
         createNodes("Items",new String [] {"Show by category","Show by expiry","Show by reorder","Inventory list"});
-        createNodes("Graphs",new String [] {"Item movement","Diminishing reports","Prolifilating reports"});
+        createNodes("Graphs",new String [] {"All graphical reports"});
         
         tree = new javax.swing.JTree(top);
         tree.setShowsRootHandles(true);
@@ -80,25 +81,36 @@ public class inventoryJTree{
                 if("Recently removed".equals(node.toString())){
                     c = (java.awt.Component)new javax.swing.JButton("Recently");
                 }else if("Recently updated".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
-                    c = (java.awt.Component)scrollpane;
+                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                    //c = (java.awt.Component)scrollpane;
                 }else if("Recently added".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
-                    c = (java.awt.Component)scrollpane;
+                   // javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                   // c = (java.awt.Component)scrollpane;
                 }else if("Show by category".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
-                    c = (java.awt.Component)scrollpane;
+                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                   // c = (java.awt.Component)scrollpane;
                 }else if("Show by expiry".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
-                    c = (java.awt.Component)scrollpane;
+                   // javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                    //c = (java.awt.Component)scrollpane;
                 }else if("Show by reorder".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
-                    c = (java.awt.Component)scrollpane;
+                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                    //c = (java.awt.Component)scrollpane;
                 }else if("Show all".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
-                    c = (java.awt.Component)scrollpane;
+                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                    //c = (java.awt.Component)scrollpane;
+                }else if("All graphical reports".equals(node.toString())){
+                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                    //c = (java.awt.Component)scrollpane;
+                    javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.FlowLayout());
+                    javax.swing.JLabel label = new javax.swing.JLabel("Graph reports");
+                    
+                    javax.swing.JComboBox box = new javax.swing.JComboBox(new Object[]{"Items Proliferate","Diminate ","Expiry"});
+                    panel.add(label);
+                    panel.add(box,FlowLayout.LEFT);
+                    
+                    c= (java.awt.Component)panel;
                 }
-                
+                //
                 inventoryMngt.addTabPane(node.toString(), c, null);
                 
             } 

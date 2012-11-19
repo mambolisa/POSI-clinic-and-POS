@@ -17,7 +17,7 @@ import javax.swing.JSplitPane;
 
 public class inventoryMngt extends javax.swing.JFrame {
     private javax.swing.JMenuBar menubar;
-    private javax.swing.JMenu file, edit, view, options, reports, logout,warehouse, transaction, submenu ;
+    private javax.swing.JMenu file, edit, view, options, reports, logout,warehouse, transaction, submenu,menu , admin;
     private java.awt.Dimension screen;
     private javax.swing.JToolBar toolBarTop,toolBarLeft, toolBarBottom;
     private static javax.swing.JTabbedPane tabbedPane;
@@ -172,21 +172,21 @@ public class inventoryMngt extends javax.swing.JFrame {
         menuitem.addActionListener(new Action());
         view.add(menuitem);
         menubar.add(view);
-        
-        options = new javax.swing.JMenu("Options");
-        
-        menuitem = new javax.swing.JMenuItem("Settings",new posi.sys.expeditors.sundry().createImageIcon("images/Tool.gif", new java.awt.Dimension(20, 20)));
-        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-        menuitem.setActionCommand("Settings"); 
+      
+        menu = new javax.swing.JMenu("POS");
+        menuitem = new javax.swing.JMenuItem("Point of sale",new posi.sys.expeditors.sundry().createImageIcon("images/Cart2.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_O, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("pos"); 
         menuitem.addActionListener(new Action());
-        options.add(menuitem);
+        menu.add(menuitem);
+        menubar.add(menu);
         
-        menuitem = new javax.swing.JMenuItem("Security",new posi.sys.expeditors.sundry().createImageIcon("images/Security.gif", new java.awt.Dimension(20, 20)));
-        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-        menuitem.setActionCommand("Security"); 
+        menu = new javax.swing.JMenu("Money matters");
+        menuitem = new javax.swing.JMenuItem("Cash register",new posi.sys.expeditors.sundry().createImageIcon("images/Currency Dollar.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setActionCommand("cashregister"); 
         menuitem.addActionListener(new Action());
-        options.add(menuitem);
-        menubar.add(options);
+        menu.add(menuitem);
+        menubar.add(menu);
         
         reports = new javax.swing.JMenu("Reports");
         menuitem = new javax.swing.JMenuItem("Reports",new posi.sys.expeditors.sundry().createImageIcon("images/Stats2.gif", new java.awt.Dimension(20, 20)));
@@ -203,18 +203,82 @@ public class inventoryMngt extends javax.swing.JFrame {
         menubar.add(warehouse);
         
         transaction = new javax.swing.JMenu("Transaction");
-        menuitem = new javax.swing.JMenuItem("Proliferate",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
-        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-        menuitem.setActionCommand("Proliferate"); 
-        menuitem.addActionListener(new Action());
-        transaction.add(menuitem);
+        menu = new javax.swing.JMenu("Proliferate");
+        menu.setIcon(new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        //menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+       // menu.setActionCommand("Proliferate"); 
+       // menuitem.addActionListener(new Action());
+        transaction.add(menu);
         
-        menuitem = new javax.swing.JMenuItem("Diminate",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow2 Down.gif", new java.awt.Dimension(20, 20)));
-        menuitem.setActionCommand("Diminate"); 
-        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        //menuitem = new javax.swing.JMenuItem("Purchases order",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Purchases order");
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.SHIFT_MASK ));
+        menuitem.setActionCommand("purorder"); 
         menuitem.addActionListener(new Action());
-        transaction.add(menuitem);
+        menu.add(menuitem);
+        
+        //menuitem = new javax.swing.JMenuItem("Purchases invoice",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Purchases invoice");
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_N,  ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("purinvoice"); 
+        menuitem.addActionListener(new Action());
+        menu.add(menuitem);
+
+        transaction.add(menu);
+        
+        menu = new javax.swing.JMenu("Diminate");
+        menu.setIcon(new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 down.gif", new java.awt.Dimension(20, 20)));
+       // menuitem.setActionCommand("Diminate"); 
+        //menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        //menuitem.addActionListener(new Action());
+                
+        //menuitem = new javax.swing.JMenuItem("Point of Sale",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Point of Sale");
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("pos"); 
+        menuitem.addActionListener(new Action());
+        menu.add(menuitem);
+        
+        //menuitem = new javax.swing.JMenuItem("Sales order",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Sales order");
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("salesorder"); 
+        menuitem.addActionListener(new Action());
+        menu.add(menuitem);
+        
+        //menuitem = new javax.swing.JMenuItem("Sales invoice",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Sales order");
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("salesinvoice"); 
+        menuitem.addActionListener(new Action());
+        menu.add(menuitem);
+        
+        transaction.add(menu);
         menubar.add(transaction);
+        
+        menu = new javax.swing.JMenu("Administrator");
+        admin = new javax.swing.JMenu("Admin controls");
+        menu.add(admin);
+         
+        menuitem = new javax.swing.JMenuItem("Settings",new posi.sys.expeditors.sundry().createImageIcon("images/Tool.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("Settings"); 
+        menuitem.addActionListener(new Action());
+        admin.add(menuitem);
+        
+        menuitem = new javax.swing.JMenuItem("Security",new posi.sys.expeditors.sundry().createImageIcon("images/Security.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("Security"); 
+        menuitem.addActionListener(new Action());
+        admin.add(menuitem);
+        menubar.add(menu);
+        
+        menuitem = new javax.swing.JMenuItem("User management",new posi.sys.expeditors.sundry().createImageIcon("images/Globe.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("userManagement"); 
+        menuitem.addActionListener(new Action());
+        admin.add(menuitem);
+        menubar.add(menu);
         
         logout = new javax.swing.JMenu("Go away");
         menuitem = new javax.swing.JMenuItem("Logout");
@@ -237,16 +301,17 @@ public class inventoryMngt extends javax.swing.JFrame {
         topToolBarPanel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
         toolBarTop = new javax.swing.JToolBar();
         this.addToolbarContentTop_1(toolBarTop);        
-        //toolBarTop.setPreferredSize(new java.awt.Dimension(200, 30));
+        toolBarTop.setPreferredSize(new java.awt.Dimension(180, 30));
         topToolBarPanel.add(toolBarTop);
         
         toolBarTop = new javax.swing.JToolBar();
         this.addToolbarContentTop_2(toolBarTop);        
-        //toolBarTop.setPreferredSize(new java.awt.Dimension(200, 30));
+        toolBarTop.setPreferredSize(new java.awt.Dimension(150, 30));
         topToolBarPanel.add(toolBarTop);
         
         toolBarTop = new javax.swing.JToolBar();
         this.addToolbarContentTop_3(toolBarTop); 
+        toolBarTop.setPreferredSize(new java.awt.Dimension(100, 30));
         topToolBarPanel.add(toolBarTop);
         
         this.add(topToolBarPanel,BorderLayout.PAGE_START);
@@ -275,7 +340,7 @@ public class inventoryMngt extends javax.swing.JFrame {
 
         splitPane.setDividerLocation(220);
         splitPane.setContinuousLayout(true);
-        splitPane.setEnabled(true);
+        splitPane.setEnabled(false);
         splitPane.setRightComponent(tabbedPane);
         
         this.add(splitPane,BorderLayout.CENTER);
@@ -410,7 +475,14 @@ public class inventoryMngt extends javax.swing.JFrame {
         button.addActionListener(new Action());
         button.setToolTipText("Remove item");
         button.setContentAreaFilled(false);
-        toolbar.add(button); 
+        toolbar.add(button);
+        
+        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Printer.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("Print");
+        button.addActionListener(new Action());
+        button.setToolTipText("Print");
+        button.setContentAreaFilled(false);
+        toolbar.add(button);
     }
     
     private void addToolbarContentTop_2(javax.swing.JToolBar toolbar){        
@@ -496,6 +568,8 @@ public class inventoryMngt extends javax.swing.JFrame {
             
             }else if("Refresh".equals(e.getActionCommand())){
             
+            }else if("Print".equals(e.getActionCommand())){
+            
             }else if("Remove".equals(e.getActionCommand())){
             
             }else if("Undo".equals(e.getActionCommand())){
@@ -539,6 +613,8 @@ public class inventoryMngt extends javax.swing.JFrame {
                 new posi.sys.all.inv.Security().setVisible(true);
             }  else if("Warehouse".equals(e.getActionCommand())){
                 new posi.sys.all.inv.Warehouse().setVisible(true);
+            }else if("pos".equals(e.getActionCommand())){
+                new posi.sys.all.pos.POS().setVisible(true);
             } 
         }        
     }// 
