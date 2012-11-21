@@ -182,7 +182,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         menubar.add(menu);
         
         menu = new javax.swing.JMenu("Money matters");
-        menuitem = new javax.swing.JMenuItem("Cash register",new posi.sys.expeditors.sundry().createImageIcon("images/Currency Dollar.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Cash management",new posi.sys.expeditors.sundry().createImageIcon("images/Currency Dollar.gif", new java.awt.Dimension(20, 20)));
         menuitem.setActionCommand("cashregister"); 
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
@@ -247,7 +247,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         menu.add(menuitem);
         
         //menuitem = new javax.swing.JMenuItem("Sales invoice",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
-        menuitem = new javax.swing.JMenuItem("Sales order");
+        menuitem = new javax.swing.JMenuItem("Sales invoice");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("salesinvoice"); 
         menuitem.addActionListener(new Action());
@@ -299,6 +299,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         splitPane = new javax.swing.JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         
         topToolBarPanel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
+       // topToolBarPanel;
         toolBarTop = new javax.swing.JToolBar();
         this.addToolbarContentTop_1(toolBarTop);        
         toolBarTop.setPreferredSize(new java.awt.Dimension(180, 30));
