@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JSplitPane;
+import posi.sys.expeditors.sundry;
 
 /**
  *
@@ -38,14 +39,14 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         file = new javax.swing.JMenu("File");
         
-        menuitem = new javax.swing.JMenuItem("New item", new posi.sys.expeditors.sundry().createImageIcon("images/Document New.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("New item", sundry.createImageIcon("images/Document New.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
         menuitem.setMnemonic(KeyEvent.VK_N);
         menuitem.addActionListener(new Action());
         menuitem.setActionCommand("New");
         file.add(menuitem);
         
-        menuitem = new javax.swing.JMenuItem("Recent items", new posi.sys.expeditors.sundry().createImageIcon("images/Footprint.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Recent items", sundry.createImageIcon("images/Footprint.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.ALT_MASK));        
         menuitem.addActionListener(new Action());
         menuitem.setActionCommand("RecentItem");
@@ -101,7 +102,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         file.addSeparator();
         
-        menuitem = new javax.swing.JMenuItem("Print",new posi.sys.expeditors.sundry().createImageIcon("images/Printer.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Print",sundry.createImageIcon("images/Printer.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("print");
         menuitem.addActionListener(new Action());
@@ -115,13 +116,13 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         edit = new javax.swing.JMenu("Edit");
         
-        menuitem = new javax.swing.JMenuItem("Undo",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow2 Left.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Undo",sundry.createImageIcon("images/Arrow2 Left.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("undo");        
         menuitem.addActionListener(new Action());
         edit.add(menuitem);
 
-        menuitem = new javax.swing.JMenuItem("Redo",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow2 Right.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Redo",sundry.createImageIcon("images/Arrow2 Right.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("redo");        
         menuitem.addActionListener(new Action());
@@ -129,25 +130,25 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         edit.addSeparator();
         
-        menuitem = new javax.swing.JMenuItem("Cut",new posi.sys.expeditors.sundry().createImageIcon("images/Clipboard Cut.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Cut",sundry.createImageIcon("images/Clipboard Cut.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("Cut");        
         menuitem.addActionListener(new Action());
         edit.add(menuitem);
         
-        menuitem = new javax.swing.JMenuItem("Copy",new posi.sys.expeditors.sundry().createImageIcon("images/Clipboard Copy.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Copy",sundry.createImageIcon("images/Clipboard Copy.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("Copy");        
         menuitem.addActionListener(new Action());
         edit.add(menuitem);
         
-        menuitem = new javax.swing.JMenuItem("Paste",new posi.sys.expeditors.sundry().createImageIcon("images/Clipboard Paste.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Paste",sundry.createImageIcon("images/Clipboard Paste.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("Paste");        
         menuitem.addActionListener(new Action());
         edit.add(menuitem);
         
-        menuitem = new javax.swing.JMenuItem("Delete",new posi.sys.expeditors.sundry().createImageIcon("images/Trash.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Delete",sundry.createImageIcon("images/Trash.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("Delete"); 
         menuitem.addActionListener(new Action());
@@ -156,7 +157,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         view = new javax.swing.JMenu("View");
         
-        menuitem = new javax.swing.JMenuItem("Search",new posi.sys.expeditors.sundry().createImageIcon("images/Search.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Search",sundry.createImageIcon("images/Search.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("Search"); 
         menuitem.addActionListener(new Action());
@@ -167,14 +168,14 @@ public class inventoryMngt extends javax.swing.JFrame {
         menuitem.addActionListener(new Action());
         view.add(menuitem);
         
-        menuitem = new javax.swing.JMenuItem("Applications",new posi.sys.expeditors.sundry().createImageIcon("images/Applications.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Applications",sundry.createImageIcon("images/Applications.gif", new java.awt.Dimension(20, 20)));
         menuitem.setActionCommand("Applications"); 
         menuitem.addActionListener(new Action());
         view.add(menuitem);
         menubar.add(view);
       
         menu = new javax.swing.JMenu("POS");
-        menuitem = new javax.swing.JMenuItem("Point of sale",new posi.sys.expeditors.sundry().createImageIcon("images/Cart2.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Point of sale",sundry.createImageIcon("images/Cart2.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_O, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("pos"); 
         menuitem.addActionListener(new Action());
@@ -182,21 +183,21 @@ public class inventoryMngt extends javax.swing.JFrame {
         menubar.add(menu);
         
         menu = new javax.swing.JMenu("Money matters");
-        menuitem = new javax.swing.JMenuItem("Cash management",new posi.sys.expeditors.sundry().createImageIcon("images/Currency Dollar.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Cash management",sundry.createImageIcon("images/Currency Dollar.gif", new java.awt.Dimension(20, 20)));
         menuitem.setActionCommand("cashregister"); 
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
         menubar.add(menu);
         
         reports = new javax.swing.JMenu("Reports");
-        menuitem = new javax.swing.JMenuItem("Reports",new posi.sys.expeditors.sundry().createImageIcon("images/Stats2.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Reports",sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(20, 20)));
         menuitem.setActionCommand("Reports"); 
         menuitem.addActionListener(new Action());
         reports.add(menuitem);
         menubar.add(reports);
         
         warehouse = new javax.swing.JMenu("Warehouse ");
-        menuitem = new javax.swing.JMenuItem("Warehouse control",new posi.sys.expeditors.sundry().createImageIcon("images/Home2.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Warehouse control",sundry.createImageIcon("images/Home2.gif", new java.awt.Dimension(20, 20)));
         menuitem.setActionCommand("Warehouse"); 
         menuitem.addActionListener(new Action());
         warehouse.add(menuitem);
@@ -204,20 +205,20 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         transaction = new javax.swing.JMenu("Transaction");
         menu = new javax.swing.JMenu("Proliferate");
-        menu.setIcon(new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        menu.setIcon(sundry.createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
         //menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
        // menu.setActionCommand("Proliferate"); 
        // menuitem.addActionListener(new Action());
         transaction.add(menu);
         
-        //menuitem = new javax.swing.JMenuItem("Purchases order",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        //menuitem = new javax.swing.JMenuItem("Purchases order",sundry.createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
         menuitem = new javax.swing.JMenuItem("Purchases order");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.SHIFT_MASK ));
         menuitem.setActionCommand("purorder"); 
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
         
-        //menuitem = new javax.swing.JMenuItem("Purchases invoice",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        //menuitem = new javax.swing.JMenuItem("Purchases invoice",sundry.createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
         menuitem = new javax.swing.JMenuItem("Purchases invoice");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_N,  ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("purinvoice"); 
@@ -227,26 +228,26 @@ public class inventoryMngt extends javax.swing.JFrame {
         transaction.add(menu);
         
         menu = new javax.swing.JMenu("Diminate");
-        menu.setIcon(new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 down.gif", new java.awt.Dimension(20, 20)));
+        menu.setIcon(sundry.createImageIcon("images/Arrow1 down.gif", new java.awt.Dimension(20, 20)));
        // menuitem.setActionCommand("Diminate"); 
         //menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         //menuitem.addActionListener(new Action());
                 
-        //menuitem = new javax.swing.JMenuItem("Point of Sale",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        //menuitem = new javax.swing.JMenuItem("Point of Sale",sundry.createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
         menuitem = new javax.swing.JMenuItem("Point of Sale");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("pos"); 
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
         
-        //menuitem = new javax.swing.JMenuItem("Sales order",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        //menuitem = new javax.swing.JMenuItem("Sales order",sundry.createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
         menuitem = new javax.swing.JMenuItem("Sales order");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("salesorder"); 
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
         
-        //menuitem = new javax.swing.JMenuItem("Sales invoice",new posi.sys.expeditors.sundry().createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
+        //menuitem = new javax.swing.JMenuItem("Sales invoice",sundry.createImageIcon("images/Arrow1 Up.gif", new java.awt.Dimension(20, 20)));
         menuitem = new javax.swing.JMenuItem("Sales invoice");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("salesinvoice"); 
@@ -260,20 +261,20 @@ public class inventoryMngt extends javax.swing.JFrame {
         admin = new javax.swing.JMenu("Admin controls");
         menu.add(admin);
          
-        menuitem = new javax.swing.JMenuItem("Settings",new posi.sys.expeditors.sundry().createImageIcon("images/Tool.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Settings",sundry.createImageIcon("images/Tool.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("Settings"); 
         menuitem.addActionListener(new Action());
         admin.add(menuitem);
         
-        menuitem = new javax.swing.JMenuItem("Security",new posi.sys.expeditors.sundry().createImageIcon("images/Security.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("Security",sundry.createImageIcon("images/Security.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("Security"); 
         menuitem.addActionListener(new Action());
         admin.add(menuitem);
         menubar.add(menu);
         
-        menuitem = new javax.swing.JMenuItem("User management",new posi.sys.expeditors.sundry().createImageIcon("images/Globe.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("User management",sundry.createImageIcon("images/Globe.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("userManagement"); 
         menuitem.addActionListener(new Action());
@@ -351,7 +352,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         if (tabbedPane.indexOfTab(title) == -1 ){
             javax.swing.ImageIcon n = null;
             
-            tabbedPane.addTab(title,new posi.sys.expeditors.sundry().createImageIcon("images/Cancel.gif", new java.awt.Dimension(17, 17)),c,tooltip);
+            tabbedPane.addTab(title,sundry.createImageIcon("images/Cancel.gif", new java.awt.Dimension(17, 17)),c,tooltip);
             tabbedPane.setSelectedIndex( tabbedPane.indexOfTab( title ) );
         }else {
             tabbedPane.setSelectedIndex( tabbedPane.indexOfTab( title ) );
@@ -411,21 +412,21 @@ public class inventoryMngt extends javax.swing.JFrame {
     }
     
     private void addToolbarContentBottom_1(javax.swing.JToolBar toolbar){
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Clock.gif", new java.awt.Dimension(25, 25)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Clock.gif", new java.awt.Dimension(25, 25)));
         button.setActionCommand("Clock");
         button.addActionListener(new Action());
         button.setToolTipText("Open clock");
 	button.setContentAreaFilled(false);
         toolbar.add(button);         
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Calendar.gif", new java.awt.Dimension(25, 25)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Calendar.gif", new java.awt.Dimension(25, 25)));
         button.setActionCommand("Calendar");
         button.addActionListener(new Action());
         button.setToolTipText("Calendar application");
 	button.setContentAreaFilled(false);
         toolbar.add(button);
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Calc.gif", new java.awt.Dimension(25, 25)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Calc.gif", new java.awt.Dimension(25, 25)));
         button.setActionCommand("calc");
         button.addActionListener(new Action());
         button.setToolTipText("Open calculator");
@@ -434,14 +435,14 @@ public class inventoryMngt extends javax.swing.JFrame {
    }
  
     private void addToolbarContentBottom_2(javax.swing.JToolBar toolbar){    
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Text Minus.gif", new java.awt.Dimension(25, 25)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Text Minus.gif", new java.awt.Dimension(25, 25)));
         button.setActionCommand("Text-");
         button.addActionListener(new Action());
         button.setToolTipText("Reduce font");
 	button.setContentAreaFilled(false);
         toolbar.add(button);   
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Text Plus.gif", new java.awt.Dimension(25, 25)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Text Plus.gif", new java.awt.Dimension(25, 25)));
         button.setActionCommand("Text+");
         button.addActionListener(new Action());
         button.setToolTipText("Increase font");
@@ -450,35 +451,35 @@ public class inventoryMngt extends javax.swing.JFrame {
     }
     
     private void addToolbarContentTop_1(javax.swing.JToolBar toolbar){
-         button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Document New.gif", new java.awt.Dimension(28, 28)));
+         button = new javax.swing.JButton(sundry.createImageIcon("images/Document New.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("New");
         button.addActionListener(new Action());
         button.setToolTipText("New item");
 	button.setContentAreaFilled(false);
         toolbar.add(button);
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Save.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Save.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Save");
         button.addActionListener(new Action());
         button.setToolTipText("Save");
         button.setContentAreaFilled(false);
         toolbar.add(button);
 
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Write.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Write.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Edit");
         button.addActionListener(new Action());
         button.setToolTipText("Edit item");
         button.setContentAreaFilled(false);
         toolbar.add(button);
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Trash.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Trash.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Remove");
         button.addActionListener(new Action());
         button.setToolTipText("Remove item");
         button.setContentAreaFilled(false);
         toolbar.add(button);
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Printer.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Printer.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Print");
         button.addActionListener(new Action());
         button.setToolTipText("Print");
@@ -487,28 +488,28 @@ public class inventoryMngt extends javax.swing.JFrame {
     }
     
     private void addToolbarContentTop_2(javax.swing.JToolBar toolbar){        
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Arrow2 Left.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Arrow2 Left.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Undo");
         button.addActionListener(new Action());
         button.setToolTipText("Undo");
         button.setContentAreaFilled(false);
         toolbar.add(button);
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Arrow2 Right.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Arrow2 Right.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Redo");
         button.addActionListener(new Action());
         button.setToolTipText("Redo");
         button.setContentAreaFilled(false);
         toolbar.add(button);        
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Search.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Search.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Search");
         button.addActionListener(new Action());
         button.setToolTipText("Search");
         button.setContentAreaFilled(false);
         toolbar.add(button);
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Refresh.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Refresh.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Refresh");
         button.addActionListener(new Action());
         button.setToolTipText("Refresh");
@@ -517,21 +518,21 @@ public class inventoryMngt extends javax.swing.JFrame {
     }
 
     private void addToolbarContentTop_3(javax.swing.JToolBar toolbar){  
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Reports");
         button.addActionListener(new Action());
         button.setContentAreaFilled(false);
         button.setToolTipText("View Reports");
         toolbar.add(button);
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Tool.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Tool.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Settings");
         button.addActionListener(new Action());
         button.setContentAreaFilled(false);
         button.setToolTipText("Manage settings");
         toolbar.add(button);
 
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Security.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Security.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Security");
         button.addActionListener(new Action());
         button.setContentAreaFilled(false);
@@ -540,7 +541,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         toolbar.addSeparator();
         
-        button = new javax.swing.JButton(new posi.sys.expeditors.sundry().createImageIcon("images/Go Out.gif", new java.awt.Dimension(28, 28)));
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Go Out.gif", new java.awt.Dimension(28, 28)));
         button.setActionCommand("Logout");
         button.addActionListener(new Action());
         button.setContentAreaFilled(false);
@@ -572,7 +573,12 @@ public class inventoryMngt extends javax.swing.JFrame {
             }else if("Print".equals(e.getActionCommand())){
             
             }else if("Remove".equals(e.getActionCommand())){
-            
+                int n = javax.swing.JOptionPane.showConfirmDialog(null, "Are you sure you want to remove item?", "Continue with changes?",javax.swing.JOptionPane.YES_NO_OPTION);
+                if( n == 0){
+                      
+                }else{
+                   return;
+                }
             }else if("Undo".equals(e.getActionCommand())){
                 
             }else if("Redo".equals(e.getActionCommand())){

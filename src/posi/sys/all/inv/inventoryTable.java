@@ -4,7 +4,6 @@
  */
 package posi.sys.all.inv;
 
-import java.awt.BorderLayout;
 
 /**
  *

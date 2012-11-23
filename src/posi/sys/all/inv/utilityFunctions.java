@@ -56,7 +56,14 @@ public class utilityFunctions {
                 new newItem().setVisible(true);
             }else if("trackitem".equals(e.getActionCommand())){
                 new trackItem(Integer.parseInt(itemID.toString())).setVisible(true);
-            }
+            }else if("Remove".equals(e.getActionCommand())){
+                int n = javax.swing.JOptionPane.showConfirmDialog(null, "Are you sure you want to remove item?", "Continue with changes?",javax.swing.JOptionPane.YES_NO_OPTION);
+                if( n == 0){
+                      
+                }else{
+                   return;
+                }
+            } 
         }
         
     }

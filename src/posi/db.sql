@@ -134,3 +134,8 @@ CREATE TABLE IF NOT EXISTS employee_roles(
     employee_role_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     employee_role_name VARCHAR(254)
 );
+
+CREATE TABLE IF NOT EXISTS item_quality(
+    item_quality_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    item_quality_value VARCHAR(254)
+);

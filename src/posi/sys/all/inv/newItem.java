@@ -6,6 +6,7 @@ package posi.sys.all.inv;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import posi.sys.expeditors.sundry;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.awt.event.WindowEvent;
  */
 public class newItem extends posi.sys.expeditors.popup {
     private int item_num = -1;
-    private posi.sys.all.expeditors.database.db_connect db;
+    private posi.sys.all.expeditors.database.db_connect db = new posi.sys.all.expeditors.database.db_connect();;
     private Object [][] data;
     
     public newItem(){
@@ -35,8 +36,7 @@ public class newItem extends posi.sys.expeditors.popup {
     private void addContent(){
         if(this.item_num == -1 ){
             this.renderContent( true );
-        }else{
-            db = new posi.sys.all.expeditors.database.db_connect();
+        }else{            
             data = db.getData("SELECT * FROM items where item_id="+this.item_num);
             this.renderContent( false );
         }        
@@ -130,12 +130,14 @@ public class newItem extends posi.sys.expeditors.popup {
 
         CatLabel.setText("Category");
 
-        CatComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+        Object [][] cat = db.getData("SELECT item_category_name FROM items_categories");
+        sundry.createCombo(CatComboBox, cat);
+                
         statusLabel.setText("Item status");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+        Object [][] status = db.getData("SELECT item_status_name FROM item_status");
+        sundry.createCombo(jComboBox2, status);
+        
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -215,8 +217,9 @@ public class newItem extends posi.sys.expeditors.popup {
 
         QualityLabel.setText("Item quality");
 
-        QualityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+        Object [][] quality = db.getData("SELECT item_quality_value FROM item_quality");
+        sundry.createCombo(QualityComboBox, quality);
+        
         WeigthLabel.setText("Item weight");
 
         descLabel.setText("Item description");
