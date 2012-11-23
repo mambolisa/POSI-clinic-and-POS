@@ -22,7 +22,7 @@ public class utilityFunctions {
         popup.add(menuitem);
         
         menuitem = new javax.swing.JMenuItem("Remove",new posi.sys.expeditors.sundry().createImageIcon("images/Trash.gif", new java.awt.Dimension(23, 23)));
-        menuitem.setActionCommand("edit");
+        menuitem.setActionCommand("Remove");
         menuitem.addActionListener(new action());
         popup.add(menuitem);
 
@@ -36,6 +36,12 @@ public class utilityFunctions {
         menuitem.addActionListener(new action());
         popup.add(menuitem);
         
+        popup.addSeparator();
+        menuitem = new javax.swing.JMenuItem("New Item",new posi.sys.expeditors.sundry().createImageIcon("images/Document New.gif", new java.awt.Dimension(23, 23)));
+        menuitem.setActionCommand("newItem");
+        menuitem.addActionListener(new action());
+        popup.add(menuitem);
+        
         return popup;
     }
     
@@ -44,6 +50,13 @@ public class utilityFunctions {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(e.getActionCommand()+" "+itemID);
+            if("edit".equals(e.getActionCommand())){
+                new newItem((Integer)itemID).setVisible(true);
+            }else if("newItem".equals(e.getActionCommand())){
+                new newItem().setVisible(true);
+            }else if("trackitem".equals(e.getActionCommand())){
+                new trackItem(Integer.parseInt(itemID.toString())).setVisible(true);
+            }
         }
         
     }

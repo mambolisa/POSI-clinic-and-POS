@@ -32,7 +32,13 @@ public class popup extends javax.swing.JDialog {
         
         this.setTitle(title);
     }
-  
+    
+    public popup(java.awt.Dimension d) {
+        super(new java.awt.Frame(), true);
+        
+        this.setPopup(d);
+    }
+    
     public popup(java.awt.Dimension d, String title) {
         super(new java.awt.Frame(), true);
         

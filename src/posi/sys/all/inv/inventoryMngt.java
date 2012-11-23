@@ -566,7 +566,7 @@ public class inventoryMngt extends javax.swing.JFrame {
             }else if("Save".equals(e.getActionCommand())){
             
             }else if("Edit".equals(e.getActionCommand())){
-            
+                new posi.sys.all.inv.newItem(1).setVisible(true);
             }else if("Refresh".equals(e.getActionCommand())){
             
             }else if("Print".equals(e.getActionCommand())){
