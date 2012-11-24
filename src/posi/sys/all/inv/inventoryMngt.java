@@ -277,7 +277,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         admin.add(menuitem);
         menubar.add(menu);
         
-        menuitem = new javax.swing.JMenuItem("User management",sundry.createImageIcon("images/Globe.gif", new java.awt.Dimension(20, 20)));
+        menuitem = new javax.swing.JMenuItem("User management",sundry.createImageIcon("images/Woman.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("userManagement"); 
         menuitem.addActionListener(new Action());
@@ -285,12 +285,14 @@ public class inventoryMngt extends javax.swing.JFrame {
         menubar.add(menu);
         
         logout = new javax.swing.JMenu("Go away");
-        menuitem = new javax.swing.JMenuItem("Logout");
+        menuitem = new javax.swing.JMenuItem("Logout",sundry.createImageIcon("images/Go out.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_L,ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("Logout"); 
         menuitem.addActionListener(new Action());
         logout.add(menuitem);
         
-        menuitem = new javax.swing.JMenuItem("Exit");
+        menuitem = new javax.swing.JMenuItem("Exit",sundry.createImageIcon("images/Standby.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_E,ActionEvent.SHIFT_MASK));
         menuitem.setActionCommand("Exit"); 
         menuitem.addActionListener(new Action());
         logout.add(menuitem);
