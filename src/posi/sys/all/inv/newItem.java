@@ -5,7 +5,7 @@
 package posi.sys.all.inv;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 import posi.sys.expeditors.sundry;
 
 /**
@@ -16,7 +16,8 @@ public class newItem extends posi.sys.expeditors.popup {
     private int item_num = -1;
     private posi.sys.all.expeditors.database.db_connect db = new posi.sys.all.expeditors.database.db_connect();;
     private Object [][] data;
-    
+    private boolean ifNew,ifDataAvailable;
+   
     public newItem(){
         super(new java.awt.Dimension(700,600),"New Item");
         this.addContent();
@@ -30,24 +31,40 @@ public class newItem extends posi.sys.expeditors.popup {
     }
     
     public static void main(String [] args){
-        new newItem(1).setVisible(true);
+        new newItem(11).setVisible(true);
     }
   
     private void addContent(){
+        ifDataAvailable = false;
+        
         if(this.item_num == -1 ){
             this.renderContent( true );
         }else{            
-            data = db.getData("SELECT * FROM items where item_id="+this.item_num);
+            String sql = "SELECT * FROM items where item_id="+this.item_num;
+            data = db.getData(sql);
+            
+            ifDataAvailable = (data.length > 0 && data.length <= 1)? true : false ;
             this.renderContent( false );
         }        
     }
     
     private void renderContent(boolean ifNewItem){
         this.createSwingComponents();
-        if( !ifNewItem ){
+        this.ifNew = ifNewItem;
+        
+        if( ifDataAvailable ) {
+           this.populateFieldUpdate();           
+        }else{
+            if( !this.ifNew ) {           
+                JOptionPane.showMessageDialog(null, "Record details not available.\n Redirected  to new items dialog","Redirected to new form", JOptionPane.ERROR_MESSAGE);
+                this.ifNew = true;
+                this.setTitle("New Item");
+            }
+        }
+        
+        if( !this.ifNew ){
             SaveUpdate.setText("Update");
-            SaveUpdate.setActionCommand("Update");
-            this.populateFieldUpdate();
+            SaveUpdate.setActionCommand("Update");   
         }  else{
             TrackItem.setVisible(false);
         }
@@ -87,6 +104,8 @@ public class newItem extends posi.sys.expeditors.popup {
         CatComboBox = new javax.swing.JComboBox();
         statusLabel = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
+        itemConversionLabel = new javax.swing.JLabel();
+        itemConversionCombo = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         sizeLabel = new javax.swing.JLabel();
         SizeText = new javax.swing.JTextField();
@@ -112,10 +131,10 @@ public class newItem extends posi.sys.expeditors.popup {
         TrackItem = new javax.swing.JButton();
         Close = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+       setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "General description", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12), new java.awt.Color(0, 0, 51))); // NOI18N
-        
+       
         ItemIdText.setEditable(false);
         
         itemIdLabel.setText("Item Id");
@@ -138,15 +157,28 @@ public class newItem extends posi.sys.expeditors.popup {
         Object [][] status = db.getData("SELECT item_status_name FROM item_status");
         sundry.createCombo(jComboBox2, status);
         
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        itemConversionLabel.setText("Item Conversion qty");
+
+        Object [][] conv = db.getData("SELECT  item_conversion_name, item_conversion_qty FROM item_conversions");
+        sundry.createCombo(itemConversionCombo, conv);
+        
+   javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(itemConversionLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(itemConversionCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(statusLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(itemIdLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -154,32 +186,24 @@ public class newItem extends posi.sys.expeditors.popup {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(itemBarCodeLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ItemBarCodeText, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ItemNameLabel))
+                                .addComponent(ItemBarCodeText))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(ItemPriceLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(2, 2, 2)
                                 .addComponent(ItemPriceText, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(ItemQtyLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ItemQtyText, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addComponent(CatLabel)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ItemQtyText, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(ItemNameText)
-                                .addGap(6, 6, 6))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(CatComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(60, Short.MAX_VALUE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(statusLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(CatLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(ItemNameLabel, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(CatComboBox, 0, 154, Short.MAX_VALUE)
+                    .addComponent(ItemNameText))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,16 +226,19 @@ public class newItem extends posi.sys.expeditors.popup {
                     .addComponent(CatComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(statusLabel)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(itemConversionCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(itemConversionLabel)
+                    .addComponent(statusLabel))
+                .addContainerGap())
         );
+
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Other descriptions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
         sizeLabel.setText("Item size");
 
-        ColorLabel.setText("Item color");
+        ColorLabel.setText("Color");
 
         MakeLabel.setText("Origin/Make");
 
@@ -347,8 +374,8 @@ public class newItem extends posi.sys.expeditors.popup {
         Close.setText("Close");
         Close.setActionCommand("Close");
         Close.addActionListener(new action());
-        
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+
+     javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,7 +390,7 @@ public class newItem extends posi.sys.expeditors.popup {
                 .addComponent(TrackItem, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Close, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 41, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -393,58 +420,18 @@ public class newItem extends posi.sys.expeditors.popup {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        pack();
-        addWindowListener(new windowListen());
-        
-       
+        pack();     
     }
-  class windowListen implements java.awt.event.WindowListener{
 
-            @Override
-            public void windowOpened(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-                dispose();
-                                
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-                
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-                
-            }
-        
-        }   
+    
     class action implements java.awt.event.ActionListener{
         
         @Override
@@ -507,5 +494,7 @@ public class newItem extends posi.sys.expeditors.popup {
     private javax.swing.JPanel picPanel;
     private javax.swing.JButton prev;
     private javax.swing.JLabel sizeLabel;
-    private javax.swing.JLabel statusLabel;
+    private javax.swing.JLabel statusLabel;    
+    private javax.swing.JComboBox itemConversionCombo;
+    private javax.swing.JLabel itemConversionLabel;
 }

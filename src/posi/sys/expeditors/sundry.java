@@ -19,14 +19,16 @@ public class sundry {
         
     return new javax.swing.ImageIcon( newimg );
     } 
+    
     public static javax.swing.JComboBox createCombo(javax.swing.JComboBox combo,Object [][] data){
         for (int i = 0; i < data.length; i++){
             Object [] row = data[i];
-            
+            String option = "";
             for (int j = 0; j< row.length; j++){
-                String cont = row[j].toString();
-                combo.addItem(cont);
+                option += row[j].toString()+ " ";
+                
             }
+            combo.addItem(option);
         }
         
     return combo;

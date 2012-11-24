@@ -10,9 +10,9 @@ package posi.sys.all.inv;
  * @author Aquarius
  */
 public class inventoryTable extends javax.swing.JTable{
-    private javax.swing.JTable table;
+    private static javax.swing.JTable table;
 
-    private javax.swing.JScrollPane scrollPane;
+    private static javax.swing.JScrollPane scrollPane;
     Object[][] data;
 
     String[] cols;
@@ -27,7 +27,7 @@ public class inventoryTable extends javax.swing.JTable{
         table.setRowHeight(20);
     }
     
-    public  javax.swing.JTable table(){
+    public  static javax.swing.JTable table(){
         return table;
     }
     
@@ -44,7 +44,7 @@ public class inventoryTable extends javax.swing.JTable{
         table.addMouseListener(m);
     }
     
-    public  javax.swing.JScrollPane tableScrollPane(){
+    public  static javax.swing.JScrollPane tableScrollPane(){
         scrollPane= new javax.swing.JScrollPane(table);
         return scrollPane;
     }

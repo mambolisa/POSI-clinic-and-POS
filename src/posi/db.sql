@@ -139,3 +139,9 @@ CREATE TABLE IF NOT EXISTS item_quality(
     item_quality_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     item_quality_value VARCHAR(254)
 );
+
+CREATE TABLE IF NOT EXISTS item_conversions(
+    item_conversion_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    item_conversion_name VARCHAR(254),
+    item_conversion_qty INT
+);

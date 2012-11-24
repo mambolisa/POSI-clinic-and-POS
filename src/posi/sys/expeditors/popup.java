@@ -64,5 +64,7 @@ public class popup extends javax.swing.JDialog {
         this.setLocation((screen.width - this.getWidth())/2,((screen.height-this.getHeight())/2));  
         
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+        
+        this.setIconImage(sundry.createImageIcon("images/Globe.gif", new java.awt.Dimension(20,20)).getImage());
     }
 }

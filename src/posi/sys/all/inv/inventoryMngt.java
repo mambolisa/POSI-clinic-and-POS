@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import posi.sys.expeditors.sundry;
 
@@ -30,8 +31,10 @@ public class inventoryMngt extends javax.swing.JFrame {
     
     private posi.sys.all.expeditors.database.db_connect db = null;
     public inventoryMngt(){ //System,Metal, Motif, GTK
-        new posi.sys.expeditors.LooknFeel("System");
+        new posi.sys.expeditors.LooknFeel("Metal");
         
+        setIconImage(sundry.createImageIcon("images/Globe.gif", new java.awt.Dimension(22,22)).getImage());
+
         db = new posi.sys.all.expeditors.database.db_connect();
         
         screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -303,28 +306,29 @@ public class inventoryMngt extends javax.swing.JFrame {
        // topToolBarPanel;
         toolBarTop = new javax.swing.JToolBar();
         this.addToolbarContentTop_1(toolBarTop);        
-        toolBarTop.setPreferredSize(new java.awt.Dimension(180, 30));
+        //toolBarTop.setPreferredSize(new java.awt.Dimension(180, 30));
         topToolBarPanel.add(toolBarTop);
         
         toolBarTop = new javax.swing.JToolBar();
         this.addToolbarContentTop_2(toolBarTop);        
-        toolBarTop.setPreferredSize(new java.awt.Dimension(150, 30));
+        //toolBarTop.setPreferredSize(new java.awt.Dimension(150, 30));
         topToolBarPanel.add(toolBarTop);
         
         toolBarTop = new javax.swing.JToolBar();
         this.addToolbarContentTop_3(toolBarTop); 
-        toolBarTop.setPreferredSize(new java.awt.Dimension(100, 30));
+       // toolBarTop.setPreferredSize(new java.awt.Dimension(100, 30));
         topToolBarPanel.add(toolBarTop);
         
         this.add(topToolBarPanel,BorderLayout.PAGE_START);
         
         toolBarLeft = new javax.swing.JToolBar(javax.swing.JToolBar.VERTICAL);
+        toolBarLeft.setFloatable(false);
         this.addToolbarContentLeft(toolBarLeft);
         this.add(toolBarLeft,BorderLayout.LINE_START);
        
         toolBarBottom = new javax.swing.JToolBar();
         this.addToolbarContentBottom_1(toolBarBottom);        
-        toolBarTop.setPreferredSize(new java.awt.Dimension(200, 30));
+        //toolBarTop.setPreferredSize(new java.awt.Dimension(200, 30));
         this.add(toolBarBottom,BorderLayout.PAGE_END);        
         
        /* toolBarBottom = new javax.swing.JToolBar();
@@ -346,6 +350,14 @@ public class inventoryMngt extends javax.swing.JFrame {
         splitPane.setRightComponent(tabbedPane);
         
         this.add(splitPane,BorderLayout.CENTER);
+    }
+    
+    public javax.swing.JTable getCurrentTable(){
+        javax.swing.JComponent c = (javax.swing.JComponent)tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+        javax.swing.JScrollPane scrollpane = (javax.swing.JScrollPane)c.getComponent(2);
+        
+        javax.swing.JTable table = (javax.swing.JTable)scrollpane.getComponent(1);
+    return table;  
     }
     
     public static void addTabPane(String title,java.awt.Component c, String tooltip){
@@ -567,17 +579,28 @@ public class inventoryMngt extends javax.swing.JFrame {
             }else if("Save".equals(e.getActionCommand())){
             
             }else if("Edit".equals(e.getActionCommand())){
-                new posi.sys.all.inv.newItem(1).setVisible(true);
+                if( inventoryTable.table().getSelectedRow() == -1){
+                    JOptionPane.showMessageDialog(null, "Please select item row!","Select item", JOptionPane.WARNING_MESSAGE);
+                }else{
+                    Object itemId = inventoryTable.table().getValueAt(inventoryTable.table().getSelectedRow(), 0);
+                    new posi.sys.all.inv.newItem(Integer.parseInt(itemId.toString())).setVisible(true);
+                }
             }else if("Refresh".equals(e.getActionCommand())){
             
             }else if("Print".equals(e.getActionCommand())){
-            
+                try {
+                    if (! getCurrentTable().print()) {
+                        System.err.println("User cancelled printing");
+                    }
+                } catch (java.awt.print.PrinterException exception) {
+                    System.err.format("Cannot print %s%n", exception.getMessage());
+                }
+
             }else if("Remove".equals(e.getActionCommand())){
                 int n = javax.swing.JOptionPane.showConfirmDialog(null, "Are you sure you want to remove item?", "Continue with changes?",javax.swing.JOptionPane.YES_NO_OPTION);
                 if( n == 0){
                       
                 }else{
-                   return;
                 }
             }else if("Undo".equals(e.getActionCommand())){
                 
@@ -627,6 +650,6 @@ public class inventoryMngt extends javax.swing.JFrame {
     }// 
     
     public static void main(String [] args ){
-       new inventoryMngt().display("Inventory Management");
+       new inventoryMngt().display("POSI Management system");
     }
 }

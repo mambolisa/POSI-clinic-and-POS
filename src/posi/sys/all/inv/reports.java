@@ -68,7 +68,7 @@ public class reports {
                if(SwingUtilities.isLeftMouseButton(e)){
                    java.awt.Point p = e.getPoint();
                    if (e.getClickCount() == 2){
-                       int rowNum = inv.table().rowAtPoint(p);
+                       int rowNum = inventoryTable.table().rowAtPoint(p);
                        Object itemCode =  data[rowNum][0];
                        System.out.println(rowNum);
                        posi.sys.all.inv.newItem newItem = new posi.sys.all.inv.newItem();
@@ -77,7 +77,7 @@ public class reports {
                }else if (SwingUtilities.isRightMouseButton(e)){
                    java.awt.Point p = e.getPoint();
                    
-                   int rowNum = inv.table().rowAtPoint(p);
+                   int rowNum = inventoryTable.table().rowAtPoint(p);
                    Object itemCode =  data[rowNum][0];
                    javax.swing.JPopupMenu popup = utilityFunctions.invRowPopupMenu(itemCode);
                    
@@ -85,6 +85,6 @@ public class reports {
                }
            }
        });
-    return  inv.tableScrollPane();
+    return  inventoryTable.tableScrollPane();
     }
 }
