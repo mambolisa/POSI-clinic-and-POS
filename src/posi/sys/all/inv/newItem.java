@@ -5,6 +5,9 @@
 package posi.sys.all.inv;
 
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import posi.sys.expeditors.sundry;
 
@@ -17,48 +20,52 @@ public class newItem extends posi.sys.expeditors.popup {
     private posi.sys.all.expeditors.database.db_connect db = new posi.sys.all.expeditors.database.db_connect();;
     private Object [][] data;
     private boolean ifNew,ifDataAvailable;
+    private int counter;
    
+    private java.sql.ResultSet rs;
+    
     public newItem(){
         super(new java.awt.Dimension(700,600),"New Item");
-        this.addContent();
+        this.addContent(true);
         
     }
     public newItem(int itemNum){
         super(new java.awt.Dimension(700,600),"Edit Item");
         
         this.item_num = itemNum;
-        this.addContent();
+        this.addContent(false);
     }
     
     public static void main(String [] args){
         new newItem(11).setVisible(true);
     }
   
-    private void addContent(){
-        ifDataAvailable = false;
-        
-        if(this.item_num == -1 ){
-            this.renderContent( true );
-        }else{            
-            String sql = "SELECT * FROM items where item_id="+this.item_num;
-            data = db.getData(sql);
-            
-            ifDataAvailable = (data.length > 0 && data.length <= 1)? true : false ;
-            this.renderContent( false );
-        }        
-    }
-    
-    private void renderContent(boolean ifNewItem){
-        this.createSwingComponents();
+    private void addContent(boolean ifNewItem){
+        this.createSwingComponents();        
+       // ifDataAvailable = false;
         this.ifNew = ifNewItem;
         
-        if( ifDataAvailable ) {
-           this.populateFieldUpdate();           
-        }else{
-            if( !this.ifNew ) {           
-                JOptionPane.showMessageDialog(null, "Record details not available.\n Redirected  to new items dialog","Redirected to new form", JOptionPane.ERROR_MESSAGE);
-                this.ifNew = true;
-                this.setTitle("New Item");
+        if(this.item_num == -1 ){
+            this.ifNew = true;
+        }else{            
+           // String sql = "SELECT * FROM items where item_id="+this.item_num;
+            String sql = "SELECT * FROM items";
+            
+            rs = db.Query(sql);
+            try {
+                boolean cont = true;
+                
+                while( rs.next() && cont == true){
+                    if( rs.getInt(1) == item_num ){
+                        System.out.println(rs.getInt(1));
+                        newPopulate(rs);
+                        cont = false;
+                    }
+                }
+                //ifDataAvailable = (data.length > 0 && data.length <= 1)? true : false ;
+                //this.renderContent( false );
+            } catch (SQLException ex) {
+                Logger.getLogger(newItem.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -67,26 +74,102 @@ public class newItem extends posi.sys.expeditors.popup {
             SaveUpdate.setActionCommand("Update");   
         }  else{
             TrackItem.setVisible(false);
+            ItemIdText.setText(" Auto-Generated");
         }
     }
     
-    private void populateFieldUpdate(){
-        ItemIdText.setText(""+data[0][0]);
-        ItemBarCodeText.setText(""+data[0][3]);
-        ItemNameText.setText(""+data[0][1]);
-        ItemPriceText.setText(""+data[0][5]);
-        ItemQtyText.setText(""+data[0][6]);
+    private void newPopulate(java.sql.ResultSet rs) throws SQLException{
+        ItemIdText.setText(""+rs.getInt(1));
+        ItemBarCodeText.setText(""+rs.getString(4));
+        ItemNameText.setText(""+rs.getString(2));
+        ItemPriceText.setText(""+rs.getDouble(6));
+        ItemQtyText.setText(""+rs.getInt(7));
         
-        //CatComboBox
-        //jComboBox2  
-        SizeText.setText(""+data[0][15]);
-        ColorText.setText(""+data[0][14]);
-        MakeText.setText(""+data[0][13]);
-        //QualityComboBox
-        WeightText.setText(""+data[0][11]);
-        DescTextArea.setText(""+data[0][2]);
-        ManufText.setText(""+data[0][1]);
+         if(!"".equals(rs.getInt(8)) && !" ".equals(rs.getInt(8)) && CatComboBox.getItemCount() > 0) {
+            CatComboBox.setSelectedIndex(rs.getInt(8));
+        }
+        
+        if(rs.getInt(17) == 0 && !" ".equals(rs.getInt(17)) && ItemStatusCombo.getItemCount() > 0) {
+            ItemStatusCombo.setSelectedIndex(rs.getInt(17));
+        } 
+        SizeText.setText(""+rs.getString(16));
+        ColorText.setText(""+rs.getString(15));
+        MakeText.setText(""+rs.getString(14));
+
+        if(!"".equals(rs.getInt(13)) && !" ".equals(rs.getInt(13)) && QualityComboBox.getItemCount() > 0 ) {
+            QualityComboBox.setSelectedIndex(rs.getInt(13));
+        }
+
+        if(!"".equals(rs.getInt(9)) && !" ".equals(rs.getInt(9)) && itemConversionCombo.getItemCount() > 0 ) {
+            itemConversionCombo.setSelectedIndex(rs.getInt(9));
+        }
+        WeightText.setText(""+rs.getString(12));
+        DescTextArea.setText(""+rs.getString(3));
+        
+        if(!"".equals(rs.getInt(11)) && !" ".equals(rs.getInt(11)) && ManufCombo.getItemCount() > 0 ) {
+            ManufCombo.setSelectedIndex(rs.getInt(11));
+        }
     }
+    
+   private void updateItem(){
+        String sql = "UPDATE items SET "
+                + "item_name = '"+ItemNameText.getText()+"', "
+                + "item_description = '"+DescTextArea.getText()+"',"
+                + "item_default_bar_code = '"+ItemBarCodeText.getText()+"', "
+                + "item_default_price = '"+ItemPriceText.getText()+"',"
+                + "item_qty = '"+ItemQtyText.getText()+"',"
+                + "item_category = '"+CatComboBox.getSelectedIndex()+"',"
+                + "item_conversion_id = '"+itemConversionCombo.getSelectedIndex()+"',"
+                + "item_manuf = '"+ManufCombo.getSelectedIndex()+"',"
+                + "item_weight = '"+WeightText.getText()+"',"
+                + "item_quality = '"+QualityComboBox.getSelectedIndex()+"',"
+                + "item_make = '"+MakeText.getText()+"',"
+                + "item_color = '"+ColorText.getText()+"',"
+                + "item_size = '"+SizeText.getText()+"',"
+                + "item_status = '"+ItemStatusCombo.getSelectedIndex()+"'"
+                + "WHERE item_id = '"+ItemIdText.getText()+"';";
+        //System.out.println(sql);
+        if(db.Update(sql)){
+            JOptionPane.showMessageDialog(null,"Item "+ItemNameText.getText()+" has been updated","Record updated!",JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null,"Item "+ItemNameText.getText()+" has failed to update","Record update erro!",JOptionPane.ERROR_MESSAGE);      
+        }
+            
+    }
+    private void addItem(){
+        java.text.SimpleDateFormat date = new java.text.SimpleDateFormat("yyyy-MM-dd k:m:s");
+        java.util.Date dt = new java.util.Date();
+        String dshow = date.format(dt);
+        
+        String sql = "INSERT INTO items "
+                + "(item_name,item_description,  item_default_bar_code, item_default_price, item_qty, item_category, item_conversion_id, "
+                + "item_manuf, item_weight, item_quality, item_make, item_color, item_size, item_status, created_at)"
+                + "VALUES ( '"+ItemNameText.getText()+"','"+DescTextArea.getText()+"','"+ItemBarCodeText.getText()+"','"+ItemPriceText.getText()+"',"
+                + "'"+ItemQtyText.getText()+"','"+(CatComboBox.getSelectedIndex()+1)+"','"+(itemConversionCombo.getSelectedIndex()+1)+"',"
+                + "'"+(ManufCombo.getSelectedIndex()+1)+"','"+WeightText.getText()+"','"+(QualityComboBox.getSelectedIndex()+1)+"','"+MakeText.getText()+"',"
+                + "'"+ColorText.getText()+"','"+SizeText.getText()+"','"+(ItemStatusCombo.getSelectedIndex()+1)+"','"+dshow+"')";
+
+        //System.out.println(sql);
+        
+        if(db.addNew(sql)){
+            JOptionPane.showMessageDialog(null,"Item "+ItemNameText.getText()+" has been added","Record added!",JOptionPane.INFORMATION_MESSAGE);
+            SaveUpdate.setText("Update");
+            SaveUpdate.setActionCommand("Update"); 
+            TrackItem.setVisible(true);
+            this.setTitle("Update item");
+            
+            rs = db.Query("SELECT * FROM items");
+            try {
+                rs.last();
+                ItemIdText.setText(""+rs.getInt(1));
+            } catch (SQLException ex) {
+                Logger.getLogger(newItem.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        }else{
+            JOptionPane.showMessageDialog(null,"Item "+ItemNameText.getText()+" has failed to be added","Record adding error!",JOptionPane.ERROR_MESSAGE);        
+        }
+    }
+  
     private void createSwingComponents(){
 
         jPanel1 = new javax.swing.JPanel();
@@ -103,7 +186,7 @@ public class newItem extends posi.sys.expeditors.popup {
         CatLabel = new javax.swing.JLabel();
         CatComboBox = new javax.swing.JComboBox();
         statusLabel = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        ItemStatusCombo = new javax.swing.JComboBox();
         itemConversionLabel = new javax.swing.JLabel();
         itemConversionCombo = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
@@ -121,7 +204,7 @@ public class newItem extends posi.sys.expeditors.popup {
         jScrollPane1 = new javax.swing.JScrollPane();
         DescTextArea = new javax.swing.JTextArea();
         ManufLabel = new javax.swing.JLabel();
-        ManufText = new javax.swing.JTextField();
+        ManufCombo = new javax.swing.JComboBox();
         picPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -155,7 +238,7 @@ public class newItem extends posi.sys.expeditors.popup {
         statusLabel.setText("Item status");
 
         Object [][] status = db.getData("SELECT item_status_name FROM item_status");
-        sundry.createCombo(jComboBox2, status);
+        sundry.createCombo(ItemStatusCombo, status);
         
         itemConversionLabel.setText("Item Conversion qty");
 
@@ -176,7 +259,7 @@ public class newItem extends posi.sys.expeditors.popup {
                         .addGap(18, 18, 18)
                         .addComponent(statusLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ItemStatusCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -227,7 +310,7 @@ public class newItem extends posi.sys.expeditors.popup {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(itemConversionCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ItemStatusCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(itemConversionLabel)
                     .addComponent(statusLabel))
                 .addContainerGap())
@@ -256,7 +339,10 @@ public class newItem extends posi.sys.expeditors.popup {
         jScrollPane1.setViewportView(DescTextArea);
 
         ManufLabel.setText("Manufacturer");
-
+        
+        Object [][] manuf = db.getData("SELECT item_manuf_name FROM item_manufacturer");
+        sundry.createCombo(ManufCombo, manuf);
+        
         picPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, java.awt.Color.gray, java.awt.Color.lightGray));
 
         javax.swing.GroupLayout picPanelLayout = new javax.swing.GroupLayout(picPanel);
@@ -303,7 +389,7 @@ public class newItem extends posi.sys.expeditors.popup {
                                 .addGap(26, 26, 26)
                                 .addComponent(ManufLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ManufText))
+                                .addComponent(ManufCombo))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(ColorText)
                                 .addGap(18, 18, 18)
@@ -338,7 +424,7 @@ public class newItem extends posi.sys.expeditors.popup {
                     .addComponent(WeigthLabel)
                     .addComponent(WeightText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ManufLabel)
-                    .addComponent(ManufText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ManufCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(picPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -439,18 +525,31 @@ public class newItem extends posi.sys.expeditors.popup {
             
             System.out.println(e.getActionCommand());
             if("Save".equals(e.getActionCommand())){
-                
+                addItem();
             }else if("Update".equals(e.getActionCommand())){
-                
+                updateItem();
             }else if("Close".equals(e.getActionCommand())){
                 dispose();
             }else if("Track".equals(e.getActionCommand())){                
                 setVisible(false);
                 new trackItem(Integer.parseInt(ItemIdText.getText())).setVisible(true);
             }else if("Next".equals(e.getActionCommand())){
+                try {
+                    if(rs.next()){
+                        newPopulate(rs);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(newItem.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }else if("Prev".equals(e.getActionCommand())){
-                
+                try {
+                    if(rs.previous()){
+                        newPopulate(rs);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(newItem.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         
@@ -473,7 +572,7 @@ public class newItem extends posi.sys.expeditors.popup {
     private javax.swing.JLabel MakeLabel;
     private javax.swing.JTextField MakeText;
     private javax.swing.JLabel ManufLabel;
-    private javax.swing.JTextField ManufText;
+    private javax.swing.JComboBox ManufCombo;
     private javax.swing.JComboBox QualityComboBox;
     private javax.swing.JLabel QualityLabel;
     private javax.swing.JButton SaveUpdate;
@@ -484,7 +583,7 @@ public class newItem extends posi.sys.expeditors.popup {
     private javax.swing.JLabel descLabel;
     private javax.swing.JLabel itemBarCodeLabel;
     private javax.swing.JLabel itemIdLabel;
-    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox ItemStatusCombo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -497,4 +596,5 @@ public class newItem extends posi.sys.expeditors.popup {
     private javax.swing.JLabel statusLabel;    
     private javax.swing.JComboBox itemConversionCombo;
     private javax.swing.JLabel itemConversionLabel;
+    
 }

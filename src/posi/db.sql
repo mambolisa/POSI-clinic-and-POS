@@ -7,10 +7,41 @@ CREATE TABLE IF NOT EXISTS items(
     item_default_price DOUBLE,
     item_qty INT,
     item_category INT NOT NULL REFERENCES items_categories(item_category_id),
+    item_pic VARCHAR(254),
+    item_manuf INT NULL REFERENCES item_manufacturer(item_manuf_id),
+    item_weight VARCHAR(200),
+    item_quality INT NULL REFERENCES item_quality(item_quality_id),,
+    item_make VARCHAR(254),
+    item_color VARCHAR(254),
+    item_size VARCHAR(200),
     item_status INT  NOT NULL REFERENCES item_status(item_status_id),
-
+    item_conversion_id INT NULL REFERENCES item_conversions(item_conversion_id),
     created_at DATETIME,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS item_manuf_goods_types(
+    item_manuf_goods_types INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    item_manuf_id INT NOT NULL REFERENCES item_manufacturer(item_manuf_id),
+    item_id INT NOT NULL REFERENCES items(item_id)
+);
+
+CREATE TABLE IF NOT EXISTS item_supp_goods_types(
+    item_supp_goods_types INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    item_supp_id INT NOT NULL REFERENCES item_supplier(item_supp_id),
+    item_id INT NOT NULL REFERENCES items(item_id)
+);
+
+CREATE TABLE IF NOT EXISTS item_supplier(
+    item_supp_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    item_supp_name VARCHAR(254),
+    item_supp_location VARCHAR(254)
+);
+
+CREATE TABLE IF NOT EXISTS item_manufacturer(
+    item_manuf_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    item_manuf_name VARCHAR(254),
+    item_manuf_location VARCHAR(254)
 );
 
 CREATE TABLE IF NOT EXISTS item_status(

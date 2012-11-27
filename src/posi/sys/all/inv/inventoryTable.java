@@ -24,7 +24,8 @@ public class inventoryTable extends javax.swing.JTable{
         table = new javax.swing.JTable(this.data, this.cols);        
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
-        table.setRowHeight(20);
+        table.setRowHeight(22);
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     }
     
     public  static javax.swing.JTable table(){

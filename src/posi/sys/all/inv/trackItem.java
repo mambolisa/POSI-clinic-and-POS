@@ -32,10 +32,10 @@ public class trackItem extends posi.sys.expeditors.popup {
     public final void content(){
         toolBar = new javax.swing.JToolBar();
         addToolbarContent(toolBar);        
-        toolBar.setFloatable(false);
-        toolBar.setPreferredSize(new java.awt.Dimension(200, 30));
+        toolBar.setFloatable(true);
+       // toolBar.setPreferredSize(new java.awt.Dimension(200, 30));
         add(toolBar,BorderLayout.PAGE_START); 
-        add(new javax.swing.JButton("Testing"),BorderLayout.CENTER);
+        //add(new javax.swing.JButton("Testing"),BorderLayout.CENTER);
     }
     
     private void addToolbarContent(javax.swing.JToolBar toolbar){

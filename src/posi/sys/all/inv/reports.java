@@ -4,6 +4,7 @@
  */
 package posi.sys.all.inv;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import posi.sys.all.expeditors.database.db_connect;
 /**
@@ -14,10 +15,10 @@ public class reports {
     private static db_connect db;
     public static javax.swing.JScrollPane InvAll(){
         db = new db_connect();
-        String sql = "SELECT item_id,item_default_bar_code,item_name,item_default_price,item_default_price,item_qty, item_description,item_category FROM items";
+        String sql = "SELECT item_id,item_default_bar_code,item_name,item_default_price,item_default_price, item_description, item_status_name FROM items, item_status WHERE item_status = item_status_id ";
         final Object[][] data = db.getData(sql);
         
-        final String [] columnNames = {"Item Id","Item code","Item name","Item price","Item qty","Description","Category"};
+        final String [] columnNames = {"Item Id","Item code","Item name","Item price","Item qty","Description","Item status"};
          
         final inventoryTable inv = new inventoryTable(data,columnNames);
          
@@ -44,7 +45,7 @@ public class reports {
 
              @Override
               public boolean isCellEditable(int row, int col) {
-                   if (col < 2) {
+                   if (col < 2 || col == 6) {
                         return false;
                    } else {
                        return true;
@@ -56,7 +57,23 @@ public class reports {
                   int n = javax.swing.JOptionPane.showConfirmDialog(inv, "Update "+data[row][col]+" to "+ value + "?", "Continue with changes?",javax.swing.JOptionPane.YES_NO_OPTION);
                   if( n == 0){
                       data[row][col] = value;
-                      fireTableCellUpdated(row, col);
+                      String sql = null;
+                      if( col == 2){
+                          sql = "UPDATE items set item_name = '"+value+"' WHERE item_id='"+data[row][0]+"';";                      
+                      }else if (col == 3){
+                          sql = "UPDATE items set item_default_price = '"+value+"' WHERE item_id='"+data[row][0]+"';"; 
+                      }else if ( col == 4){
+                          sql = "UPDATE items set item_qty = '"+value+"' WHERE item_id='"+data[row][0]+"';"; 
+                      }else if ( col == 5){
+                          sql = "UPDATE items set item_description = '"+value+"' WHERE item_id='"+data[row][0]+"';"; 
+                      }
+                          
+                      if(db.Update(sql)){
+                            JOptionPane.showMessageDialog(null,"Item  has been updated","Record updated!",JOptionPane.INFORMATION_MESSAGE);
+                            fireTableCellUpdated(row, col);
+                      }else{
+                            JOptionPane.showMessageDialog(null,"Item  has failed to update","Record update erro!",JOptionPane.ERROR_MESSAGE);      
+                      } 
                   }else{
                       return;
                   }

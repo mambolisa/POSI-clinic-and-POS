@@ -26,6 +26,7 @@ public class inventoryMngt extends javax.swing.JFrame {
     private javax.swing.JButton button;
     private javax.swing.JSplitPane splitPane;
     private javax.swing.JMenuItem menuitem;
+    private javax.swing.JCheckBoxMenuItem checkBoxMenuItem;
     
     private javax.swing.JPanel topToolBarPanel;
     
@@ -116,7 +117,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         menuitem.addActionListener(new Action());
         file.add(menuitem);
         menubar.add(file);
-        
+        /*
         edit = new javax.swing.JMenu("Edit");
         
         menuitem = new javax.swing.JMenuItem("Undo",sundry.createImageIcon("images/Arrow2 Left.gif", new java.awt.Dimension(20, 20)));
@@ -157,7 +158,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         menuitem.addActionListener(new Action());
         edit.add(menuitem);
         menubar.add(edit);
-        
+        */
         view = new javax.swing.JMenu("View");
         
         menuitem = new javax.swing.JMenuItem("Search",sundry.createImageIcon("images/Search.gif", new java.awt.Dimension(20, 20)));
@@ -166,15 +167,63 @@ public class inventoryMngt extends javax.swing.JFrame {
         menuitem.addActionListener(new Action());
         view.add(menuitem);
         
-        menuitem = new javax.swing.JMenuItem("Toolbars");
-        menuitem.setActionCommand("Toolbars"); 
-        menuitem.addActionListener(new Action());
-        view.add(menuitem);
+        menu = new javax.swing.JMenu("Toolbars");
+        
+        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Navigation");
+        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_N,  ActionEvent.SHIFT_MASK));
+        checkBoxMenuItem.setActionCommand("navigationToolbar"); 
+        checkBoxMenuItem.addActionListener(new Action());
+        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItem);
+        
+        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Item Controls");
+        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_I, ActionEvent.SHIFT_MASK));
+        checkBoxMenuItem.setActionCommand("ItemControlToolbar"); 
+        checkBoxMenuItem.addActionListener(new Action());
+        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItem);
+        
+        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Application controls");
+        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_A,  ActionEvent.SHIFT_MASK));
+        checkBoxMenuItem.setActionCommand("ApplicationControlToolbar"); 
+        checkBoxMenuItem.addActionListener(new Action());
+        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItem);
+        
+        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Ploriferate controls");
+        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_P, ActionEvent.SHIFT_MASK));
+        checkBoxMenuItem.setActionCommand("PloriferateControlToolbar"); 
+        checkBoxMenuItem.addActionListener(new Action());
+        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItem);
+         
+        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Diminate controls");
+        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_D, ActionEvent.SHIFT_MASK));
+        checkBoxMenuItem.setActionCommand("DiminateControlToolbar"); 
+        checkBoxMenuItem.addActionListener(new Action());
+        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItem);
+        
+        view.add(menu);
         
         menuitem = new javax.swing.JMenuItem("Applications",sundry.createImageIcon("images/Applications.gif", new java.awt.Dimension(20, 20)));
         menuitem.setActionCommand("Applications"); 
         menuitem.addActionListener(new Action());
         view.add(menuitem);
+        
+        menu = new javax.swing.JMenu("Stakeholders");
+        menuitem = new javax.swing.JMenuItem("Customers",sundry.createImageIcon("images/Man.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setActionCommand("Customer"); 
+        menuitem.addActionListener(new Action());        
+        menu.add(menuitem);
+        
+        menuitem = new javax.swing.JMenuItem("Suppliers",sundry.createImageIcon("images/Woman.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setActionCommand("Supplier"); 
+        menuitem.addActionListener(new Action());
+        menu.add(menuitem);
+        
+        view.add(menu);
+        
         menubar.add(view);
       
         menu = new javax.swing.JMenu("POS");
@@ -187,7 +236,15 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         menu = new javax.swing.JMenu("Money matters");
         menuitem = new javax.swing.JMenuItem("Cash management",sundry.createImageIcon("images/Currency Dollar.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_C, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+
         menuitem.setActionCommand("cashregister"); 
+        menuitem.addActionListener(new Action());
+        menu.add(menuitem);
+        
+        menuitem = new javax.swing.JMenuItem("Accounting",sundry.createImageIcon("images/Light.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_A, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("accounting"); 
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
         menubar.add(menu);
@@ -286,13 +343,13 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         logout = new javax.swing.JMenu("Go away");
         menuitem = new javax.swing.JMenuItem("Logout",sundry.createImageIcon("images/Go out.gif", new java.awt.Dimension(20, 20)));
-        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_L,ActionEvent.SHIFT_MASK));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_L,ActionEvent.SHIFT_MASK| ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("Logout"); 
         menuitem.addActionListener(new Action());
         logout.add(menuitem);
         
         menuitem = new javax.swing.JMenuItem("Exit",sundry.createImageIcon("images/Standby.gif", new java.awt.Dimension(20, 20)));
-        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_E,ActionEvent.SHIFT_MASK));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_E,ActionEvent.SHIFT_MASK | ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("Exit"); 
         menuitem.addActionListener(new Action());
         logout.add(menuitem);
@@ -307,17 +364,21 @@ public class inventoryMngt extends javax.swing.JFrame {
         topToolBarPanel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
        // topToolBarPanel;
         toolBarTop = new javax.swing.JToolBar();
-        this.addToolbarContentTop_1(toolBarTop);        
+        this.addToolbarContentTop_1(toolBarTop);
+        toolBarTop.setName("Item Control");
         //toolBarTop.setPreferredSize(new java.awt.Dimension(180, 30));
         topToolBarPanel.add(toolBarTop);
         
         toolBarTop = new javax.swing.JToolBar();
-        this.addToolbarContentTop_2(toolBarTop);        
+        this.addToolbarContentTop_2(toolBarTop); 
+        toolBarTop.setName("Navigator");
         //toolBarTop.setPreferredSize(new java.awt.Dimension(150, 30));
         topToolBarPanel.add(toolBarTop);
         
         toolBarTop = new javax.swing.JToolBar();
         this.addToolbarContentTop_3(toolBarTop); 
+        toolBarTop.setName("System Control");
+        
        // toolBarTop.setPreferredSize(new java.awt.Dimension(100, 30));
         topToolBarPanel.add(toolBarTop);
         
@@ -591,7 +652,7 @@ public class inventoryMngt extends javax.swing.JFrame {
             
             }else if("Print".equals(e.getActionCommand())){
                 try {
-                    if (! getCurrentTable().print()) {
+                    if (!inventoryTable.table().print()) {
                         System.err.println("User cancelled printing");
                     }
                 } catch (java.awt.print.PrinterException exception) {
@@ -647,7 +708,32 @@ public class inventoryMngt extends javax.swing.JFrame {
                 new posi.sys.all.inv.Warehouse().setVisible(true);
             }else if("pos".equals(e.getActionCommand())){
                 new posi.sys.all.pos.POS().setVisible(true);
-            } 
+            } else  if("PloriferateControlToolbar".equals(e.getActionCommand())){
+                //PloriferateControlToolbar
+                if("itemControl".equals(toolBarTop.getName())){
+                    System.out.println("item");
+                }
+            } else  if("DiminateControlToolbar".equals(e.getActionCommand())){
+                //navigationToolbar
+                if("itemControl".equals(toolBarTop.getName())){
+                    System.out.println("item");
+                }
+            }else  if("ApplicationControlToolbar".equals(e.getActionCommand())){
+                //navigationToolbar
+                if("SystemControl".equals(toolBarTop.getName())){
+                    System.out.println("sys");
+                }
+            }else  if("ItemControlToolbar".equals(e.getActionCommand())){
+                //navigationToolbar
+                if("itemControl".equals(toolBarTop.getName())){
+                    System.out.println("Nav");
+                }
+            }else  if("navigationToolbar".equals(e.getActionCommand())){
+                //navigationToolbar
+                if("navigator".equals(toolBarTop.getName())){
+                    System.out.println("Nav");
+                }
+            }
         }        
     }// 
     

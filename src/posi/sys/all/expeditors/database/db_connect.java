@@ -38,14 +38,17 @@ public class db_connect{
             return con;
         }
         
-	public void addNew(String sql){
+	public boolean addNew(String sql){
+                boolean ifAdded = false;
 		try {
 			stmt=con.createStatement();
 			stmt.execute(sql);
+                        ifAdded = true;
 		}
 		catch (Exception err) {
 			System.out.println( "Error: " + err );
 		}
+           return ifAdded;
 	}
 
 	public ResultSet Query(String sql){
@@ -106,24 +109,30 @@ public class db_connect{
         return row; 
         }
         
-	public void Delete(String sql){
+	public boolean Delete(String sql){
+            boolean ifDeleted = false;
 		PreparedStatement st;
 		try{
 			st=con.prepareStatement(sql);
 			st.executeUpdate();
+                        ifDeleted = true;
 		}
 		catch (Exception err) {
 			System.out.println( "Error deleting: " + err );
 		}
+            return ifDeleted;
 	}
 
-	public void Update(String sql){
+	public boolean Update(String sql){
+            boolean ifUpdated = false;
 		try{
 			s=con.createStatement();
 			s.execute(sql);
+                        ifUpdated = true;
 		}
 		catch (Exception err) {
 			System.out.println( "Error=== " + err );
 		}
+           return ifUpdated;
 	}
 }
