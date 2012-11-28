@@ -5,6 +5,7 @@
 package posi.sys.all.pos;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -26,10 +27,13 @@ public class POS extends posi.sys.expeditors.popup {
     private javax.swing.JPanel panel;
     private javax.swing.JTabbedPane tabbedPane;
     
+    private javax.swing.JTextField textfield;
+    private javax.swing.JLabel label;
+    
     private String [] columnNames = {"Item bar code","Item Name","Item qty","Price","Total"};
     private Object [][] data ;
     public POS(){
-        super(new java.awt.Dimension(950,650),"Point of sale");
+        super(new java.awt.Dimension(970,670),"Point of sale");
          //System,Metal, Motif, GTK
         new posi.sys.expeditors.LooknFeel("Metal");
         
@@ -73,15 +77,21 @@ public class POS extends posi.sys.expeditors.popup {
         panel= new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
         toolBar = new javax.swing.JToolBar();
         addToolbarContent(toolBar);        
-        toolBar.setFloatable(true);
-       // toolBar.setPreferredSize(new java.awt.Dimension(200, 30));
-        panel.add(toolBar,BorderLayout.PAGE_START); 
+        toolBar.setFloatable(false);
+        toolBar.setPreferredSize(new java.awt.Dimension(350, 40));
+        panel.add(toolBar); 
         
         toolBar = new javax.swing.JToolBar();
-        addToolbarContent(toolBar);        
-        toolBar.setFloatable(true);
-       // toolBar.setPreferredSize(new java.awt.Dimension(200, 30));
-        panel.add(toolBar,BorderLayout.PAGE_START); 
+        addToolbarContent_2(toolBar);        
+        toolBar.setFloatable(false);
+        toolBar.setPreferredSize(new java.awt.Dimension(200, 40));
+        panel.add(toolBar); 
+        
+        toolBar = new javax.swing.JToolBar();
+        addToolbarContent_3(toolBar);        
+        toolBar.setFloatable(false);
+        toolBar.setPreferredSize(new java.awt.Dimension(390, 40));
+        panel.add(toolBar); 
         
         add(panel,BorderLayout.PAGE_START);
         tabbedPane = new javax.swing.JTabbedPane();
@@ -91,76 +101,94 @@ public class POS extends posi.sys.expeditors.popup {
         add(tabbedPane,BorderLayout.CENTER);
         
         toolBar = new javax.swing.JToolBar();
-        addToolbarContent(toolBar);        
-        toolBar.setFloatable(true);
-        //toolBar.setPreferredSize(new java.awt.Dimension(200, 30));
+        addToolbarContent_4(toolBar);        
+        toolBar.setFloatable(false);
+        toolBar.setPreferredSize(new java.awt.Dimension(300, 50));
         add(toolBar,BorderLayout.PAGE_END);
     }
     
     private void addToolbarContent(javax.swing.JToolBar toolbar){
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Printer.gif", new java.awt.Dimension(34, 32)));
-        button.setActionCommand("Customers");
+        textfield = new javax.swing.JTextField(30);
+        textfield.setPreferredSize(new java.awt.Dimension(150, 50));
+        textfield.setActionCommand("inputText");
+        textfield.addActionListener( new Action());
+        toolbar.add(textfield); 
+        
+        button = new javax.swing.JButton("Go");
+        button.setPreferredSize(new java.awt.Dimension(70, 60));
+        button.setActionCommand("SearchItem");
         button.addActionListener( new Action());
-        button.setToolTipText("Customers");
-	button.setContentAreaFilled(false);
         toolbar.add(button); 
-        
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Document new.gif", new java.awt.Dimension(34, 32)));
-        button.setActionCommand("Customers");
-        button.addActionListener( new Action());
-        button.setToolTipText("Customers");
-	button.setContentAreaFilled(false);
-        toolbar.add(button); 
-        
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Man.gif", new java.awt.Dimension(34, 32)));
-        button.setActionCommand("Customers");
-        button.addActionListener( new Action());
-        button.setToolTipText("Customers");
-	button.setContentAreaFilled(false);
-        toolbar.add(button);         
-        
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Search.gif", new java.awt.Dimension(34, 32)));
-        button.setActionCommand("Search");
-        button.addActionListener( new Action());
-        button.setToolTipText("Search");
-	button.setContentAreaFilled(false);
-        toolbar.add(button);
- 
    }    
     
 private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         button = new javax.swing.JButton(sundry.createImageIcon("images/Printer.gif", new java.awt.Dimension(34, 32)));
-        button.setActionCommand("Customers");
+        button.setActionCommand("PrintReciept");
         button.addActionListener( new Action());
-        button.setToolTipText("Customers");
 	button.setContentAreaFilled(false);
         toolbar.add(button); 
         
         button = new javax.swing.JButton(sundry.createImageIcon("images/Document new.gif", new java.awt.Dimension(34, 32)));
-        button.setActionCommand("Customers");
+        button.setActionCommand("NewSales");
         button.addActionListener( new Action());
-        button.setToolTipText("Customers");
 	button.setContentAreaFilled(false);
         toolbar.add(button); 
         
         button = new javax.swing.JButton(sundry.createImageIcon("images/Man.gif", new java.awt.Dimension(34, 32)));
         button.setActionCommand("Customers");
         button.addActionListener( new Action());
-        button.setToolTipText("Customers");
 	button.setContentAreaFilled(false);
         toolbar.add(button);         
         
         button = new javax.swing.JButton(sundry.createImageIcon("images/Search.gif", new java.awt.Dimension(34, 32)));
         button.setActionCommand("Search");
         button.addActionListener( new Action());
-        button.setToolTipText("Search");
 	button.setContentAreaFilled(false);
         toolbar.add(button);
- 
    }    
     
+    private void addToolbarContent_3(javax.swing.JToolBar toolbar){
+        java.text.SimpleDateFormat date = new java.text.SimpleDateFormat("yyyy-MM-dd k:m:s");
+        java.util.Date dt = new java.util.Date();
+        String dshow = date.format(dt);
+        
+        label = new javax.swing.JLabel();
+        label.setPreferredSize(new java.awt.Dimension(130, 40));
+        label.setText( dshow);
+        label.setForeground(Color.black);
+        toolbar.add(label); 
+        
+        label = new javax.swing.JLabel();
+        label.setPreferredSize(new java.awt.Dimension(130, 40));
+        label.setText( "User: "+"Administrator");
+        label.setForeground(Color.darkGray);
+        toolbar.add(label); 
+        
+        label = new javax.swing.JLabel();
+        label.setPreferredSize(new java.awt.Dimension(130, 40));
+        label.setText( "Session: " + 1);
+        label.setForeground(Color.BLUE);
+        toolbar.add(label); 
+   } 
+    
+    private void addToolbarContent_4(javax.swing.JToolBar toolbar){
+        panel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
+        addButtons(panel);
+     
+        toolbar.add(panel); 
+   }
+    
+   private void addButtons(javax.swing.JPanel panel){
+       javax.swing.JButton button;
+       
+       for(int i = 1; i <= 5; i++ ){
+           button = new javax.swing.JButton("Item "+i);
+           panel.add(button);
+       }
+   }
+   
     public final javax.swing.JScrollPane addSalesTable(){
-        int cols = 5, rows = 10;
+        int cols = 5, rows = 15;
         data = new Object[rows][cols];
         for ( int i = 0; i < rows; i++ ){
             for ( int j = 0; j < cols-1; j++ ){

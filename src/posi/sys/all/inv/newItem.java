@@ -71,10 +71,14 @@ public class newItem extends posi.sys.expeditors.popup {
         
         if( !this.ifNew ){
             SaveUpdate.setText("Update");
-            SaveUpdate.setActionCommand("Update");   
+            SaveUpdate.setActionCommand("Update");  
+            prev.setEnabled(true);
+            next.setEnabled(true);
         }  else{
             TrackItem.setVisible(false);
             ItemIdText.setText(" Auto-Generated");
+            prev.setEnabled(false);
+            next.setEnabled(false);
         }
     }
     
