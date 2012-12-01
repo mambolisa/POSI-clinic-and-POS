@@ -11,14 +11,14 @@ import java.awt.event.ActionEvent;
  * @author Aquarius
  */
 public class utilityFunctions {
-    private static Object itemID;
-    public static javax.swing.JPopupMenu invRowPopupMenu(Object itemCode){
+    private  int itemID;
+    public javax.swing.JPopupMenu invRowPopupMenu(int itemCode){
         itemID = itemCode;
         javax.swing.JPopupMenu popup = new javax.swing.JPopupMenu();
         javax.swing.JMenuItem menuitem;
         menuitem = new javax.swing.JMenuItem("Edit",new posi.sys.expeditors.sundry().createImageIcon("images/Write.gif", new java.awt.Dimension(23, 23)));
         menuitem.addActionListener(new action());
-        menuitem.setActionCommand("edit");
+        menuitem.setActionCommand("editSales");
         popup.add(menuitem);
         
         menuitem = new javax.swing.JMenuItem("Remove",new posi.sys.expeditors.sundry().createImageIcon("images/Trash.gif", new java.awt.Dimension(23, 23)));
@@ -44,18 +44,53 @@ public class utilityFunctions {
         
         return popup;
     }
-    
-    static class action implements java.awt.event.ActionListener{
+ 
+    public javax.swing.JPopupMenu salesCatRowPopupMenu(int itemCode){
+        itemID = itemCode;
+        javax.swing.JPopupMenu popup = new javax.swing.JPopupMenu();
+        javax.swing.JMenuItem menuitem;
+        menuitem = new javax.swing.JMenuItem("View item",new posi.sys.expeditors.sundry().createImageIcon("images/Cube.gif", new java.awt.Dimension(23, 23)));
+        menuitem.addActionListener(new action());
+        menuitem.setActionCommand("edit");
+        popup.add(menuitem);
+        
+        menuitem = new javax.swing.JMenuItem("Remove item from list",new posi.sys.expeditors.sundry().createImageIcon("images/Cancel.gif", new java.awt.Dimension(23, 23)));
+        menuitem.setActionCommand("RemoveFromSalesList");
+        menuitem.addActionListener(new action());
+        popup.add(menuitem);
+
+        menuitem = new javax.swing.JMenuItem("Customer item history",new posi.sys.expeditors.sundry().createImageIcon("images/Dots.gif", new java.awt.Dimension(23, 23)));
+        menuitem.setActionCommand("CustHist");
+        menuitem.addActionListener(new action());
+        popup.add(menuitem);
+        
+        popup.addSeparator();
+        menuitem = new javax.swing.JMenuItem("Leave comment on item",new posi.sys.expeditors.sundry().createImageIcon("images/Bubble 1.gif", new java.awt.Dimension(23, 23)));
+        menuitem.setActionCommand("LeaveCommentOnItem");
+        menuitem.addActionListener(new action());
+        popup.add(menuitem);
+        
+        return popup;
+    }
+        
+    class action implements java.awt.event.ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand()+" "+itemID);
             if("edit".equals(e.getActionCommand())){
-                new newItem((Integer)itemID).setVisible(true);
+                new newItem(itemID,false).setVisible(true);
+            }else if("editSales".equals(e.getActionCommand())){
+                new newItem(itemID,true).setVisible(true);
             }else if("newItem".equals(e.getActionCommand())){
                 new newItem().setVisible(true);
             }else if("trackitem".equals(e.getActionCommand())){
-                new trackItem(Integer.parseInt(itemID.toString())).setVisible(true);
+                new trackItem(itemID).setVisible(true);
+            }else if("LeaveCommentOnItem".equals(e.getActionCommand())){
+                
+            }else if("CustHist".equals(e.getActionCommand())){
+            
+            }else if("RemoveFromSalesList".equals(e.getActionCommand())){
+                
             }else if("Remove".equals(e.getActionCommand())){
                 int n = javax.swing.JOptionPane.showConfirmDialog(null, "Are you sure you want to remove item?", "Continue with changes?",javax.swing.JOptionPane.YES_NO_OPTION);
                 if( n == 0){

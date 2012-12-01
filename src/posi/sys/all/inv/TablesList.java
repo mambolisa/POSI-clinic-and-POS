@@ -8,13 +8,20 @@ package posi.sys.all.inv;
  *
  * @author Aquarius
  */
-public  class TablesList extends java.util.ArrayList {
+public  class TablesList  {
     private int count = 0;
-    javax.swing.JComponent c;
+    private javax.swing.JComponent c;
+    private javax.swing.JTable table;
+    private javax.swing.JScrollPane scrollpane;
+    private java.util.List<Object> list;
+    
+    public TablesList(){
+        list = new java.util.ArrayList<Object>();
+    }
+    
     public void addItem(javax.swing.JComponent c, String title){
         count++;
         
-        this.add(c);
     }
     
     public int getCount(){
@@ -25,12 +32,12 @@ public  class TablesList extends java.util.ArrayList {
         count--;
     }
     
-    public javax.swing.JComponent getComponent(String title){
-        return c;
+    public javax.swing.JScrollPane getComponent(String title){
+        return scrollpane;
     }
     
-    public javax.swing.JComponent getComponentTable(String title){
+    public javax.swing.JTable getComponentTable(String title){
         
-        return c;
+        return table;
     }
 }

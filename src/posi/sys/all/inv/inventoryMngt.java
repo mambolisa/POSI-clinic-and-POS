@@ -30,6 +30,8 @@ public class inventoryMngt extends javax.swing.JFrame {
     
     private javax.swing.JPanel topToolBarPanel;
     
+    private posi.sys.all.inv.tableReports inv;
+    
     private posi.sys.all.expeditors.database.db_connect db = null;
     public inventoryMngt(){ //System,Metal, Motif, GTK
         new posi.sys.expeditors.LooknFeel("Metal");
@@ -402,8 +404,9 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         tabbedPane = new javax.swing.JTabbedPane();
         tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-                                            
-        addTabPane("Inventory list",posi.sys.all.inv.reports.InvAll(),"Close inventory");
+        
+        inv  = new posi.sys.all.inv.tableReports();
+        addTabPane("Inventory list",inv.InvAll(),"Close inventory");
                 
         splitPane.setLeftComponent(new posi.sys.all.inv.inventoryJTree().getContent());
 
@@ -642,17 +645,17 @@ public class inventoryMngt extends javax.swing.JFrame {
             }else if("Save".equals(e.getActionCommand())){
             
             }else if("Edit".equals(e.getActionCommand())){
-                if( inventoryTable.table().getSelectedRow() == -1){
+                if( inv.getTable().getSelectedRow() == -1){
                     JOptionPane.showMessageDialog(null, "Please select item row!","Select item", JOptionPane.WARNING_MESSAGE);
                 }else{
-                    Object itemId = inventoryTable.table().getValueAt(inventoryTable.table().getSelectedRow(), 0);
-                    new posi.sys.all.inv.newItem(Integer.parseInt(itemId.toString())).setVisible(true);
+                    Object itemId = inv.getTable().getValueAt(inv.getTable().getSelectedRow(), 0);
+                    new posi.sys.all.inv.newItem(Integer.parseInt(itemId.toString()),false).setVisible(true);
                 }
             }else if("Refresh".equals(e.getActionCommand())){
             
             }else if("Print".equals(e.getActionCommand())){
                 try {
-                    if (!inventoryTable.table().print()) {
+                    if (!inv.getTable().print()) {
                         System.err.println("User cancelled printing");
                     }
                 } catch (java.awt.print.PrinterException exception) {
@@ -678,7 +681,7 @@ public class inventoryMngt extends javax.swing.JFrame {
             } else if("warehouse".equals(e.getActionCommand())){
                 new posi.sys.expeditors.Login();
             } else if("InvAllV".equals(e.getActionCommand())){
-                addTabPane("Inventory list", posi.sys.all.inv.reports.InvAll(),"Close inventory");
+                addTabPane("Inventory list", inv.InvAll(),"Close inventory");
                 
             } else if("ReportV".equals(e.getActionCommand()) || "Reports".equals(e.getActionCommand())){                
                 splitPane.setLeftComponent(inventoryJTree.updateTree());

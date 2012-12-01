@@ -15,10 +15,12 @@ public class trackItem extends posi.sys.expeditors.popup {
     private int item_id;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JButton button;
+    private posi.sys.all.inv.tableReports allItems;
     
     public trackItem(){
         super(new java.awt.Dimension(800,650),"Track Item");
-        this.getContentPane().add(posi.sys.all.inv.reports.InvAll());
+        allItems = new posi.sys.all.inv.tableReports();
+        this.getContentPane().add(allItems.InvAll());
         this.content();
     }
     

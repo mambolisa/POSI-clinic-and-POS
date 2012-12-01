@@ -4,6 +4,8 @@
  */
 package posi.sys.expeditors;
 
+import java.awt.event.KeyEvent;
+
 /**
  *
  * @author Aquarius

@@ -11,16 +11,19 @@ import posi.sys.all.expeditors.database.db_connect;
  *
  * @author Aquarius
  */
-public class reports {
+public class tableReports {
     private static db_connect db;
-    public static javax.swing.JScrollPane InvAll(){
+    private Object[][] data;
+    private inventoryTable inv;
+    
+    public javax.swing.JScrollPane InvAll(){
         db = new db_connect();
         String sql = "SELECT item_id,item_default_bar_code,item_name,item_default_price,item_default_price, item_description, item_status_name FROM items, item_status WHERE item_status = item_status_id ";
-        final Object[][] data = db.getData(sql);
+        data = db.getData(sql);
         
         final String [] columnNames = {"Item Id","Item code","Item name","Item price","Item qty","Description","Item status"};
          
-        final inventoryTable inv = new inventoryTable(data,columnNames);
+        inv = new inventoryTable(data,columnNames);
          
         inv.setTableModel(new javax.swing.table.AbstractTableModel(){
              @Override
@@ -85,7 +88,7 @@ public class reports {
                if(SwingUtilities.isLeftMouseButton(e)){
                    java.awt.Point p = e.getPoint();
                    if (e.getClickCount() == 2){
-                       int rowNum = inventoryTable.table().rowAtPoint(p);
+                       int rowNum = inv.table().rowAtPoint(p);
                        Object itemCode =  data[rowNum][0];
                        System.out.println(rowNum);
                        posi.sys.all.inv.newItem newItem = new posi.sys.all.inv.newItem();
@@ -94,14 +97,18 @@ public class reports {
                }else if (SwingUtilities.isRightMouseButton(e)){
                    java.awt.Point p = e.getPoint();
                    
-                   int rowNum = inventoryTable.table().rowAtPoint(p);
+                   int rowNum = inv.table().rowAtPoint(p);
                    Object itemCode =  data[rowNum][0];
-                   javax.swing.JPopupMenu popup = utilityFunctions.invRowPopupMenu(itemCode);
+                   javax.swing.JPopupMenu popup = new utilityFunctions().invRowPopupMenu(Integer.parseInt(itemCode.toString()));
                    
                    popup.show(e.getComponent(), e.getX(), e.getY());
                }
            }
        });
-    return  inventoryTable.tableScrollPane();
+    return  inv.tableScrollPane();
+    }
+    
+    public javax.swing.JTable getTable(){
+        return inv;
     }
 }

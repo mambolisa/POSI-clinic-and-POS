@@ -29,17 +29,28 @@ public class newItem extends posi.sys.expeditors.popup {
         this.addContent(true);
         
     }
-    public newItem(int itemNum){
+    public newItem(int itemNum, boolean iNewEnabledBtn){
         super(new java.awt.Dimension(700,600),"Edit Item");
         
         this.item_num = itemNum;
         this.addContent(false);
+        
+        if(!iNewEnabledBtn){
+            disableButtons();
+        }
     }
     
     public static void main(String [] args){
-        new newItem(11).setVisible(true);
+        new newItem(11, false).setVisible(true);
     }
   
+    private void disableButtons(){
+        prev.setEnabled(false);
+        next.setEnabled(false);
+        SaveUpdate.setEnabled(false);
+        TrackItem.setEnabled(false);
+    }
+    
     private void addContent(boolean ifNewItem){
         this.createSwingComponents();        
        // ifDataAvailable = false;
@@ -55,9 +66,8 @@ public class newItem extends posi.sys.expeditors.popup {
             try {
                 boolean cont = true;
                 
-                while( rs.next() && cont == true){
+                while( rs.next() && cont == true){System.out.println(rs.getInt(1));
                     if( rs.getInt(1) == item_num ){
-                        System.out.println(rs.getInt(1));
                         newPopulate(rs);
                         cont = false;
                     }
@@ -87,31 +97,31 @@ public class newItem extends posi.sys.expeditors.popup {
         ItemBarCodeText.setText(""+rs.getString(4));
         ItemNameText.setText(""+rs.getString(2));
         ItemPriceText.setText(""+rs.getDouble(6));
-        ItemQtyText.setText(""+rs.getInt(7));
+        ItemQtyText.setText(""+rs.getInt(8));
         
-         if(!"".equals(rs.getInt(8)) && !" ".equals(rs.getInt(8)) && CatComboBox.getItemCount() > 0) {
-            CatComboBox.setSelectedIndex(rs.getInt(8));
+         if(!"".equals(rs.getInt(10)) && !" ".equals(rs.getInt(10)) && CatComboBox.getItemCount() > 0) {
+            CatComboBox.setSelectedIndex(rs.getInt(10));
         }
         
-        if(rs.getInt(17) == 0 && !" ".equals(rs.getInt(17)) && ItemStatusCombo.getItemCount() > 0) {
-            ItemStatusCombo.setSelectedIndex(rs.getInt(17));
+        if(rs.getInt(19) == 0 && !" ".equals(rs.getInt(19)) && ItemStatusCombo.getItemCount() > 0) {
+            ItemStatusCombo.setSelectedIndex(rs.getInt(19));
         } 
-        SizeText.setText(""+rs.getString(16));
-        ColorText.setText(""+rs.getString(15));
-        MakeText.setText(""+rs.getString(14));
+        SizeText.setText(""+rs.getString(18));
+        ColorText.setText(""+rs.getString(17));
+        MakeText.setText(""+rs.getString(16));
 
-        if(!"".equals(rs.getInt(13)) && !" ".equals(rs.getInt(13)) && QualityComboBox.getItemCount() > 0 ) {
-            QualityComboBox.setSelectedIndex(rs.getInt(13));
+        if(!"".equals(rs.getInt(15)) && !" ".equals(rs.getInt(15)) && QualityComboBox.getItemCount() > 0 ) {
+            QualityComboBox.setSelectedIndex(rs.getInt(15));
         }
 
-        if(!"".equals(rs.getInt(9)) && !" ".equals(rs.getInt(9)) && itemConversionCombo.getItemCount() > 0 ) {
-            itemConversionCombo.setSelectedIndex(rs.getInt(9));
+        if(!"".equals(rs.getInt(11)) && !" ".equals(rs.getInt(11)) && itemConversionCombo.getItemCount() > 0 ) {
+            itemConversionCombo.setSelectedIndex(rs.getInt(11));
         }
-        WeightText.setText(""+rs.getString(12));
+        WeightText.setText(""+rs.getString(14));
         DescTextArea.setText(""+rs.getString(3));
         
-        if(!"".equals(rs.getInt(11)) && !" ".equals(rs.getInt(11)) && ManufCombo.getItemCount() > 0 ) {
-            ManufCombo.setSelectedIndex(rs.getInt(11));
+        if(!"".equals(rs.getInt(13)) && !" ".equals(rs.getInt(13)) && ManufCombo.getItemCount() > 0 ) {
+            ManufCombo.setSelectedIndex(rs.getInt(13));
         }
     }
     

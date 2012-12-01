@@ -10,26 +10,29 @@ package posi.sys.all.inv;
  * @author Aquarius
  */
 public class inventoryTable extends javax.swing.JTable{
-    private static javax.swing.JTable table;
-
     private static javax.swing.JScrollPane scrollPane;
-    Object[][] data;
-
-    String[] cols;
-        
-    public inventoryTable(Object [][] data, String [] columnNames){
-        this.cols = columnNames;
-        this.data = data;
-        
-        table = new javax.swing.JTable(this.data, this.cols);        
-        table.setFillsViewportHeight(true);
-        table.setAutoCreateRowSorter(true);
-        table.setRowHeight(22);
-        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    private posi.sys.all.inv.TablesList r = new posi.sys.all.inv.TablesList();
+    
+    public inventoryTable(java.util.Vector data, java.util.Vector columnNames){
+        super(data, columnNames);      
+       // r.addItem(table, "")
+        setTable();
     }
     
-    public  static javax.swing.JTable table(){
-        return table;
+    public inventoryTable(Object [][] data, String [] columnNames){
+        super(data, columnNames);        
+        setTable();
+    }
+    
+    private void setTable(){
+        setFillsViewportHeight(true);
+        setAutoCreateRowSorter(true);
+        setRowHeight(22);
+        setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    public  javax.swing.JTable table(){
+        return this;
     }
     
     @Override
@@ -38,15 +41,15 @@ public class inventoryTable extends javax.swing.JTable{
     }
     
     public void setTableModel(javax.swing.table.TableModel dataModel){
-        table.setModel(dataModel);
+        setModel(dataModel);
     }
     
     public void setMouseListener(java.awt.event.MouseAdapter m){
-        table.addMouseListener(m);
+        addMouseListener(m);
     }
     
-    public  static javax.swing.JScrollPane tableScrollPane(){
-        scrollPane= new javax.swing.JScrollPane(table);
+    public javax.swing.JScrollPane tableScrollPane(){
+        scrollPane= new javax.swing.JScrollPane(this);
         return scrollPane;
     }
 }
