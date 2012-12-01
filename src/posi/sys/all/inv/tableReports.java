@@ -18,13 +18,13 @@ public class tableReports {
     
     public javax.swing.JScrollPane InvAll(){
         db = new db_connect();
-        String sql = "SELECT item_id,item_default_bar_code,item_name,item_default_price,item_default_price, item_description, item_status_name FROM items, item_status WHERE item_status = item_status_id ";
+        String sql = "SELECT item_id,item_default_bar_code,item_name, item_description,item_default_price,item_qty, item_status_name FROM items, item_status WHERE item_status = item_status_id ";
         data = db.getData(sql);
         
-        final String [] columnNames = {"Item Id","Item code","Item name","Item price","Item qty","Description","Item status"};
+        final String [] columnNames = {"Item Id","Item code","Item name","Description","Item price","Item qty","Item status"};
          
         inv = new inventoryTable(data,columnNames);
-         
+        
         inv.setTableModel(new javax.swing.table.AbstractTableModel(){
              @Override
             public int getColumnCount() {
@@ -63,11 +63,11 @@ public class tableReports {
                       String sql = null;
                       if( col == 2){
                           sql = "UPDATE items set item_name = '"+value+"' WHERE item_id='"+data[row][0]+"';";                      
-                      }else if (col == 3){
+                      }else if (col == 4){
                           sql = "UPDATE items set item_default_price = '"+value+"' WHERE item_id='"+data[row][0]+"';"; 
-                      }else if ( col == 4){
-                          sql = "UPDATE items set item_qty = '"+value+"' WHERE item_id='"+data[row][0]+"';"; 
                       }else if ( col == 5){
+                          sql = "UPDATE items set item_qty = '"+value+"' WHERE item_id='"+data[row][0]+"';"; 
+                      }else if ( col == 3){
                           sql = "UPDATE items set item_description = '"+value+"' WHERE item_id='"+data[row][0]+"';"; 
                       }
                           
@@ -82,6 +82,13 @@ public class tableReports {
                   }
               }
         });
+        inv.getColumnModel().getColumn(0).setPreferredWidth(70);
+        inv.getColumnModel().getColumn(1).setPreferredWidth(150);
+        inv.getColumnModel().getColumn(2).setPreferredWidth(320);
+        inv.getColumnModel().getColumn(3).setPreferredWidth(250);
+        inv.getColumnModel().getColumn(4).setPreferredWidth(100);
+        inv.getColumnModel().getColumn(5).setPreferredWidth(100);
+        
         
        inv.setMouseListener(new java.awt.event.MouseAdapter() {
            public void mouseClicked(java.awt.event.MouseEvent e){

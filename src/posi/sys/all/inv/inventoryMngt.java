@@ -7,6 +7,7 @@ package posi.sys.all.inv;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
@@ -19,15 +20,15 @@ import posi.sys.expeditors.sundry;
 
 public class inventoryMngt extends javax.swing.JFrame {
     private javax.swing.JMenuBar menubar;
-    private javax.swing.JMenu file, edit, view, options, reports, logout,warehouse, transaction, submenu,menu , admin;
+    private javax.swing.JMenu file,/* edit,*/ view,/* options,*/ reports, logout,warehouse, transaction, submenu,menu , admin;
     private java.awt.Dimension screen;
-    private javax.swing.JToolBar toolBarTop,toolBarLeft, toolBarBottom;
+    private javax.swing.JToolBar toolBarTop_1,toolBarTop_2,toolBarTop_3,toolBarTop_4,toolBarLeft, toolBarBottom;
     private static javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JButton button;
     private javax.swing.JSplitPane splitPane;
     private javax.swing.JMenuItem menuitem;
-    private javax.swing.JCheckBoxMenuItem checkBoxMenuItem;
-    
+    private javax.swing.JCheckBoxMenuItem checkBoxMenuItemNav, checkBoxMenuItemTrasaction, checkBoxMenuItemSysControl, checkBoxMenuItemIControl;
+    ////
     private javax.swing.JPanel topToolBarPanel;
     
     private posi.sys.all.inv.tableReports inv;
@@ -171,41 +172,46 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         menu = new javax.swing.JMenu("Toolbars");
         
-        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Navigation");
-        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_N,  ActionEvent.SHIFT_MASK));
-        checkBoxMenuItem.setActionCommand("navigationToolbar"); 
-        checkBoxMenuItem.addActionListener(new Action());
-        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
-        menu.add(checkBoxMenuItem);
+        checkBoxMenuItemNav = new javax.swing.JCheckBoxMenuItem("Navigation");
+        checkBoxMenuItemNav.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_N,  ActionEvent.SHIFT_MASK));
+        checkBoxMenuItemNav.setActionCommand("navigationToolbar"); 
+        checkBoxMenuItemNav.setSelected(true);
+        checkBoxMenuItemNav.addItemListener(new itemListen());
+        checkBoxMenuItemNav.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItemNav);
         
-        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Item Controls");
-        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_I, ActionEvent.SHIFT_MASK));
-        checkBoxMenuItem.setActionCommand("ItemControlToolbar"); 
-        checkBoxMenuItem.addActionListener(new Action());
-        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
-        menu.add(checkBoxMenuItem);
+        checkBoxMenuItemIControl = new javax.swing.JCheckBoxMenuItem("Item Controls");
+        checkBoxMenuItemIControl.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_I, ActionEvent.SHIFT_MASK));
+        checkBoxMenuItemIControl.setActionCommand("ItemControlToolbar"); 
+        checkBoxMenuItemIControl.setSelected(true);
+        checkBoxMenuItemIControl.addItemListener(new itemListen());        
+        checkBoxMenuItemIControl.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItemIControl);
+        //ItemControlToolbar  
+        checkBoxMenuItemSysControl = new javax.swing.JCheckBoxMenuItem("System controls");
+        checkBoxMenuItemSysControl.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_A,  ActionEvent.SHIFT_MASK));
+        checkBoxMenuItemSysControl.setActionCommand("ApplicationControlToolbar"); 
+        checkBoxMenuItemSysControl.setSelected(true);
+        checkBoxMenuItemSysControl.addItemListener(new itemListen());        
+        checkBoxMenuItemSysControl.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItemSysControl);
         
-        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Application controls");
-        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_A,  ActionEvent.SHIFT_MASK));
-        checkBoxMenuItem.setActionCommand("ApplicationControlToolbar"); 
-        checkBoxMenuItem.addActionListener(new Action());
-        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
-        menu.add(checkBoxMenuItem);
-        
-        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Ploriferate controls");
-        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_P, ActionEvent.SHIFT_MASK));
-        checkBoxMenuItem.setActionCommand("PloriferateControlToolbar"); 
-        checkBoxMenuItem.addActionListener(new Action());
-        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
-        menu.add(checkBoxMenuItem);
+        checkBoxMenuItemTrasaction = new javax.swing.JCheckBoxMenuItem("Transaction");
+        checkBoxMenuItemTrasaction.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_P, ActionEvent.SHIFT_MASK));
+        checkBoxMenuItemTrasaction.setActionCommand("Transaction"); 
+        checkBoxMenuItemTrasaction.setSelected(false);
+        checkBoxMenuItemTrasaction.addItemListener(new itemListen());        
+        checkBoxMenuItemTrasaction.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItemTrasaction);
          
-        checkBoxMenuItem = new javax.swing.JCheckBoxMenuItem("Diminate controls");
-        checkBoxMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_D, ActionEvent.SHIFT_MASK));
-        checkBoxMenuItem.setActionCommand("DiminateControlToolbar"); 
-        checkBoxMenuItem.addActionListener(new Action());
-        checkBoxMenuItem.setPreferredSize(new java.awt.Dimension(200, 25));
-        menu.add(checkBoxMenuItem);
-        
+        /*checkBoxMenuItemDimControl = new javax.swing.JCheckBoxMenuItem("Diminate controls");
+        checkBoxMenuItemDimControl.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_D, ActionEvent.SHIFT_MASK));
+        checkBoxMenuItemDimControl.setActionCommand("DiminateControlToolbar"); 
+        checkBoxMenuItemDimControl.setSelected(false);
+        checkBoxMenuItemDimControl.addItemListener(new itemListen());        
+        checkBoxMenuItemDimControl.setPreferredSize(new java.awt.Dimension(200, 25));
+        menu.add(checkBoxMenuItemDimControl);
+        */
         view.add(menu);
         
         menuitem = new javax.swing.JMenuItem("Applications",sundry.createImageIcon("images/Applications.gif", new java.awt.Dimension(20, 20)));
@@ -365,24 +371,31 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         topToolBarPanel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
        // topToolBarPanel;
-        toolBarTop = new javax.swing.JToolBar();
-        this.addToolbarContentTop_1(toolBarTop);
-        toolBarTop.setName("Item Control");
+        toolBarTop_1 = new javax.swing.JToolBar();
+        this.addToolbarContentTop_1(toolBarTop_1);
+        toolBarTop_1.setName("Item Control");
         //toolBarTop.setPreferredSize(new java.awt.Dimension(180, 30));
-        topToolBarPanel.add(toolBarTop);
+        topToolBarPanel.add(toolBarTop_1);
         
-        toolBarTop = new javax.swing.JToolBar();
-        this.addToolbarContentTop_2(toolBarTop); 
-        toolBarTop.setName("Navigator");
+        toolBarTop_2 = new javax.swing.JToolBar();
+        this.addToolbarContentTop_2(toolBarTop_2); 
+        toolBarTop_2.setName("Navigator");
         //toolBarTop.setPreferredSize(new java.awt.Dimension(150, 30));
-        topToolBarPanel.add(toolBarTop);
+        topToolBarPanel.add(toolBarTop_2);
         
-        toolBarTop = new javax.swing.JToolBar();
-        this.addToolbarContentTop_3(toolBarTop); 
-        toolBarTop.setName("System Control");
+        toolBarTop_4 = new javax.swing.JToolBar();
+        this.addToolbarContentTop_4(toolBarTop_4); 
+        toolBarTop_4.setName("Trasaction");
+        toolBarTop_4.setVisible(false);
+       // toolBarTop.setPreferredSize(new java.awt.Dimension(100, 30));
+        topToolBarPanel.add(toolBarTop_4);
+        
+        toolBarTop_3 = new javax.swing.JToolBar();
+        this.addToolbarContentTop_3(toolBarTop_3); 
+        toolBarTop_3.setName("System Control");
         
        // toolBarTop.setPreferredSize(new java.awt.Dimension(100, 30));
-        topToolBarPanel.add(toolBarTop);
+        topToolBarPanel.add(toolBarTop_3);
         
         this.add(topToolBarPanel,BorderLayout.PAGE_START);
         
@@ -626,7 +639,70 @@ public class inventoryMngt extends javax.swing.JFrame {
         button.setToolTipText("Logout");
         toolbar.add(button);       
         
-    }    
+    }  
+  
+    private void addToolbarContentTop_4(javax.swing.JToolBar toolbar){  
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("SalesOrder");
+        button.addActionListener(new Action());
+        button.setContentAreaFilled(false);
+        button.setToolTipText("Sales Order");
+        toolbar.add(button);
+        
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Tool.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("SalesReturn");
+        button.addActionListener(new Action());
+        button.setContentAreaFilled(false);
+        button.setToolTipText("Sales Return");
+        toolbar.add(button);
+
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Security.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("SalesInvoice");
+        button.addActionListener(new Action());
+        button.setContentAreaFilled(false);
+        button.setToolTipText("Sales Invoice");
+        toolbar.add(button);
+        
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Security.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("POS");
+        button.addActionListener(new Action());
+        button.setContentAreaFilled(false);
+        button.setToolTipText("Point of Sale");
+        toolbar.add(button);
+        
+        toolbar.addSeparator();
+        
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("PurOrder");
+        button.addActionListener(new Action());
+        button.setContentAreaFilled(false);
+        button.setToolTipText("Purchases Order");
+        toolbar.add(button);
+        
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Tool.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("PurReturn");
+        button.addActionListener(new Action());
+        button.setContentAreaFilled(false);
+        button.setToolTipText("Purchases Return");
+        toolbar.add(button);
+
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Security.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("PurInvoice");
+        button.addActionListener(new Action());
+        button.setContentAreaFilled(false);
+        button.setToolTipText("Purchases Invoice");
+        toolbar.add(button);
+        
+        toolbar.addSeparator();
+        
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Trackback.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("Transfer");
+        button.addActionListener(new Action());
+        button.setContentAreaFilled(false);
+        button.setToolTipText("Item transfer");
+        toolbar.add(button);  
+    }  
+   
     public void display(String title){
         this.setSize(screen.width, screen.height);
         this.setVisible(true);
@@ -636,6 +712,37 @@ public class inventoryMngt extends javax.swing.JFrame {
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
     
+    class itemListen implements java.awt.event.ItemListener{
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if(e.getSource() == checkBoxMenuItemNav){                
+                if(e.getStateChange() == ItemEvent.SELECTED ) {
+                    toolBarTop_2.setVisible(true);
+                }else if(e.getStateChange() == ItemEvent.DESELECTED) {
+                    toolBarTop_2.setVisible(false);
+                }
+            }else if(e.getSource() == checkBoxMenuItemTrasaction){// updaqte
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                    toolBarTop_4.setVisible(true);
+                }else if(e.getStateChange() == ItemEvent.DESELECTED ) {
+                    toolBarTop_4.setVisible(false);
+                }
+            }else if(e.getSource() == checkBoxMenuItemSysControl){
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                    toolBarTop_3.setVisible(true);
+                }else if(e.getStateChange() == ItemEvent.DESELECTED ) {
+                    toolBarTop_3.setVisible(false);
+                }
+            }else if(e.getSource() == checkBoxMenuItemIControl){
+                if(e.getStateChange() == ItemEvent.SELECTED ) {
+                    toolBarTop_1.setVisible(true);
+                }else if(e.getStateChange() == ItemEvent.DESELECTED ) {
+                    toolBarTop_1.setVisible(false);
+                }
+            }
+        }
+        
+    }
     class Action implements java.awt.event.ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -711,32 +818,7 @@ public class inventoryMngt extends javax.swing.JFrame {
                 new posi.sys.all.inv.Warehouse().setVisible(true);
             }else if("pos".equals(e.getActionCommand())){
                 new posi.sys.all.pos.POS().setVisible(true);
-            } else  if("PloriferateControlToolbar".equals(e.getActionCommand())){
-                //PloriferateControlToolbar
-                if("itemControl".equals(toolBarTop.getName())){
-                    System.out.println("item");
-                }
-            } else  if("DiminateControlToolbar".equals(e.getActionCommand())){
-                //navigationToolbar
-                if("itemControl".equals(toolBarTop.getName())){
-                    System.out.println("item");
-                }
-            }else  if("ApplicationControlToolbar".equals(e.getActionCommand())){
-                //navigationToolbar
-                if("SystemControl".equals(toolBarTop.getName())){
-                    System.out.println("sys");
-                }
-            }else  if("ItemControlToolbar".equals(e.getActionCommand())){
-                //navigationToolbar
-                if("itemControl".equals(toolBarTop.getName())){
-                    System.out.println("Nav");
-                }
-            }else  if("navigationToolbar".equals(e.getActionCommand())){
-                //navigationToolbar
-                if("navigator".equals(toolBarTop.getName())){
-                    System.out.println("Nav");
-                }
-            }
+            } 
         }        
     }// 
     

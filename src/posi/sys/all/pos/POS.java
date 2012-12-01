@@ -34,13 +34,14 @@ public class POS extends posi.sys.expeditors.popup {
     
     private javax.swing.JTextField textfield;
     private javax.swing.JLabel label;
-    private inventoryTable table;
+    
+    private inventoryTable inv;
     
     private int scroll_end;
-    private int scroll_interval;
+    private int scroll_interval = 4;
     private int scroll_current;
     
-    private int default_num_rows = 16;
+    private int default_num_rows = 15;
     
     private db_connect db = new db_connect();
     
@@ -57,22 +58,39 @@ public class POS extends posi.sys.expeditors.popup {
         
         menuitem = new javax.swing.JMenuItem("New Sales ");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_N, ActionEvent.CTRL_MASK ));
+        menuitem.setActionCommand("new_sales");
+        menuitem.addActionListener(new Action());
         menu.add(menuitem);
+        
         menuitem = new javax.swing.JMenuItem("Search Item");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_S, ActionEvent.CTRL_MASK ));
+        menuitem.setActionCommand("search_item"); 
+        menuitem.addActionListener(new Action());
         menu.add(menuitem);
+        
         menu.addSeparator();
         menuitem = new javax.swing.JMenuItem("Print reciept");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_P, ActionEvent.CTRL_MASK ));
+        menuitem.setActionCommand("print_reciept");        
+        menuitem.addActionListener(new Action());
         menu.add(menuitem);
+        
         menuitem = new javax.swing.JMenuItem("Print invoice");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_P, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("print_invoice");
+        menuitem.addActionListener(new Action());
         menu.add(menuitem);
+        
         menu.addSeparator();
         menuitem = new javax.swing.JMenuItem("Items catalogue");
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+        menuitem.setActionCommand("item_catalogue");
+        menuitem.addActionListener(new Action());
         menu.add(menuitem);
-        menuitem = new javax.swing.JMenuItem("Close");        
+        
+        menuitem = new javax.swing.JMenuItem("Close"); 
+        menuitem.setActionCommand("close");
+        menuitem.addActionListener(new Action());
         menu.add(menuitem);
         
         menubar.add(menu);
@@ -132,7 +150,7 @@ public class POS extends posi.sys.expeditors.popup {
         
         button = new javax.swing.JButton("Go");
         button.setPreferredSize(new java.awt.Dimension(80, 60));
-        button.setActionCommand("SearchItem");
+        button.setActionCommand("Go");
         button.addActionListener( new Action());
         toolbar.add(button); 
    }    
@@ -140,28 +158,28 @@ public class POS extends posi.sys.expeditors.popup {
 private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         button = new javax.swing.JButton(sundry.createImageIcon("images/Printer.gif", new java.awt.Dimension(34, 32)));
         button.setPreferredSize( new java.awt.Dimension(34, 32));
-        button.setActionCommand("PrintReciept");
+        button.setActionCommand("print_reciept");
         button.addActionListener( new Action());
 	button.setContentAreaFilled(false);
         toolbar.add(button); 
         
         button = new javax.swing.JButton(sundry.createImageIcon("images/Document new.gif", new java.awt.Dimension(34, 32)));
         button.setPreferredSize( new java.awt.Dimension(34, 32));
-        button.setActionCommand("NewSales");
+        button.setActionCommand("new_sales");
         button.addActionListener( new Action());
 	button.setContentAreaFilled(false);
         toolbar.add(button); 
         
         button = new javax.swing.JButton(sundry.createImageIcon("images/Man.gif", new java.awt.Dimension(34, 32)));
         button.setPreferredSize( new java.awt.Dimension(34, 32));
-        button.setActionCommand("Customers");
+        button.setActionCommand("Customer");
         button.addActionListener( new Action());
 	button.setContentAreaFilled(false);
         toolbar.add(button);         
         
         button = new javax.swing.JButton(sundry.createImageIcon("images/Search.gif", new java.awt.Dimension(34, 32)));
         button.setPreferredSize( new java.awt.Dimension(34, 32));
-        button.setActionCommand("Search");
+        button.setActionCommand("search_item");
         button.addActionListener( new Action());
 	button.setContentAreaFilled(false);
         toolbar.add(button);
@@ -191,8 +209,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         toolbar.add(label); 
    } 
     
-    private void addToolbarContent_4(javax.swing.JToolBar toolbar){
-        scroll_interval = 5;
+    private void addToolbarContent_4(javax.swing.JToolBar toolbar){        
         scroll_end = db.getData("SELECT * FROM items").length;
         
         panel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
@@ -255,9 +272,9 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
    }
    
    public void addDefaultRows(){               
-        for (int i = 0; i< default_num_rows; i++ ){
+        for (int i = 0; i < default_num_rows; i++ ){
             Object [] row = {"","","","",""};
-            ( (javax.swing.table.DefaultTableModel) table.getModel() ).addRow( row);
+            ( (javax.swing.table.DefaultTableModel) inv.getModel() ).addRow( row );
         }
    }
    
@@ -273,27 +290,27 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         columnNames.addElement("Discount");
         columnNames.addElement("Total");
         
-        table = new inventoryTable(data,columnNames);
-          
-        table.setRowHeight(29);
+        inv = new inventoryTable(data,columnNames);       
+        inv.setAutoCreateRowSorter(false);
+        inv.setRowHeight(29);
         //set column widths
-        table.getColumnModel().getColumn(0).setPreferredWidth(50);
-        table.getColumnModel().getColumn(1).setPreferredWidth(110);
-        table.getColumnModel().getColumn(2).setPreferredWidth(320);
-        table.getColumnModel().getColumn(3).setPreferredWidth(70);
-        table.getColumnModel().getColumn(4).setPreferredWidth(70);
-        table.getColumnModel().getColumn(5).setPreferredWidth(70);
+        inv.getColumnModel().getColumn(0).setPreferredWidth(50);
+        inv.getColumnModel().getColumn(1).setPreferredWidth(110);
+        inv.getColumnModel().getColumn(2).setPreferredWidth(320);
+        inv.getColumnModel().getColumn(3).setPreferredWidth(70);
+        inv.getColumnModel().getColumn(4).setPreferredWidth(70);
+        inv.getColumnModel().getColumn(5).setPreferredWidth(70);
          
         addDefaultRows();       
         
-        table.setMouseListener(new java.awt.event.MouseAdapter() {
+        inv.setMouseListener(new java.awt.event.MouseAdapter() {
             @Override
            public void mouseClicked(java.awt.event.MouseEvent e){
                 if (SwingUtilities.isRightMouseButton(e)){
                    java.awt.Point p = e.getPoint();
                    
-                   int rowNum = table.rowAtPoint(p);
-                   Object itemCode =  table.getModel().getValueAt(rowNum, 0);
+                   int rowNum = inv.rowAtPoint(p);
+                   Object itemCode =  inv.getModel().getValueAt(rowNum, 0);
                    javax.swing.JPopupMenu popup = new utilityFunctions().salesCatRowPopupMenu(Integer.parseInt(itemCode.toString()));
                    
                    popup.show(e.getComponent(), e.getX(), e.getY());
@@ -302,7 +319,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         });
         
         
-        scrollpane = table.tableScrollPane();//.tableScrollPane();
+        scrollpane = inv.tableScrollPane();//.tableScrollPane();
         
         return scrollpane;
     }
@@ -318,7 +335,23 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
                 scrollItem(start);
             }else if("scroll_left".equals( e.getActionCommand())){
                 
+            }else if("close".equals( e.getActionCommand())){
+                dispose();
+            }else if("new_sales".equals( e.getActionCommand())){
+                dispose();
+                 new POS().setVisible(true);
+            }else if("search_item".equals( e.getActionCommand())){
+                new posi.sys.all.inv.Search().setVisible(true);                
+            }else if("print_reciept".equals( e.getActionCommand())){                
+                
+            }else if("item_catalogue".equals( e.getActionCommand())){
+                
+            }else if("Customer".equals( e.getActionCommand())){
+                
+            }else if("Go".equals( e.getActionCommand())){
+                addRowItem(textfield.getText());
             }
+            
         }
     }
     
@@ -358,7 +391,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
        Object [] row = {data[0][0],data[0][1],data[0][2],"1",data[0][3],disc,total };
        
        Object [] info = rowInfo(data[0][1].toString());
-       if(info.length > 0 && info[0] != null){
+       if(info[0] != null){
             if("true".equals(info[0].toString()) ){
                 Object [] qty = getDbItemQty(data[0][1].toString());
                 
@@ -367,16 +400,32 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
                 int minQty = Integer.parseInt(qty[1].toString());
                 
                 if(newQty < availQty && (availQty - newQty) > minQty ) {
-                    table.getModel().setValueAt(newQty, Integer.parseInt(info[1].toString()), 3);
+                    inv.getModel().setValueAt(newQty, Integer.parseInt(info[1].toString()), 3); // updating items in list
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "No more items available!", "Warning message", JOptionPane.WARNING_MESSAGE);
                 }
-            }else{
-                ( (javax.swing.table.DefaultTableModel) table.getModel() ).insertRow( 0, row);
+            }else{                
+                ( (javax.swing.table.DefaultTableModel) inv.getModel() ).insertRow( 0, row); // consequent adding items to list      
             }
        }else{
-           ( (javax.swing.table.DefaultTableModel) table.getModel() ).insertRow( 0, row);
+           if(inv.getModel().getRowCount() > default_num_rows ){
+                int nextAvail = getNextAvailRow();
+
+                if(nextAvail != 0){
+                     inv.getModel().setValueAt(data[0][0], nextAvail, 0); 
+                     inv.getModel().setValueAt(data[0][1], nextAvail, 1);
+                     inv.getModel().setValueAt(data[0][2], nextAvail, 2);
+                     inv.getModel().setValueAt("1", nextAvail, 3);
+                     inv.getModel().setValueAt(data[0][3], nextAvail, 4);
+                     inv.getModel().setValueAt(disc, nextAvail, 5);
+                     inv.getModel().setValueAt(total, nextAvail, 6);
+                }else{
+                     ( (javax.swing.table.DefaultTableModel) inv.getModel() ).addRow( row); // consequent adding items to list
+                }
+           }else{
+                     ( (javax.swing.table.DefaultTableModel) inv.getModel() ).insertRow( 0, row); // consequent adding items to list
+                }
        }
        
        updateFooterQty();
@@ -411,20 +460,31 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
     private Object[] rowInfo(String itemCode){
         Object [] info = new Object[3];
         
-        int max = table.getRowCount();
+        int max = inv.getRowCount();
         
         for (int i = 0; i< max; i++){
-            if(itemCode.equals(table.getModel().getValueAt(i, 1))){
+            if(itemCode.equals(inv.getModel().getValueAt(i, 1))){
                 info[0] = "true"; //test if available
                 info[1] = i;//row num
-                info[2] = table.getModel().getValueAt(i, 3);  //item cat qty
+                info[2] = inv.getModel().getValueAt(i, 3);  //item cat qty
                 
             }
         }
         return info;
     }
     
-    
+    private int getNextAvailRow(){
+        int max = inv.getRowCount();
+        int availRow = 0;
+        
+        for (int i = 0; i< max; i++){
+            if("".equals(inv.getModel().getValueAt(i, 0))){
+                availRow = i;
+                return availRow;
+            }
+        }
+        return availRow;
+    }
     public Object[] getDbItemQty(String item){
         String sql = "SELECT item_qty,item_min_qty FROM items WHERE item_default_bar_code = '"+item+"';";
         Object [][] row = db.getData(sql);

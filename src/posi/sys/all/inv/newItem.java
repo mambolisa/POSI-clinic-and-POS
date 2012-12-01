@@ -37,6 +37,8 @@ public class newItem extends posi.sys.expeditors.popup {
         
         if(!iNewEnabledBtn){
             disableButtons();
+        }else{
+            enableButtons();
         }
     }
     
@@ -49,6 +51,13 @@ public class newItem extends posi.sys.expeditors.popup {
         next.setEnabled(false);
         SaveUpdate.setEnabled(false);
         TrackItem.setEnabled(false);
+    }
+    
+    private void enableButtons(){
+        prev.setEnabled(true);
+        next.setEnabled(true);
+        SaveUpdate.setEnabled(true);
+        TrackItem.setEnabled(true);
     }
     
     private void addContent(boolean ifNewItem){
@@ -82,13 +91,12 @@ public class newItem extends posi.sys.expeditors.popup {
         if( !this.ifNew ){
             SaveUpdate.setText("Update");
             SaveUpdate.setActionCommand("Update");  
-            prev.setEnabled(true);
-            next.setEnabled(true);
+            enableButtons();
+            SaveUpdate.setEnabled(true);
         }  else{
-            TrackItem.setVisible(false);
             ItemIdText.setText(" Auto-Generated");
-            prev.setEnabled(false);
-            next.setEnabled(false);
+            disableButtons();
+            SaveUpdate.setEnabled(true);
         }
     }
     
@@ -169,7 +177,7 @@ public class newItem extends posi.sys.expeditors.popup {
             JOptionPane.showMessageDialog(null,"Item "+ItemNameText.getText()+" has been added","Record added!",JOptionPane.INFORMATION_MESSAGE);
             SaveUpdate.setText("Update");
             SaveUpdate.setActionCommand("Update"); 
-            TrackItem.setVisible(true);
+            enableButtons();
             this.setTitle("Update item");
             
             rs = db.Query("SELECT * FROM items");
