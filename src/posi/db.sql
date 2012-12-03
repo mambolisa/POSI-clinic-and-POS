@@ -5,8 +5,12 @@ CREATE TABLE IF NOT EXISTS items(
     item_default_bar_code VARCHAR(254),
     item_default_loc VARCHAR(254),
     item_default_price DOUBLE,
+    item_default_min_price DOUBLE,
+    item_default_per_disc DOUBLE,
     item_qty INT,
+    item_min_qty INT,
     item_category INT NOT NULL REFERENCES items_categories(item_category_id),
+    item_conversion_id int,
     item_pic VARCHAR(254),
     item_manuf INT NULL REFERENCES item_manufacturer(item_manuf_id),
     item_weight VARCHAR(200),
@@ -15,7 +19,6 @@ CREATE TABLE IF NOT EXISTS items(
     item_color VARCHAR(254),
     item_size VARCHAR(200),
     item_status INT  NOT NULL REFERENCES item_status(item_status_id),
-    item_conversion_id INT NULL REFERENCES item_conversions(item_conversion_id),
     created_at DATETIME,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -176,3 +179,21 @@ CREATE TABLE IF NOT EXISTS item_conversions(
     item_conversion_name VARCHAR(254),
     item_conversion_qty INT
 );
+
+#trigger
+
+# Items table trigger update item_default_min_qty if empty using percentage_disc
+
+CREATE TRIGGER itemsref AFTER INSERT ON items
+FOR EACH ROW BEGIN
+INSERT INTO test2 SET a2 = NEW.a1;
+DELETE FROM test3 WHERE a3 = NEW.a1;
+UPDATE test4 SET b4 = b4 + 1 WHERE a4 = NEW.a1;
+END;
+*/
+
+CREATE TRIGGER itemsref AFTER INSERT ON items
+    FOR EACH ROW BEGIN
+        IF (NEW.item_default_min_price = 0)
+            UPDATE items SET item_default_min_price = (NEW.item_default_per_disc * NEW.item_default_price)
+END;

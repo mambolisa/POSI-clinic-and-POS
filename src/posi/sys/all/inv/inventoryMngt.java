@@ -4,11 +4,17 @@
  */
 package posi.sys.all.inv;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import posi.sys.expeditors.sundry;
@@ -415,8 +421,16 @@ public class inventoryMngt extends javax.swing.JFrame {
         this.add(toolBarBottom,BorderLayout.AFTER_LAST_LINE);  
          */
         
-        tabbedPane = new javax.swing.JTabbedPane();
+        tabbedPane = new javax.swing.JTabbedPane(){
+           /* @Override
+            public void paint(Graphics g){
+		super.paint(g);
+		closeUI.paint(g);
+            }*/
+        };
         tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        //tabbedPane.addMouseListener(closeUI);
+        //tabbedPane.addMouseMotionListener(closeUI);
         
         inv  = new posi.sys.all.inv.tableReports();
         addTabPane("Inventory list",inv.InvAll(),"Close inventory");
@@ -444,6 +458,7 @@ public class inventoryMngt extends javax.swing.JFrame {
             javax.swing.ImageIcon n = null;
             
             tabbedPane.addTab(title,sundry.createImageIcon("images/Cancel.gif", new java.awt.Dimension(17, 17)),c,tooltip);
+            //tabbedPane.addTab(title+" ",c);
             tabbedPane.setSelectedIndex( tabbedPane.indexOfTab( title ) );
         }else {
             tabbedPane.setSelectedIndex( tabbedPane.indexOfTab( title ) );
@@ -825,4 +840,7 @@ public class inventoryMngt extends javax.swing.JFrame {
     public static void main(String [] args ){
        new inventoryMngt().display("POSI Management system");
     }
+    
+   
 }
+    

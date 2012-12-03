@@ -34,12 +34,7 @@ public class inventoryTable extends javax.swing.JTable{
     public  javax.swing.JTable table(){
         return this;
     }
-    
-    @Override
-    public Object getValueAt(int row, int col){
-        return  super.getValueAt(row, col);       
-    }
-    
+        
     public void setTableModel(javax.swing.table.TableModel dataModel){
         setModel(dataModel);
     }
