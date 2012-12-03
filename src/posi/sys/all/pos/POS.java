@@ -457,8 +457,8 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
             textfield.setText("");
             return;
        }
-       double disc = Double.parseDouble(data[0][3].toString()) ;//- Double.parseDouble(data[0][3].toString());
-       double total = Double.parseDouble(data[0][3].toString()) * 1;
+       double disc = round2Decimal(Double.parseDouble(data[0][3].toString()));//- Double.parseDouble(data[0][3].toString());
+       double total = round2Decimal(Double.parseDouble(data[0][3].toString()) * 1);
        
        Object [] row = {data[0][0],data[0][1],data[0][2],"1",data[0][3],disc,total };
        
@@ -471,10 +471,14 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
                 int newQty = Integer.parseInt(info[2].toString())+1;
                 int minQty = Integer.parseInt(qty[1].toString());
                 double newTotal = 0;
+                
                 if(newQty < availQty && (availQty - newQty) > minQty ) {
                     inv.getModel().setValueAt(newQty, Integer.parseInt(info[1].toString()), 3); // updating items in list
+                   
                     newTotal = (Integer.parseInt(info[2].toString()) * Double.parseDouble(inv.getModel().getValueAt(Integer.parseInt(info[1].toString()),4).toString()));
-                    inv.getModel().setValueAt(newTotal, Integer.parseInt(info[1].toString()), 6);
+                    newTotal = round2Decimal(newTotal);
+                    
+                    inv.getModel().setValueAt((newTotal), Integer.parseInt(info[1].toString()), 6);
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "No more items available!", "Warning message", JOptionPane.WARNING_MESSAGE);
@@ -492,9 +496,9 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
                      inv.getModel().setValueAt(data[0][1], nextAvail, 1);
                      inv.getModel().setValueAt(data[0][2], nextAvail, 2);
                      inv.getModel().setValueAt("1", nextAvail, 3);
-                     inv.getModel().setValueAt(data[0][3], nextAvail, 4);
-                     inv.getModel().setValueAt(disc, nextAvail, 5);
-                     inv.getModel().setValueAt(total, nextAvail, 6);
+                     inv.getModel().setValueAt(round2Decimal(Double.parseDouble(data[0][3].toString())), nextAvail, 4);
+                     inv.getModel().setValueAt(round2Decimal(disc), nextAvail, 5);
+                     inv.getModel().setValueAt(round2Decimal(total), nextAvail, 6);
                 }else{
                      ( (javax.swing.table.DefaultTableModel) inv.getModel() ).addRow( row); // consequent adding items to list
                 }
@@ -524,8 +528,8 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         }
         
         buttonQty.setText(""+qtyAll);
-        buttonDisc.setText(""+discAll);
-        buttonTotal.setText(""+totalAll);
+        buttonDisc.setText(""+round2Decimal(discAll));
+        buttonTotal.setText(""+round2Decimal(totalAll));
     }
     
     private void scrollItem(int start){        
@@ -543,6 +547,11 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
     
     private void showQRCode(){
         
+    }
+    
+    private static double round2Decimal(double num){
+        java.text.DecimalFormat twoDForm = new java.text.DecimalFormat("#.##");
+    return Double.valueOf(twoDForm.format(num));  
     }
     
     private static Object[] rowInfo(String itemCode){
