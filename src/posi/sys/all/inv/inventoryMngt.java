@@ -4,19 +4,18 @@
  */
 package posi.sys.all.inv;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.text.MessageFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.JTable.PrintMode;
 import posi.sys.expeditors.sundry;
 
 /**
@@ -433,6 +432,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         //tabbedPane.addMouseMotionListener(closeUI);
         
         inv  = new posi.sys.all.inv.tableReports();
+        
         addTabPane("Inventory list",inv.InvAll(),"Close inventory");
                 
         splitPane.setLeftComponent(new posi.sys.all.inv.inventoryJTree().getContent());
@@ -443,6 +443,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         splitPane.setRightComponent(tabbedPane);
         
         this.add(splitPane,BorderLayout.CENTER);
+
     }
     
     public javax.swing.JTable getCurrentTable(){
@@ -774,16 +775,26 @@ public class inventoryMngt extends javax.swing.JFrame {
                     new posi.sys.all.inv.newItem(Integer.parseInt(itemId.toString()),false).setVisible(true);
                 }
             }else if("Refresh".equals(e.getActionCommand())){
-            
+                
             }else if("Print".equals(e.getActionCommand())){
-                try {
-                    if (!inv.getTable().print()) {
-                        System.err.println("User cancelled printing");
-                    }
-                } catch (java.awt.print.PrinterException exception) {
-                    System.err.format("Cannot print %s%n", exception.getMessage());
-                }
+                PrinterJob job = PrinterJob.getPrinterJob();
+                
+                MessageFormat header = new MessageFormat("Header");
 
+                MessageFormat footer = new MessageFormat("Footer");
+                
+                job.setPrintable(inv.getTable().getPrintable(PrintMode.NORMAL, header, footer));
+               // job.setPrintable(new MyTablePrintable(tblmunim, PrintMode.FIT_WIDTH, header, footer));
+
+                if (job.printDialog()){
+                   try {
+                     job.print();
+                     System.out.println("End PrintJob.print()");
+                   }
+                   catch (PrinterException pe) {
+                     System.out.println("Error printing: " + pe);
+                   } 
+                }
             }else if("Remove".equals(e.getActionCommand())){
                 int n = javax.swing.JOptionPane.showConfirmDialog(null, "Are you sure you want to remove item?", "Continue with changes?",javax.swing.JOptionPane.YES_NO_OPTION);
                 if( n == 0){
@@ -806,8 +817,7 @@ public class inventoryMngt extends javax.swing.JFrame {
                 addTabPane("Inventory list", inv.InvAll(),"Close inventory");
                 
             } else if("ReportV".equals(e.getActionCommand()) || "Reports".equals(e.getActionCommand())){                
-                splitPane.setLeftComponent(inventoryJTree.updateTree());
-                splitPane.setDividerLocation(220);
+                new posi.sys.all.inv.reports().setVisible(true);
                // removeAllTab();
             } else if("trackItemV".equals(e.getActionCommand()) || "TrackItem".equals(e.getActionCommand())){
                 new posi.sys.all.inv.trackItem().setVisible(true);

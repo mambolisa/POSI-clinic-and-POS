@@ -11,23 +11,21 @@ import posi.sys.all.expeditors.database.db_connect;
  *
  * @author Aquarius
  */
-public class tableReports  {
+public class tableReports {
     private static db_connect db;
     private Object[][] data;
     private inventoryTable inv;
     
     public javax.swing.JScrollPane InvAll(){
         db = new db_connect();
-        String sql = "SELECT item_id,item_default_bar_code,item_name, item_description,item_default_price,item_qty, item_status_name FROM items, item_status WHERE item_status = item_status_id ";
+        String sql = "SELECT item_id,item_default_bar_code,item_name, item_description,item_default_price,item_qty FROM items, item_status WHERE item_status = item_status_id ";
         data = db.getData(sql);
-        String [] choice = {"Active","Inactive"};
-        
-        for (int i = 0; i< data.length; i++ ){
-            data[i][6] = new javax.swing.JComboBox(choice);
-        }
-        final String [] columnNames = {"Item Id","Item code","Item name","Description","Item price","Item qty","Item status"};
+     
+        final String [] columnNames = {"Item Id","Item code","Item name","Description","Item price","Item qty"};
          
         inv = new inventoryTable(data,columnNames);
+        inv.getTableHeader().setReorderingAllowed(false);
+        inv.getTableHeader().setResizingAllowed(false);
         
         inv.setTableModel(new javax.swing.table.AbstractTableModel(){
              @Override
@@ -93,7 +91,6 @@ public class tableReports  {
         inv.getColumnModel().getColumn(3).setPreferredWidth(250);
         inv.getColumnModel().getColumn(4).setPreferredWidth(100);
         inv.getColumnModel().getColumn(5).setPreferredWidth(100);
-        inv.getColumnModel().getColumn(6).setPreferredWidth(100);
         
         
        inv.setMouseListener(new java.awt.event.MouseAdapter() {

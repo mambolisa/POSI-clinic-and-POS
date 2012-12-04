@@ -12,12 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
-import jxl.format.Border;
 
 import posi.sys.all.expeditors.database.db_connect;
-import posi.sys.all.inv.POS_scroll_items;
 import posi.sys.all.inv.inventoryTable;
 import posi.sys.all.inv.utilityFunctions;
 import posi.sys.expeditors.sundry;
@@ -37,7 +33,7 @@ public class POS extends posi.sys.expeditors.popup {
     private javax.swing.JTabbedPane tabbedPane;
     
     private static javax.swing.JTextField textfield;
-    private javax.swing.JLabel label;
+    private javax.swing.JLabel label,labelTime;
     
     private static inventoryTable inv;
    
@@ -187,16 +183,24 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         toolbar.add(button);
    }    
     
-    private void addToolbarContent_3(javax.swing.JToolBar toolbar){
-        java.text.SimpleDateFormat date = new java.text.SimpleDateFormat("     k:m:s");
-        java.util.Date dt = new java.util.Date();
-        String dshow = date.format(dt)+" AM";
+    private void addToolbarContent_3(javax.swing.JToolBar toolbar){        
+        labelTime = new javax.swing.JLabel();
+
+        new javax.swing.Timer(1000,new java.awt.event.ActionListener() {
+            @Override
+             public void actionPerformed(ActionEvent arg0) {
+                date = new java.text.SimpleDateFormat("     k:m:s a");
+                dt = new java.util.Date();
+                dshow = date.format(dt);
+                labelTime.setText( dshow );
+            }
+        }).start();        
         
-        label = new javax.swing.JLabel();
-        label.setPreferredSize(new java.awt.Dimension(150, 40));
-        label.setText( dshow);
-        label.setForeground(Color.black);
-        toolbar.add(label); 
+        
+        labelTime.setPreferredSize(new java.awt.Dimension(150, 40));
+        labelTime.setForeground(Color.black);
+        labelTime.setText( dshow );
+        toolbar.add(labelTime); 
         
         label = new javax.swing.JLabel();
         label.setPreferredSize(new java.awt.Dimension(140, 40));
@@ -300,6 +304,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         columnNames.addElement("Total");
         
         inv = new inventoryTable(data,columnNames){
+            
             @Override
             public boolean isCellEditable(int row, int column) {
                 if ( column == 0 || column ==5 )
@@ -357,8 +362,10 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
                 updateFooterQty();
             }
         };
+        inv.getTableHeader().setReorderingAllowed(false);
+        inv.getTableHeader().setResizingAllowed(false);
+        inv.setAutoCreateRowSorter(false);
         
-        inv.setAutoCreateRowSorter(true);
         inv.setRowHeight(29);
         
         //set column widths
@@ -569,7 +576,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         }
         return info;
     }
-    
+     
     private static int getNextAvailRow(){
         int max = inv.getRowCount();
         int availRow = 0;
@@ -606,4 +613,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
     }
     
     private javax.swing.JScrollPane scrollpane;
+    private  java.text.SimpleDateFormat date;
+    java.util.Date dt;
+    String dshow;
 }

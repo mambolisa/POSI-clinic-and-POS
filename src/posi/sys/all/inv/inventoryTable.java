@@ -13,6 +13,10 @@ public class inventoryTable extends javax.swing.JTable{
     private static javax.swing.JScrollPane scrollPane;
     private posi.sys.all.inv.TablesList r = new posi.sys.all.inv.TablesList();
     
+    public inventoryTable(){
+        
+    }
+    
     public inventoryTable(java.util.Vector data, java.util.Vector columnNames){
         super(data, columnNames);      
        // r.addItem(table, "")

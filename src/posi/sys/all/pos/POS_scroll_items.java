@@ -2,11 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package posi.sys.all.inv;
+package posi.sys.all.pos;
 
 import java.awt.event.ActionEvent;
-import posi.sys.all.pos.POS;
-
 /**
  *
  * @author Aquarius
@@ -32,8 +30,17 @@ public class POS_scroll_items {
         
     }
     
-   
+   private static javax.swing.JPanel panelRemoveComponent(javax.swing.JPanel panel){
+       int size = panel.getComponentCount();
+       
+       for(int i = 0; i < size; i++){
+           panel.remove(i);
+       }
+   return panel;
+   }
    public static void makeScrollButtons(javax.swing.JPanel panel){
+       javax.swing.JPanel panelNew = new javax.swing.JPanel();
+       
        Object[][] data = db.getData( sqls[ item_option ] );
        scroll_end = data.length;
        
@@ -53,19 +60,22 @@ public class POS_scroll_items {
            });
            
            int item_width = item_name.length()*15;
-           if(item_width > 120)
+           if(item_width > 120) {
                item_width = 120;
+           }
            button.setPreferredSize(new java.awt.Dimension(item_width, 35));
            
-           panel.add(button);
+           panelNew.add(button);
        }
+       
+       panel.add(panelNew);
        scroll_current = scroll_interval-1;
    }
    
    public static void scrollItems(javax.swing.JPanel panel){
        start_scroll += 1;
-       panel.removeAll();
-       makeScrollButtons(panel);
+       
+       makeScrollButtons(panelRemoveComponent(panel));
    }
     
 }
