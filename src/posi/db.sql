@@ -197,3 +197,4 @@ CREATE TRIGGER itemsref AFTER INSERT ON items
         IF (NEW.item_default_min_price = 0)
             UPDATE items SET item_default_min_price = (NEW.item_default_per_disc * NEW.item_default_price)
 END;
+
