@@ -46,7 +46,7 @@ public class POS extends posi.sys.expeditors.popup {
     
     private boolean sellAll = false;
     public POS(){
-        super(new java.awt.Dimension(970,670),"Point of sale");
+        super(new java.awt.Dimension(970,675),"Point of sale");
          //System,Metal, Motif, GTK
         new posi.sys.expeditors.LooknFeel("Metal");
         

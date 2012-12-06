@@ -83,7 +83,7 @@ class Action implements java.awt.event.ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
     }
         
     }

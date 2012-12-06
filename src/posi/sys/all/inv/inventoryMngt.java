@@ -789,10 +789,10 @@ public class inventoryMngt extends javax.swing.JFrame {
                 if (job.printDialog()){
                    try {
                      job.print();
-                     System.out.println("End PrintJob.print()");
+                      JOptionPane.showMessageDialog(null,"Completed printing ","Printing success",JOptionPane.INFORMATION_MESSAGE);
                    }
                    catch (PrinterException pe) {
-                     System.out.println("Error printing: " + pe);
+                     JOptionPane.showMessageDialog(null,"Error printing: " + pe,"Printing Error!",JOptionPane.ERROR_MESSAGE);
                    } 
                 }
             }else if("Remove".equals(e.getActionCommand())){
