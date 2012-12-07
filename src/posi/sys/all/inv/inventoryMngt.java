@@ -297,6 +297,12 @@ public class inventoryMngt extends javax.swing.JFrame {
         menuitem.setActionCommand("purinvoice"); 
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
+        
+        menuitem = new javax.swing.JMenuItem("Normal purchases");
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_Q,  ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("normalpur"); 
+        menuitem.addActionListener(new Action());
+        menu.add(menuitem);
 
         transaction.add(menu);
         

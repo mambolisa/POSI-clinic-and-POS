@@ -6,6 +6,7 @@ package posi.sys.all.inv;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import posi.sys.all.expeditors.database.db_connect;
 
 /**
  *
@@ -15,13 +16,16 @@ public class trackItem extends posi.sys.expeditors.popup {
     private int item_id;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JButton button;
-    private posi.sys.all.inv.tableReports allItems;
+    private db_connect db = new db_connect();
+    
+    private inventoryTable inv;
+    
+    private Object [][] data;
     
     public trackItem(){
         super(new java.awt.Dimension(800,650),"Track Item");
-        allItems = new posi.sys.all.inv.tableReports();
-        this.getContentPane().add(allItems.InvAll());
-        this.content();
+        this.getContentPane().add(searchTable());
+        //this.content();
     }
     
     public trackItem(int itemId){
@@ -30,7 +34,30 @@ public class trackItem extends posi.sys.expeditors.popup {
         
         this.content();
     }
-  
+    public final javax.swing.JScrollPane searchTable(){        
+        String sql = "SELECT item_default_bar_code,item_name, item_description,item_default_price,item_qty FROM items, item_status WHERE item_status = item_status_id ";
+        data = db.getData(sql);
+        
+        final String [] columnNames = {"Item code","Item name","Description","Item price","Item qty"};
+         
+        inv = new inventoryTable(data,columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+            
+        };
+        
+        inv.setRowHeight(28);
+        
+        inv.getColumnModel().getColumn(0).setPreferredWidth(180);
+        inv.getColumnModel().getColumn(1).setPreferredWidth(300);
+        inv.getColumnModel().getColumn(2).setPreferredWidth(200);
+        inv.getColumnModel().getColumn(3).setPreferredWidth(130);
+        inv.getColumnModel().getColumn(4).setPreferredWidth(100);
+        
+    return  inv.tableScrollPane();
+    }  
     public final void content(){
         toolBar = new javax.swing.JToolBar();
         addToolbarContent(toolBar);        

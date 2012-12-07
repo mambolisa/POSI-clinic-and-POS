@@ -14,7 +14,7 @@ import posi.sys.all.expeditors.database.db_connect;
  * @author Aquarius
  */
 public class Search extends posi.sys.expeditors.popup {
-    private javax.swing.JPanel panel; 
+    private javax.swing.JPanel panel,panel2,panel3; 
     private javax.swing.JTextField textfield;
     private javax.swing.JButton button;
     
@@ -26,9 +26,11 @@ public class Search extends posi.sys.expeditors.popup {
     
     public Search(){
        super(new java.awt.Dimension(850,550),"Search");
+       panel2 = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
+      // panel2.setPreferredSize(new java.awt.Dimension(845, 40));
        
-       panel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
-       
+       panel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));       
+       panel.setPreferredSize(new java.awt.Dimension(600, 40));
        textfield = new javax.swing.JTextField(30); 
        textfield.addActionListener(new Action());
        textfield.setActionCommand("Search");
@@ -41,8 +43,17 @@ public class Search extends posi.sys.expeditors.popup {
        button.setPreferredSize(new java.awt.Dimension(100, 35));
        panel.add(button);
        
-       this.add(panel,BorderLayout.PAGE_START);
+       panel2.add(panel);
        
+       panel3 = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.RIGHT));
+       button = new javax.swing.JButton("Advanced search");
+       button.addActionListener(new Action());
+       button.setActionCommand("advanced_search");
+       button.setPreferredSize(new java.awt.Dimension(200, 35));
+       panel3.add(button);
+       
+       panel2.add(panel3);
+       this.add(panel2,BorderLayout.PAGE_START);
        
        this.add(searchTable(),BorderLayout.CENTER);
     }
@@ -83,7 +94,9 @@ class Action implements java.awt.event.ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+         if( "advanced_search".equals(e.getActionCommand())){
+             new advanced_search().setVisible(true);
+         }
     }
         
-    }
+}
