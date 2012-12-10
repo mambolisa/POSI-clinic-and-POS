@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 
 import posi.sys.all.expeditors.database.db_connect;
 import posi.sys.all.inv.inventoryTable;
-import posi.sys.all.inv.utilityFunctions;
+import posi.sys.expeditors.utilityFunctions;
 import posi.sys.expeditors.sundry;
 
 

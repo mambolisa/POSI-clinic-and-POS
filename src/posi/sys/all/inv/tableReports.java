@@ -4,6 +4,7 @@
  */
 package posi.sys.all.inv;
 
+import posi.sys.expeditors.utilityFunctions;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import posi.sys.all.expeditors.database.db_connect;
@@ -95,15 +96,7 @@ public class tableReports {
         
        inv.setMouseListener(new java.awt.event.MouseAdapter() {
            public void mouseClicked(java.awt.event.MouseEvent e){
-               if(SwingUtilities.isLeftMouseButton(e)){
-                   java.awt.Point p = e.getPoint();
-                   if (e.getClickCount() == 2){
-                       int rowNum = inv.table().rowAtPoint(p);
-                       Object itemCode =  data[rowNum][0];
-                       posi.sys.all.inv.newItem newItem = new posi.sys.all.inv.newItem();
-                   }
-                   
-               }else if (SwingUtilities.isRightMouseButton(e)){
+               if (SwingUtilities.isRightMouseButton(e)){
                    java.awt.Point p = e.getPoint();
                    
                    int rowNum = inv.table().rowAtPoint(p);
@@ -119,5 +112,10 @@ public class tableReports {
     
     public javax.swing.JTable getTable(){
         return inv;
+    }
+    
+    public javax.swing.table.TableModel getTableModel(){
+        return inv.getModel();
+        
     }
 }

@@ -14,8 +14,8 @@ import java.awt.print.PrinterJob;
 import java.text.MessageFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTable;
 import javax.swing.JTable.PrintMode;
+import javax.swing.event.ChangeEvent;
 import posi.sys.expeditors.sundry;
 
 /**
@@ -28,7 +28,7 @@ public class inventoryMngt extends javax.swing.JFrame {
     private javax.swing.JMenu file,/* edit,*/ view,/* options,*/ reports, logout,warehouse, transaction, submenu,menu , admin;
     private java.awt.Dimension screen;
     private javax.swing.JToolBar toolBarTop_1,toolBarTop_2,toolBarTop_3,toolBarTop_4,toolBarLeft, toolBarBottom;
-    private static javax.swing.JTabbedPane tabbedPane;
+    public static ManageTabs tabbedPane;
     private javax.swing.JButton button;
     private javax.swing.JSplitPane splitPane;
     private javax.swing.JMenuItem menuitem;
@@ -36,9 +36,15 @@ public class inventoryMngt extends javax.swing.JFrame {
     ////
     private javax.swing.JPanel topToolBarPanel;
     
+    private javax.swing.JTextField textfield;
+    
     private posi.sys.all.inv.tableReports inv;
     
+    private Object [] currentDataObj;
+    
     private posi.sys.all.expeditors.database.db_connect db = null;
+    
+    private javax.swing.table.TableRowSorter<javax.swing.table.TableModel> sorter;
     public inventoryMngt(){ //System,Metal, Motif, GTK
         new posi.sys.expeditors.LooknFeel("Metal");
         
@@ -378,7 +384,49 @@ public class inventoryMngt extends javax.swing.JFrame {
         menubar.add(new javax.swing.JMenu("Help"));
         
         this.setJMenuBar(menubar);
+        
         splitPane = new javax.swing.JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        
+        tabbedPane = new ManageTabs(){
+            public void setTabLayoutPolicy() {
+                super.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+            }            
+        };
+                
+        inv  = new posi.sys.all.inv.tableReports();
+        javax.swing.JScrollPane table = inv.InvAll();
+        
+        sorter = new javax.swing.table.TableRowSorter<javax.swing.table.TableModel>(inv.getTable().getModel());
+        inv.getTable().setRowSorter(sorter);
+        
+        tabbedPane.addTabs("Inventory list",table,"Close inventory");
+        
+        tabbedPane.addChangeListener(new javax.swing.event.ChangeListener(){
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                currentDataObj = ManageTabs.getCurrentComponents();
+                
+                if(currentDataObj == null) {
+                    return;
+                }
+                
+                javax.swing.JTable table = (javax.swing.JTable)currentDataObj[3];
+                sorter = new javax.swing.table.TableRowSorter<javax.swing.table.TableModel>(table.getModel());
+                table.setRowSorter(sorter);
+            }
+        });
+        
+        currentDataObj = ManageTabs.getCurrentComponents();
+        
+        splitPane.setLeftComponent(new posi.sys.all.inv.inventoryJTree().getContent());
+
+        splitPane.setDividerLocation(220);
+        splitPane.setContinuousLayout(true);
+        splitPane.setEnabled(false);
+        splitPane.setRightComponent(tabbedPane);
+        
+        this.add(splitPane,BorderLayout.CENTER);
         
         topToolBarPanel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
        // topToolBarPanel;
@@ -393,20 +441,19 @@ public class inventoryMngt extends javax.swing.JFrame {
         toolBarTop_2.setName("Navigator");
         //toolBarTop.setPreferredSize(new java.awt.Dimension(150, 30));
         topToolBarPanel.add(toolBarTop_2);
-        
-        toolBarTop_4 = new javax.swing.JToolBar();
-        this.addToolbarContentTop_4(toolBarTop_4); 
-        toolBarTop_4.setName("Trasaction");
-        toolBarTop_4.setVisible(false);
-       // toolBarTop.setPreferredSize(new java.awt.Dimension(100, 30));
-        topToolBarPanel.add(toolBarTop_4);
-        
+               
         toolBarTop_3 = new javax.swing.JToolBar();
         this.addToolbarContentTop_3(toolBarTop_3); 
         toolBarTop_3.setName("System Control");
         
        // toolBarTop.setPreferredSize(new java.awt.Dimension(100, 30));
         topToolBarPanel.add(toolBarTop_3);
+        
+        toolBarTop_4 = new javax.swing.JToolBar();
+        this.addToolbarContentTop_4(toolBarTop_4); 
+        toolBarTop_4.setName("Search");
+        toolBarTop_4.setPreferredSize(new java.awt.Dimension(250, 40));
+        topToolBarPanel.add(toolBarTop_4);
         
         this.add(topToolBarPanel,BorderLayout.PAGE_START);
         
@@ -425,61 +472,9 @@ public class inventoryMngt extends javax.swing.JFrame {
         toolBarTop.setPreferredSize(new java.awt.Dimension(200, 30));
         this.add(toolBarBottom,BorderLayout.AFTER_LAST_LINE);  
          */
-        
-        tabbedPane = new javax.swing.JTabbedPane(){
-           /* @Override
-            public void paint(Graphics g){
-		super.paint(g);
-		closeUI.paint(g);
-            }*/
-        };
-        tabbedPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        //tabbedPane.addMouseListener(closeUI);
-        //tabbedPane.addMouseMotionListener(closeUI);
-        
-        inv  = new posi.sys.all.inv.tableReports();
-        
-        addTabPane("Inventory list",inv.InvAll(),"Close inventory");
-                
-        splitPane.setLeftComponent(new posi.sys.all.inv.inventoryJTree().getContent());
-
-        splitPane.setDividerLocation(220);
-        splitPane.setContinuousLayout(true);
-        splitPane.setEnabled(false);
-        splitPane.setRightComponent(tabbedPane);
-        
-        this.add(splitPane,BorderLayout.CENTER);
 
     }
-    
-    public javax.swing.JTable getCurrentTable(){
-        javax.swing.JComponent c = (javax.swing.JComponent)tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
-        javax.swing.JScrollPane scrollpane = (javax.swing.JScrollPane)c.getComponent(2);
-        
-        javax.swing.JTable table = (javax.swing.JTable)scrollpane.getComponent(1);
-    return table;  
-    }
-    
-    public static void addTabPane(String title,java.awt.Component c, String tooltip){
-        if (tabbedPane.indexOfTab(title) == -1 ){
-            javax.swing.ImageIcon n = null;
-            
-            tabbedPane.addTab(title,sundry.createImageIcon("images/Cancel.gif", new java.awt.Dimension(17, 17)),c,tooltip);
-            //tabbedPane.addTab(title+" ",c);
-            tabbedPane.setSelectedIndex( tabbedPane.indexOfTab( title ) );
-        }else {
-            tabbedPane.setSelectedIndex( tabbedPane.indexOfTab( title ) );
-        }
-        
-    }
-   
-    public void removeTab(){
-        
-    }
-    
-    public void removeAllTab(){
-        tabbedPane.removeAll();
-    }
+
     public void setsplitPaneRightComponent(java.awt.Component c){
         splitPane.setRightComponent(c);
     }
@@ -664,65 +659,37 @@ public class inventoryMngt extends javax.swing.JFrame {
     }  
   
     private void addToolbarContentTop_4(javax.swing.JToolBar toolbar){  
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
-        button.setActionCommand("SalesOrder");
-        button.addActionListener(new Action());
-        button.setContentAreaFilled(false);
-        button.setToolTipText("Sales Order");
-        toolbar.add(button);
-        
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Tool.gif", new java.awt.Dimension(28, 28)));
-        button.setActionCommand("SalesReturn");
-        button.addActionListener(new Action());
-        button.setContentAreaFilled(false);
-        button.setToolTipText("Sales Return");
-        toolbar.add(button);
+        //button = new javax.swing.JButton(sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
+        textfield = new javax.swing.JTextField(20);
+        textfield.setActionCommand("SearchTextField");
+        textfield.addKeyListener(new java.awt.event.KeyListener(){
+            //currentDataObj
+            javax.swing.JTable table = (javax.swing.JTable)currentDataObj[3];
+            @Override
+            public void keyTyped(KeyEvent e) {
+               sorter.setRowFilter(javax.swing.RowFilter.regexFilter(textfield.getText()));
+            }
 
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Security.gif", new java.awt.Dimension(28, 28)));
-        button.setActionCommand("SalesInvoice");
-        button.addActionListener(new Action());
-        button.setContentAreaFilled(false);
-        button.setToolTipText("Sales Invoice");
-        toolbar.add(button);
-        
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Security.gif", new java.awt.Dimension(28, 28)));
-        button.setActionCommand("POS");
-        button.addActionListener(new Action());
-        button.setContentAreaFilled(false);
-        button.setToolTipText("Point of Sale");
-        toolbar.add(button);
-        
-        toolbar.addSeparator();
-        
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
-        button.setActionCommand("PurOrder");
-        button.addActionListener(new Action());
-        button.setContentAreaFilled(false);
-        button.setToolTipText("Purchases Order");
-        toolbar.add(button);
-        
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Tool.gif", new java.awt.Dimension(28, 28)));
-        button.setActionCommand("PurReturn");
-        button.addActionListener(new Action());
-        button.setContentAreaFilled(false);
-        button.setToolTipText("Purchases Return");
-        toolbar.add(button);
+            @Override
+            public void keyPressed(KeyEvent e) {
 
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Security.gif", new java.awt.Dimension(28, 28)));
-        button.setActionCommand("PurInvoice");
-        button.addActionListener(new Action());
-        button.setContentAreaFilled(false);
-        button.setToolTipText("Purchases Invoice");
-        toolbar.add(button);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
         
-        toolbar.addSeparator();
+        });
         
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Trackback.gif", new java.awt.Dimension(28, 28)));
-        button.setActionCommand("Transfer");
+        toolbar.add(textfield);
+        
+        button = new javax.swing.JButton("Go");
+        button.setActionCommand("searchTextField");
+       // button.setPreferredSize(new java.awt.Dimension(100, 45));
         button.addActionListener(new Action());
-        button.setContentAreaFilled(false);
-        button.setToolTipText("Item transfer");
-        toolbar.add(button);  
+        //toolbar.add(button);
+
     }  
    
     public void display(String title){
@@ -783,13 +750,18 @@ public class inventoryMngt extends javax.swing.JFrame {
             }else if("Refresh".equals(e.getActionCommand())){
                 
             }else if("Print".equals(e.getActionCommand())){
+                Object [] obj = tabbedPane.getCurrentComponents();
+                
+                javax.swing.JTable table = (javax.swing.JTable) obj[3];
+                
+                //System.out.println(obj[0]);
                 PrinterJob job = PrinterJob.getPrinterJob();
                 
                 MessageFormat header = new MessageFormat("Header");
 
                 MessageFormat footer = new MessageFormat("Footer");
                 
-                job.setPrintable(inv.getTable().getPrintable(PrintMode.NORMAL, header, footer));
+                job.setPrintable(table.getPrintable(PrintMode.NORMAL, header, footer));
                // job.setPrintable(new MyTablePrintable(tblmunim, PrintMode.FIT_WIDTH, header, footer));
 
                 if (job.printDialog()){
@@ -806,6 +778,7 @@ public class inventoryMngt extends javax.swing.JFrame {
                 if( n == 0){
                       
                 }else{
+                    
                 }
             }else if("Undo".equals(e.getActionCommand())){
                 
@@ -820,7 +793,7 @@ public class inventoryMngt extends javax.swing.JFrame {
             } else if("warehouse".equals(e.getActionCommand())){
                 new posi.sys.expeditors.Login();
             } else if("InvAllV".equals(e.getActionCommand())){
-                addTabPane("Inventory list", inv.InvAll(),"Close inventory");
+                tabbedPane.addTabs("Inventory list", inv.InvAll(),"Close inventory");
                 
             } else if("ReportV".equals(e.getActionCommand()) || "Reports".equals(e.getActionCommand())){                
                 new posi.sys.all.inv.reports().setVisible(true);

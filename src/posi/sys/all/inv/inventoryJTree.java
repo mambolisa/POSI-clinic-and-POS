@@ -40,7 +40,7 @@ public class inventoryJTree{
     public static javax.swing.JScrollPane updateTree(){
         top = new javax.swing.tree.DefaultMutableTreeNode("Reports");
         createNodes("Stock",new String [] {"Recent","Recently ","Recently added"});
-        createNodes("Items",new String [] {"Show by category","Show by expiry","Show by reorder","Inventory list"});
+        createNodes("Items",new String [] {"Show by category","Show by expiry","Show by reorder"});
         createNodes("Graphs",new String [] {"All graphical reports"});
         
         tree = new javax.swing.JTree(top);
@@ -110,8 +110,9 @@ public class inventoryJTree{
                     
                     c= (java.awt.Component)panel;
                 }
+             //   c = (java.awt.Component)new javax.swing.JTable(5,6);
                 //
-                inventoryMngt.addTabPane(node.toString(), c, null);
+                inventoryMngt.tabbedPane.addTabs(node.toString(), c, null);
                 
             } 
         }

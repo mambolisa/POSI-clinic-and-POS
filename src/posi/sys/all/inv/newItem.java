@@ -75,7 +75,7 @@ public class newItem extends posi.sys.expeditors.popup {
             try {
                 boolean cont = true;
                 
-                while( rs.next() && cont == true){System.out.println(rs.getInt(1));
+                while( rs.next() && cont == true){
                     if( rs.getInt(1) == item_num ){
                         newPopulate(rs);
                         cont = false;
@@ -128,9 +128,10 @@ public class newItem extends posi.sys.expeditors.popup {
         WeightText.setText(""+rs.getString(14));
         DescTextArea.setText(""+rs.getString(3));
         
-        if(!"".equals(rs.getInt(13)) && !" ".equals(rs.getInt(13)) && ManufCombo.getItemCount() > 0 ) {
+/*        if(!"".equals(rs.getInt(13)) && !" ".equals(rs.getInt(13)) && ManufCombo.getItemCount() > 0 ) {
             ManufCombo.setSelectedIndex(rs.getInt(13));
-        }
+        }*
+        */
     }
     
    private void updateItem(){
@@ -545,7 +546,6 @@ public class newItem extends posi.sys.expeditors.popup {
         @Override
         public void actionPerformed(ActionEvent e) {
             
-            System.out.println(e.getActionCommand());
             if("Save".equals(e.getActionCommand())){
                 addItem();
             }else if("Update".equals(e.getActionCommand())){
@@ -559,9 +559,10 @@ public class newItem extends posi.sys.expeditors.popup {
                 try {
                     if(rs.next()){
                         newPopulate(rs);
-                    }
+                    }                    
+                    
                 } catch (SQLException ex) {
-                    Logger.getLogger(newItem.class.getName()).log(Level.SEVERE, null, ex);
+                   //Logger.getLogger(newItem.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
             }else if("Prev".equals(e.getActionCommand())){
@@ -570,7 +571,7 @@ public class newItem extends posi.sys.expeditors.popup {
                         newPopulate(rs);
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(newItem.class.getName()).log(Level.SEVERE, null, ex);
+                   // Logger.getLogger(newItem.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

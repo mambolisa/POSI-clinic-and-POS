@@ -4,9 +4,12 @@
  */
 package posi.sys.all.inv;
 
+import posi.sys.expeditors.utilityFunctions;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.table.TableModel;
 import posi.sys.all.expeditors.database.db_connect;
 
 /**
@@ -24,6 +27,8 @@ public class Search extends posi.sys.expeditors.popup {
     
     private Object[][] data;
     
+    private javax.swing.table.TableRowSorter<javax.swing.table.TableModel> sorter;
+    
     public Search(){
        super(new java.awt.Dimension(850,550),"Search");
        panel2 = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
@@ -31,10 +36,12 @@ public class Search extends posi.sys.expeditors.popup {
        
        panel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));       
        panel.setPreferredSize(new java.awt.Dimension(600, 40));
+       
        textfield = new javax.swing.JTextField(30); 
        textfield.addActionListener(new Action());
        textfield.setActionCommand("Search");
        textfield.setPreferredSize(new java.awt.Dimension(300, 35));
+
        panel.add(textfield);
        
        button = new javax.swing.JButton("Search");
@@ -56,6 +63,24 @@ public class Search extends posi.sys.expeditors.popup {
        this.add(panel2,BorderLayout.PAGE_START);
        
        this.add(searchTable(),BorderLayout.CENTER);
+       
+       textfield.addKeyListener(new java.awt.event.KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                 sorter.setRowFilter(javax.swing.RowFilter.regexFilter(textfield.getText()));
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                
+            }
+        });
     }
     
     public static void main(String [] args){
@@ -64,10 +89,10 @@ public class Search extends posi.sys.expeditors.popup {
     
     public final javax.swing.JScrollPane searchTable(){
         db = new db_connect();
-        String sql = "SELECT item_default_bar_code,item_name, item_description,item_default_price,item_qty FROM items, item_status WHERE item_status = item_status_id ";
+        String sql = "SELECT item_id, item_default_bar_code,item_name, item_description,item_default_price,item_qty FROM items, item_status WHERE item_status = item_status_id ";
         data = db.getData(sql);
         
-        final String [] columnNames = {"Item code","Item name","Description","Item price","Item qty"};
+        final String [] columnNames = {"Item Num","Item code","Item name","Description","Item price","Item qty"};
          
         inv = new inventoryTable(data,columnNames){
             @Override
@@ -79,11 +104,31 @@ public class Search extends posi.sys.expeditors.popup {
         
         inv.setRowHeight(28);
         
-        inv.getColumnModel().getColumn(0).setPreferredWidth(180);
-        inv.getColumnModel().getColumn(1).setPreferredWidth(300);
-        inv.getColumnModel().getColumn(2).setPreferredWidth(200);
-        inv.getColumnModel().getColumn(3).setPreferredWidth(130);
-        inv.getColumnModel().getColumn(4).setPreferredWidth(100);
+        inv.getColumnModel().getColumn(0).setPreferredWidth(70);
+        inv.getColumnModel().getColumn(1).setPreferredWidth(180);
+        inv.getColumnModel().getColumn(2).setPreferredWidth(300);
+        inv.getColumnModel().getColumn(3).setPreferredWidth(200);
+        inv.getColumnModel().getColumn(4).setPreferredWidth(130);
+        inv.getColumnModel().getColumn(5).setPreferredWidth(100);
+        
+        sorter = new javax.swing.table.TableRowSorter<TableModel>(inv.getModel());
+        inv.setRowSorter(sorter);
+        
+        inv.setMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+           public void mouseClicked(java.awt.event.MouseEvent e){
+               if (javax.swing.SwingUtilities.isRightMouseButton(e)){
+                   java.awt.Point p = e.getPoint();
+                   
+                   int rowNum = inv.table().rowAtPoint(p);
+                   Object itemCode =  data[rowNum][0];
+                   
+                   javax.swing.JPopupMenu popup = new utilityFunctions().invRowPopupMenu(Integer.parseInt(itemCode.toString()));
+                   
+                   popup.show(e.getComponent(), e.getX(), e.getY());
+               }
+           }
+       });
         
     return  inv.tableScrollPane();
     }

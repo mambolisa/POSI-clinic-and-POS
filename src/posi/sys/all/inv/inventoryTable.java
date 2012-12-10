@@ -11,7 +11,7 @@ package posi.sys.all.inv;
  */
 public class inventoryTable extends javax.swing.JTable{
     private static javax.swing.JScrollPane scrollPane;
-    private posi.sys.all.inv.TablesList r = new posi.sys.all.inv.TablesList();
+    private posi.sys.all.inv.ManageTabs r = new posi.sys.all.inv.ManageTabs();
     
     public inventoryTable(){
         
