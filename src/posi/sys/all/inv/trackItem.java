@@ -6,13 +6,14 @@ package posi.sys.all.inv;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import posi.sys.all.expeditors.database.db_connect;
 
 /**
  *
  * @author Aquarius
  */
-public class trackItem extends posi.sys.expeditors.popup {
+public class trackItem  extends posi.sys.expeditors.popup{
     private int item_id;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JButton button;
@@ -21,44 +22,55 @@ public class trackItem extends posi.sys.expeditors.popup {
     private inventoryTable inv;
     
     private Object [][] data;
+   // private posi.sys.expeditors.popup popup;
     
     public trackItem(){
-        super(new java.awt.Dimension(800,650),"Track Item");
-        this.getContentPane().add(searchTable());
-        //this.content();
+        super(new java.awt.Dimension(850,550),"Track item");
+        setVisible(false);
+        
+        final Search search = new Search();
+        
+        search.addWindowListener(new java.awt.event.WindowListener(){
+
+            @Override
+            public void windowOpened(WindowEvent e) { }
+
+            @Override
+            public void windowClosing(WindowEvent e) { }
+
+            @Override
+            public void windowClosed(WindowEvent e) { 
+                item_id = search.getTableSelectedRow();
+                content();                 
+                setVisible(true);
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) { }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) { }
+
+            @Override
+            public void windowActivated(WindowEvent e) { }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) { }
+        
+        });
+        
+        search.setVisible(true);
     }
     
     public trackItem(int itemId){
-        super(new java.awt.Dimension(800,650),"Track Item");
+        super(new java.awt.Dimension(850,550),"Track item");
+        
         this.item_id = itemId;
         
         this.content();
     }
-    public final javax.swing.JScrollPane searchTable(){        
-        String sql = "SELECT item_default_bar_code,item_name, item_description,item_default_price,item_qty FROM items, item_status WHERE item_status = item_status_id ";
-        data = db.getData(sql);
-        
-        final String [] columnNames = {"Item code","Item name","Description","Item price","Item qty"};
-         
-        inv = new inventoryTable(data,columnNames){
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-            
-        };
-        
-        inv.setRowHeight(28);
-        
-        inv.getColumnModel().getColumn(0).setPreferredWidth(180);
-        inv.getColumnModel().getColumn(1).setPreferredWidth(300);
-        inv.getColumnModel().getColumn(2).setPreferredWidth(200);
-        inv.getColumnModel().getColumn(3).setPreferredWidth(130);
-        inv.getColumnModel().getColumn(4).setPreferredWidth(100);
-        
-    return  inv.tableScrollPane();
-    }  
-    public final void content(){
+  
+    public final void content(){ System.out.print(item_id);
         toolBar = new javax.swing.JToolBar();
         addToolbarContent(toolBar);        
         toolBar.setFloatable(true);
@@ -98,6 +110,6 @@ public class trackItem extends posi.sys.expeditors.popup {
         
     }
     public static void main(String [] args){
-        new trackItem().setVisible(true);
+        new trackItem();
     }
 }

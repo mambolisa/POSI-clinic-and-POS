@@ -87,6 +87,10 @@ public class Search extends posi.sys.expeditors.popup {
         new Search().setVisible(true);
     }
     
+    public int getTableSelectedRow(){
+        return inv.getSelectedRow();                
+    }
+            
     public final javax.swing.JScrollPane searchTable(){
         db = new db_connect();
         String sql = "SELECT item_id, item_default_bar_code,item_name, item_description,item_default_price,item_qty FROM items, item_status WHERE item_status = item_status_id ";

@@ -58,6 +58,10 @@ public class popup extends javax.swing.JDialog {
         getContentPane().add(c);
     }
     
+    public void SetPopup(java.awt.Dimension d){
+        setPopup(d);
+    }
+    
     private void setPopup(java.awt.Dimension d){
         this.setSize(d.width, d.height);
         

@@ -452,7 +452,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         toolBarTop_4 = new javax.swing.JToolBar();
         this.addToolbarContentTop_4(toolBarTop_4); 
         toolBarTop_4.setName("Search");
-        toolBarTop_4.setPreferredSize(new java.awt.Dimension(250, 40));
+        toolBarTop_4.setPreferredSize(new java.awt.Dimension(300, 40));
         topToolBarPanel.add(toolBarTop_4);
         
         this.add(topToolBarPanel,BorderLayout.PAGE_START);
@@ -660,7 +660,7 @@ public class inventoryMngt extends javax.swing.JFrame {
   
     private void addToolbarContentTop_4(javax.swing.JToolBar toolbar){  
         //button = new javax.swing.JButton(sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
-        textfield = new javax.swing.JTextField(20);
+        textfield = new javax.swing.JTextField();
         textfield.setActionCommand("SearchTextField");
         textfield.addKeyListener(new java.awt.event.KeyListener(){
             //currentDataObj
@@ -799,7 +799,7 @@ public class inventoryMngt extends javax.swing.JFrame {
                 new posi.sys.all.inv.reports().setVisible(true);
                // removeAllTab();
             } else if("trackItemV".equals(e.getActionCommand()) || "TrackItem".equals(e.getActionCommand())){
-                new posi.sys.all.inv.trackItem().setVisible(true);
+                new posi.sys.all.inv.trackItem();
             } else if("mainAllV".equals(e.getActionCommand())){
                 splitPane.setLeftComponent(new inventoryJTree().getContent());
                 splitPane.setDividerLocation(220);                

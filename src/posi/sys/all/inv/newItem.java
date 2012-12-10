@@ -554,7 +554,7 @@ public class newItem extends posi.sys.expeditors.popup {
                 dispose();
             }else if("Track".equals(e.getActionCommand())){                
                 setVisible(false);
-                new trackItem(Integer.parseInt(ItemIdText.getText())).setVisible(true);
+                new trackItem(Integer.parseInt(ItemIdText.getText()));
             }else if("Next".equals(e.getActionCommand())){
                 try {
                     if(rs.next()){

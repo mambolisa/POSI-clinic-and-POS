@@ -86,7 +86,7 @@ public class utilityFunctions {
             }else if("newItem".equals(e.getActionCommand())){
                 new newItem().setVisible(true);
             }else if("trackitem".equals(e.getActionCommand())){
-                new trackItem(itemID).setVisible(true);
+                new trackItem(itemID);
             }else if("LeaveCommentOnItem".equals(e.getActionCommand())){
                 
             }else if("CustHist".equals(e.getActionCommand())){
