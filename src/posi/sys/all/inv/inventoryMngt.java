@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.text.MessageFormat;
@@ -120,7 +121,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         menuitem = new javax.swing.JMenuItem("Print",sundry.createImageIcon("images/Printer.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
-        menuitem.setActionCommand("print");
+        menuitem.setActionCommand("Print");
         menuitem.addActionListener(new Action());
         file.add(menuitem);
         
@@ -647,13 +648,11 @@ public class inventoryMngt extends javax.swing.JFrame {
             public void keyTyped(KeyEvent e) {
                 java.awt.Component c = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
                 javax.swing.JScrollPane scrollpane;
-                javax.swing.JViewport viewport;
                 javax.swing.JTable table_sort = null;
                         
                 if ("javax.swing.JScrollPane".equals(c.getClass().getName())){
                      scrollpane = (javax.swing.JScrollPane)c;
-                      //viewport = scrollpane.getViewport();
-                      
+                     
                       table_sort = (javax.swing.JTable)scrollpane.getViewport().getView();
                       sorter = new javax.swing.table.TableRowSorter<javax.swing.table.TableModel>(table_sort.getModel());
                 
@@ -743,7 +742,7 @@ public class inventoryMngt extends javax.swing.JFrame {
                 }
             }else if("Refresh".equals(e.getActionCommand())){
                 
-            }else if("Print".equals(e.getActionCommand())){       
+            }else if("Print".equals(e.getActionCommand())){   System.out.print("Printer")     ;
                 javax.swing.JTable table = printer_helper();
                 
                 PrinterJob job = PrinterJob.getPrinterJob();
@@ -778,7 +777,15 @@ public class inventoryMngt extends javax.swing.JFrame {
             }else if("Exit".equals(e.getActionCommand())){
                 System.exit(0);
             }else if("Search".equals(e.getActionCommand())){
-                new posi.sys.all.inv.Search().setVisible(true);
+                new posi.sys.all.inv.Search(){
+                    @Override
+                    public void setVisible(boolean b) {
+                        if( b == false){
+                             new posi.sys.all.inv.newItem(Integer.parseInt(get_item_index()),false).setVisible(true);
+                        }else
+                             super.setVisible(b);
+                    }
+                }.setVisible(true);
             } else if("Logout".equals(e.getActionCommand())){
                 new posi.sys.expeditors.Login();
             } else if("warehouse".equals(e.getActionCommand())){

@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -382,7 +383,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         inv.setMouseListener(new java.awt.event.MouseAdapter() {
             @Override
            public void mouseClicked(java.awt.event.MouseEvent e){
-                if (SwingUtilities.isRightMouseButton(e)){
+                 if (SwingUtilities.isRightMouseButton(e)){
                    java.awt.Point p = e.getPoint();
                    
                    int rowNum = inv.rowAtPoint(p);
@@ -419,7 +420,16 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
                 dispose();
                  new POS().setVisible(true);
             }else if("search_item".equals( e.getActionCommand())){
-                new posi.sys.all.inv.Search().setVisible(true);                
+                new posi.sys.all.inv.Search(){
+                    @Override
+                    public void setVisible(boolean b) {
+                        if( b == false){
+                           addRowItem(get_item_bar_code());
+                           super.setVisible(false);
+                        }else
+                             super.setVisible(b);
+                    }
+                }.setVisible(true);               
             }else if("print_reciept".equals( e.getActionCommand())){                
                 
             }else if("item_catalogue".equals( e.getActionCommand())){

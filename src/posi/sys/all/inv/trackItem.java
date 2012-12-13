@@ -21,6 +21,8 @@ public class trackItem  extends posi.sys.expeditors.popup{
     
     private inventoryTable inv;
     
+    private String item_index, item_bar_code;
+    
     private Object [][] data;
    // private posi.sys.expeditors.popup popup;
     
@@ -28,38 +30,23 @@ public class trackItem  extends posi.sys.expeditors.popup{
         super(new java.awt.Dimension(850,550),"Track item");
         setVisible(false);
         
-        final Search search = new Search();
-        
-        search.addWindowListener(new java.awt.event.WindowListener(){
-
+        new posi.sys.all.inv.Search(){
             @Override
-            public void windowOpened(WindowEvent e) { }
-
-            @Override
-            public void windowClosing(WindowEvent e) { }
-
-            @Override
-            public void windowClosed(WindowEvent e) { 
-                item_id = search.getTableSelectedRow();
-                content();                 
-                setVisible(true);
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) { }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) { }
-
-            @Override
-            public void windowActivated(WindowEvent e) { }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) { }
-        
-        });
-        
-        search.setVisible(true);
+            public void setVisible(boolean b) {
+               if( b == false){
+                   item_index = get_item_index();
+                   item_bar_code = get_item_bar_code();
+                   
+                   super.setVisible(false);
+                  updateVisibility(true);
+               }else
+                  super.setVisible(b);
+               }
+           }.setVisible(true);
+    }
+    
+    public void updateVisibility(boolean v){
+        setVisible(v);
     }
     
     public trackItem(int itemId){

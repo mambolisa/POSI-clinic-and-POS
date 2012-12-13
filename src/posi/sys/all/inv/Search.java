@@ -27,10 +27,12 @@ public class Search extends posi.sys.expeditors.popup {
     
     private Object[][] data;
     
+    private String item_index, item_bar_code;
     private javax.swing.table.TableRowSorter<javax.swing.table.TableModel> sorter;
     
     public Search(){
        super(new java.awt.Dimension(850,550),"Search");
+       
        panel2 = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
       // panel2.setPreferredSize(new java.awt.Dimension(845, 40));
        
@@ -90,7 +92,15 @@ public class Search extends posi.sys.expeditors.popup {
     public int getTableSelectedRow(){
         return inv.getSelectedRow();                
     }
-            
+      
+    public String get_item_index(){
+        return item_index;
+    }
+    
+    public String get_item_bar_code(){
+        return item_bar_code;
+    }
+    
     public final javax.swing.JScrollPane searchTable(){
         db = new db_connect();
         String sql = "SELECT item_id, item_default_bar_code,item_name, item_description,item_default_price,item_qty FROM items, item_status WHERE item_status = item_status_id ";
@@ -121,12 +131,19 @@ public class Search extends posi.sys.expeditors.popup {
         inv.setMouseListener(new java.awt.event.MouseAdapter() {
             @Override
            public void mouseClicked(java.awt.event.MouseEvent e){
-               if (javax.swing.SwingUtilities.isRightMouseButton(e)){
-                   java.awt.Point p = e.getPoint();
+                java.awt.Point p = e.getPoint();
                    
-                   int rowNum = inv.table().rowAtPoint(p);
-                   Object itemCode =  data[rowNum][0];
-                   
+                int rowNum = inv.table().rowAtPoint(p);
+                Object itemCode =  data[rowNum][0];
+                Object itemBarCode = data[rowNum][1];
+                if (javax.swing.SwingUtilities.isLeftMouseButton(e)){                    
+                    if(e.getClickCount() >= 2){
+                        item_index = itemCode.toString();
+                        item_bar_code = itemBarCode.toString();
+                        setVisible(false);
+                        
+                    }
+                }else if (javax.swing.SwingUtilities.isRightMouseButton(e)){
                    javax.swing.JPopupMenu popup = new utilityFunctions().invRowPopupMenu(Integer.parseInt(itemCode.toString()));
                    
                    popup.show(e.getComponent(), e.getX(), e.getY());
