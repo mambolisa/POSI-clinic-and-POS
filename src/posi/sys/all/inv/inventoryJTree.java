@@ -20,8 +20,9 @@ public class inventoryJTree{
     
     public inventoryJTree(){
         top = new javax.swing.tree.DefaultMutableTreeNode("Inventory List view");
-        this.createNodes("Recent",new String [] {"Recently removed","Recently updated","Recently added"});
-        this.createNodes("Others",new String [] {"Show by category","Show by expiry","Show by reorder","Inventory list"});
+        
+        inventoryJTree.createNodes("Show",new String [] {"Show by category","Show by expiry","Show by reorder","Inventory list"});
+        inventoryJTree.createNodes("Recent",new String [] {"Recently removed","Recently updated","Recently added"});
         
         tree = new javax.swing.JTree(top);
         tree.setShowsRootHandles(true);
@@ -77,40 +78,59 @@ public class inventoryJTree{
             return;
 
             Object nodeInfo = node.getUserObject();
+           
+            /*
+             * Remove dummy data
+             */              
+                    
+                  
+            String[] columnNames = {"First Name",
+                        "Last Name",
+                        "Sport",
+                        "# of Years",
+                        "Vegetarian"};
+
+            Object[][] data = {
+                                {"Mary", "Campione",
+                                 "Snowboarding", new Integer(5), new Boolean(false)},
+                                {"Alison", "Huml",
+                                 "Rowing", new Integer(3), new Boolean(true)},
+                                {"Kathy", "Walrath",
+                                 "Knitting", new Integer(2), new Boolean(false)},
+                                {"Sharon", "Zakhour",
+                                 "Speed reading", new Integer(20), new Boolean(true)},
+                                {"Philip", "Milne","Pool", "10", "false"}
+                            };
+
             if (node.isLeaf()) {
                 if("Recently removed".equals(node.toString())){
-                    c = (java.awt.Component)new javax.swing.JButton("Recently");
+                    c = (java.awt.Component)new javax.swing.JButton("Recently removed");
                 }else if("Recently updated".equals(node.toString())){
                     //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                     //c = (java.awt.Component)scrollpane;
+                    c = (java.awt.Component)new javax.swing.JButton("Recently updated");
                 }else if("Recently added".equals(node.toString())){
                    // javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                    // c = (java.awt.Component)scrollpane;
+                    c = (java.awt.Component)new javax.swing.JButton("Recently added");
                 }else if("Show by category".equals(node.toString())){
                     //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                    // c = (java.awt.Component)scrollpane;
+                    c = (java.awt.Component)new javax.swing.JButton("Cat");
                 }else if("Show by expiry".equals(node.toString())){
-                   // javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
-                    //c = (java.awt.Component)scrollpane;
+                    javax.swing.JScrollPane scrollpane = new inventoryTable(data, columnNames).tableScrollPane();
+                    c = (java.awt.Component)scrollpane;
+                   // c = (java.awt.Component)new javax.swing.JButton("Cat");
                 }else if("Show by reorder".equals(node.toString())){
-                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
-                    //c = (java.awt.Component)scrollpane;
+                    javax.swing.JScrollPane scrollpane = new inventoryTable(data,columnNames).tableScrollPane();
+                    c = (java.awt.Component)scrollpane;
+                   // c = (java.awt.Component)new javax.swing.JButton("Cat");
                 }else if("Show all".equals(node.toString())){
                     //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
                     //c = (java.awt.Component)scrollpane;
-                }else if("All graphical reports".equals(node.toString())){
-                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
-                    //c = (java.awt.Component)scrollpane;
-                    javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.FlowLayout());
-                    javax.swing.JLabel label = new javax.swing.JLabel("Graph reports");
-                    
-                    javax.swing.JComboBox box = new javax.swing.JComboBox(new Object[]{"Items Proliferate","Diminate ","Expiry"});
-                    panel.add(label);
-                    panel.add(box,FlowLayout.LEFT);
-                    
-                    c= (java.awt.Component)panel;
+                    c = (java.awt.Component)new javax.swing.JButton("All");
                 }
-             //   c = (java.awt.Component)new javax.swing.JTable(5,6);
+              // c = (java.awt.Component)new javax.swing.JTable(5,6);
                 //
                 inventoryMngt.tabbedPane.addTabs(node.toString(), c, null);
                 

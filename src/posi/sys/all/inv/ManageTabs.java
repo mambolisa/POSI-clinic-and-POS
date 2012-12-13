@@ -13,20 +13,13 @@ import posi.sys.expeditors.sundry;
  */
 public  class ManageTabs extends javax.swing.JTabbedPane {
     private TabCloseUI closeUI;
-    
-    private static java.util.ArrayList<Object[]> tabList;
-    
+        
     private javax.swing.JScrollPane scrollpane;
-    
-    private int counter = 0;
-    
-    public static int current = 0;
-    
+        
     private javax.swing.JViewport viewport;
     
     public ManageTabs(){
         closeUI = new TabCloseUI(this);
-        tabList = new java.util.ArrayList<Object []>();
     }
     
     public String getTabTitleAt(int index) {
@@ -37,7 +30,7 @@ public  class ManageTabs extends javax.swing.JTabbedPane {
         return super.indexOfTab(title);
     }
    
-   public void addTabs(String title,java.awt.Component c, String tooltip){
+   public synchronized void addTabs(String title,java.awt.Component c, String tooltip){
        String cl = "";
        
        try{
@@ -58,43 +51,26 @@ public  class ManageTabs extends javax.swing.JTabbedPane {
        javax.swing.JTable table = (viewport != null) ? (javax.swing.JTable)viewport.getView() : new javax.swing.JTable(); 
        
         if (indexOfTab(title) == -1 ){
-            addTab(title,sundry.createImageIcon("images/Cancel.gif", new java.awt.Dimension(17, 17)),c);
-            setSelectedIndex( indexOfTab( title ) );
-            current = getTabIndex(title);
             
-            tabList.add(new Object[] {counter, title, c, table});
-            counter++;
+            addTab(title,sundry.createImageIcon("images/Cancel.gif", new java.awt.Dimension(17, 17)),c);
+
+            
+            setSelectedIndex( indexOfTab( title ) );
+                      
         }else {
             setSelectedIndex( indexOfTab( title ) );
-            current = getTabIndex(title);
         }
     }
-    
+
     public void removeTab(String title){
         
     }
-    
-    public static Object [] getCurrentComponents(){
-        //showListContent();
-        System.out.print("Current: "+ current + "\t Size: "+ tabList.size());
-        return tabList.get(current);
-    }
-    
+
     @Override
     public void removeTabAt(int index){
         super.removeTabAt(index);
-        tabList.remove(index);   
-        counter--;
     }
-    
-    public static void showListContent(){
-        int list  = tabList.size();
-        Object [] obj ;
-        for (int i = 0; i < list; i++){
-            obj = tabList.get(i);
-            System.out.println(obj[0] + ": \t"+ obj[1] + "\t"+ obj[2] + "\t"+ obj[3] + "\n");
-        }
-    }
+ 
     public void removeAllTabs(){
         
     }

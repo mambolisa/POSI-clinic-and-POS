@@ -40,8 +40,6 @@ public class inventoryMngt extends javax.swing.JFrame {
     
     private posi.sys.all.inv.tableReports inv;
     
-    private Object [] currentDataObj;
-    
     private posi.sys.all.expeditors.database.db_connect db = null;
     
     private javax.swing.table.TableRowSorter<javax.swing.table.TableModel> sorter;
@@ -387,11 +385,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         splitPane = new javax.swing.JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         
-        tabbedPane = new ManageTabs(){
-            public void setTabLayoutPolicy() {
-                super.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-            }            
-        };
+        tabbedPane = new ManageTabs();
                 
         inv  = new posi.sys.all.inv.tableReports();
         javax.swing.JScrollPane table = inv.InvAll();
@@ -400,25 +394,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         inv.getTable().setRowSorter(sorter);
         
         tabbedPane.addTabs("Inventory list",table,"Close inventory");
-        
-        tabbedPane.addChangeListener(new javax.swing.event.ChangeListener(){
 
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                currentDataObj = ManageTabs.getCurrentComponents();
-                
-                if(currentDataObj == null) {
-                    return;
-                }
-                
-                javax.swing.JTable table = (javax.swing.JTable)currentDataObj[3];
-                sorter = new javax.swing.table.TableRowSorter<javax.swing.table.TableModel>(table.getModel());
-                table.setRowSorter(sorter);
-            }
-        });
-        
-        currentDataObj = ManageTabs.getCurrentComponents();
-        
         splitPane.setLeftComponent(new posi.sys.all.inv.inventoryJTree().getContent());
 
         splitPane.setDividerLocation(220);
@@ -662,12 +638,30 @@ public class inventoryMngt extends javax.swing.JFrame {
         //button = new javax.swing.JButton(sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
         textfield = new javax.swing.JTextField();
         textfield.setActionCommand("SearchTextField");
+        
+        
+        
         textfield.addKeyListener(new java.awt.event.KeyListener(){
             //currentDataObj
-            javax.swing.JTable table = (javax.swing.JTable)currentDataObj[3];
             @Override
             public void keyTyped(KeyEvent e) {
-               sorter.setRowFilter(javax.swing.RowFilter.regexFilter(textfield.getText()));
+                java.awt.Component c = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+                javax.swing.JScrollPane scrollpane;
+                javax.swing.JViewport viewport;
+                javax.swing.JTable table_sort = null;
+                        
+                if ("javax.swing.JScrollPane".equals(c.getClass().getName())){
+                     scrollpane = (javax.swing.JScrollPane)c;
+                      //viewport = scrollpane.getViewport();
+                      
+                      table_sort = (javax.swing.JTable)scrollpane.getViewport().getView();
+                      sorter = new javax.swing.table.TableRowSorter<javax.swing.table.TableModel>(table_sort.getModel());
+                
+                      table_sort.setRowSorter(sorter);                 
+                
+                      sorter.setRowFilter(javax.swing.RowFilter.regexFilter(textfield.getText()));   
+                }
+                
             }
 
             @Override
@@ -749,12 +743,9 @@ public class inventoryMngt extends javax.swing.JFrame {
                 }
             }else if("Refresh".equals(e.getActionCommand())){
                 
-            }else if("Print".equals(e.getActionCommand())){
-                Object [] obj = tabbedPane.getCurrentComponents();
+            }else if("Print".equals(e.getActionCommand())){       
+                javax.swing.JTable table = printer_helper();
                 
-                javax.swing.JTable table = (javax.swing.JTable) obj[3];
-                
-                //System.out.println(obj[0]);
                 PrinterJob job = PrinterJob.getPrinterJob();
                 
                 MessageFormat header = new MessageFormat("Header");
@@ -829,7 +820,20 @@ public class inventoryMngt extends javax.swing.JFrame {
     public static void main(String [] args ){
        new inventoryMngt().display("POSI Management system");
     }
-    
    
+   private javax.swing.JTable printer_helper(){
+       java.awt.Component c = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+       javax.swing.JScrollPane scrollpane;
+       javax.swing.JTable table_ = null;
+                        
+       if ("javax.swing.JScrollPane".equals(c.getClass().getName())){
+          scrollpane = (javax.swing.JScrollPane)c;
+          //viewport = scrollpane.getViewport();
+                      
+           table_ = (javax.swing.JTable)scrollpane.getViewport().getView();  
+        }
+       
+   return table_;
+   } 
 }
     
