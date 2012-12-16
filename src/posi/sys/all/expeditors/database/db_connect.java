@@ -102,8 +102,9 @@ public class db_connect{
                 row = new Object[numCols];
                  
                 for (int j = 0; j< numCols; j++ ){                        
-                    row[j] = (rs.getObject(j+1) != null )? rs.getObject(j+1) : " " ;
+                    row[j] = ( rs.getObject ( j+1 ) != null ) ? rs.getObject(j+1) : " " ;
                 } 
+                
             } catch (SQLException ex) {
                 Logger.getLogger(db_connect.class.getName()).log(Level.SEVERE, null, ex);
             }

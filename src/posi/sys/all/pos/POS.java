@@ -305,7 +305,10 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         columnNames.addElement("Total");
         
         inv = new inventoryTable(data,columnNames){
-            
+            @Override
+            public void setAutoCreateRowSorter(boolean autoCreateRowSorter) {
+                super.setAutoCreateRowSorter(false);
+            }
             @Override
             public boolean isCellEditable(int row, int column) {
                 if ( column == 0 || column ==5 )

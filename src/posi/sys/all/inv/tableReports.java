@@ -4,10 +4,10 @@
  */
 package posi.sys.all.inv;
 
-import posi.sys.expeditors.utilityFunctions;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import posi.sys.all.expeditors.database.db_connect;
+import posi.sys.expeditors.utilityFunctions;
 /**
  *
  * @author Aquarius
@@ -82,7 +82,7 @@ public class tableReports {
                             JOptionPane.showMessageDialog(null,"Item  has failed to update","Record update erro!",JOptionPane.ERROR_MESSAGE);      
                       } 
                   }else{
-                      return;
+
                   }
               }
         });

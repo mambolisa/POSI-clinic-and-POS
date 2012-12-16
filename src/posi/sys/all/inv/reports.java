@@ -37,7 +37,7 @@ public class reports extends posi.sys.expeditors.popup implements javax.swing.ev
     Object [] SysList = {"User sys usage","Audit trails"};
     
     public reports(){
-        super(new java.awt.Dimension(1000,650),"Reports");
+        super(new java.awt.Dimension(1100,670),"Reports");
         addContent();
     }
     

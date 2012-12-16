@@ -9,14 +9,12 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.text.MessageFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable.PrintMode;
-import javax.swing.event.ChangeEvent;
 import posi.sys.expeditors.sundry;
 
 /**

@@ -8,7 +8,9 @@ package posi.sys.all.inv;
 /**
  *
  * @author Aquarius
+ * 
  */
+
 public class inventoryTable extends javax.swing.JTable{
     private static javax.swing.JScrollPane scrollPane;
     private posi.sys.all.inv.ManageTabs r = new posi.sys.all.inv.ManageTabs();
