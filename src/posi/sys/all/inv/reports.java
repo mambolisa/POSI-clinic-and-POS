@@ -239,7 +239,10 @@ public class reports extends posi.sys.expeditors.popup implements javax.swing.ev
         }else if("Printer".equals(e.getActionCommand())){
            
         }else if("Settings".equals(e.getActionCommand())){
-           
+           new reportSettings(){
+               
+           }.setVisible(true);
         }
     }
+    
 }

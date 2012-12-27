@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package posi.sys.all.inv;
+package posi.sys.search;
 
 import posi.sys.expeditors.utilityFunctions;
 import java.awt.BorderLayout;
@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.table.TableModel;
 import posi.sys.all.expeditors.database.db_connect;
+import posi.sys.all.inv.advanced_search;
+import posi.sys.all.inv.invTables;
 
 /**
  *
@@ -23,11 +25,12 @@ public class Search extends posi.sys.expeditors.popup {
     
     private posi.sys.all.expeditors.database.db_connect db;
     
-    private inventoryTable inv;
+    private invTables inv;
     
     private Object[][] data;
     
-    private String item_index, item_bar_code;
+    private String index, item_bar_code, item_name;
+    private Double item_price;
     private javax.swing.table.TableRowSorter<javax.swing.table.TableModel> sorter;
     
     public Search(){
@@ -40,10 +43,22 @@ public class Search extends posi.sys.expeditors.popup {
        panel.setPreferredSize(new java.awt.Dimension(600, 40));
        
        textfield = new javax.swing.JTextField(30); 
-       textfield.addActionListener(new Action());
        textfield.setActionCommand("Search");
        textfield.setPreferredSize(new java.awt.Dimension(300, 35));
+       textfield.addKeyListener(new java.awt.event.KeyListener() {
 
+            @Override
+            public void keyTyped(KeyEvent e) { }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                sorter.setRowFilter(javax.swing.RowFilter.regexFilter(textfield.getText()));
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) { }
+        });
+       
        panel.add(textfield);
        
        button = new javax.swing.JButton("Search");
@@ -66,23 +81,7 @@ public class Search extends posi.sys.expeditors.popup {
        
        this.add(searchTable(),BorderLayout.CENTER);
        
-       textfield.addKeyListener(new java.awt.event.KeyListener() {
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-                 sorter.setRowFilter(javax.swing.RowFilter.regexFilter(textfield.getText()));
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                
-            }
-        });
+       
     }
     
     public static void main(String [] args){
@@ -94,21 +93,34 @@ public class Search extends posi.sys.expeditors.popup {
     }
       
     public String get_item_index(){
-        return item_index;
+        return index;
     }
     
     public String get_item_bar_code(){
         return item_bar_code;
     }
     
-    public final javax.swing.JScrollPane searchTable(){
+    public String get_item_name(){
+        return item_name;
+    }
+    
+    public double get_item_price(){
+        return item_price;
+    }
+    
+        
+    public void set_textfield_text(String text){
+        textfield.setText(text);
+    }
+    
+    public javax.swing.JScrollPane searchTable(){
         db = new db_connect();
         String sql = "SELECT item_id, item_default_bar_code,item_name, item_description,item_default_price,item_qty FROM items, item_status WHERE item_status = item_status_id ";
         data = db.getData(sql);
         
         final String [] columnNames = {"Item Num","Item code","Item name","Description","Item price","Item qty"};
          
-        inv = new inventoryTable(data,columnNames){
+        inv = new invTables(data,columnNames){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -132,22 +144,24 @@ public class Search extends posi.sys.expeditors.popup {
             @Override
            public void mouseClicked(java.awt.event.MouseEvent e){
                 java.awt.Point p = e.getPoint();
-                   
-                int rowNum = inv.table().rowAtPoint(p);
-                Object itemCode =  data[rowNum][0];
-                Object itemBarCode = data[rowNum][1];
-                if (javax.swing.SwingUtilities.isLeftMouseButton(e)){                    
-                    if(e.getClickCount() >= 2){
-                        item_index = itemCode.toString();
-                        item_bar_code = itemBarCode.toString();
-                        setVisible(false);
-                        
+                int rowNum = inv.rowAtPoint(p);  
+                if( rowNum != -1 ){               
+                    Object index_object =  data[rowNum][0];
+                    Object itemBarCode = data[rowNum][1];
+                    Object itemname = data[rowNum][2];
+                    Object itemprice = data[rowNum][4];
+                    if (javax.swing.SwingUtilities.isLeftMouseButton(e)){                    
+                        if(e.getClickCount() >= 2){
+                            index = index_object.toString();
+                            item_bar_code = itemBarCode.toString();
+                            item_name = itemname.toString();
+                            item_price = Double.parseDouble(itemprice.toString());
+                            
+                            setVisible(false);
+
+                        }
                     }
-                }else if (javax.swing.SwingUtilities.isRightMouseButton(e)){
-                   javax.swing.JPopupMenu popup = new utilityFunctions().invRowPopupMenu(Integer.parseInt(itemCode.toString()));
-                   
-                   popup.show(e.getComponent(), e.getX(), e.getY());
-               }
+                }
            }
        });
         

@@ -19,7 +19,7 @@ public class trackItem  extends posi.sys.expeditors.popup{
     private javax.swing.JButton button;
     private db_connect db = new db_connect();
     
-    private inventoryTable inv;
+    private invTables inv;
     
     private String item_index, item_bar_code;
     
@@ -30,7 +30,7 @@ public class trackItem  extends posi.sys.expeditors.popup{
         super(new java.awt.Dimension(850,550),"Track item");
         setVisible(false);
         
-        new posi.sys.all.inv.Search(){
+        new posi.sys.search.Search(){
             @Override
             public void setVisible(boolean b) {
                if( b == false){

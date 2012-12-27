@@ -229,11 +229,13 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         menu = new javax.swing.JMenu("Stakeholders");
         menuitem = new javax.swing.JMenuItem("Customers",sundry.createImageIcon("images/Man.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_C, ActionEvent.ALT_MASK));
         menuitem.setActionCommand("Customer"); 
         menuitem.addActionListener(new Action());        
         menu.add(menuitem);
         
         menuitem = new javax.swing.JMenuItem("Suppliers",sundry.createImageIcon("images/Woman.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_S, ActionEvent.ALT_MASK));
         menuitem.setActionCommand("Supplier"); 
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
@@ -739,8 +741,10 @@ public class inventoryMngt extends javax.swing.JFrame {
                     new posi.sys.all.inv.newItem(Integer.parseInt(itemId.toString()),false).setVisible(true);
                 }
             }else if("Refresh".equals(e.getActionCommand())){
+                javax.swing.JTable table = printer_helper(); 
+                javax.swing.table.AbstractTableModel new_model = (javax.swing.table.AbstractTableModel)table.getModel();
                 
-            }else if("Print".equals(e.getActionCommand())){   System.out.print("Printer")     ;
+            }else if("Print".equals(e.getActionCommand())){ 
                 javax.swing.JTable table = printer_helper();
                 
                 PrinterJob job = PrinterJob.getPrinterJob();
@@ -775,7 +779,7 @@ public class inventoryMngt extends javax.swing.JFrame {
             }else if("Exit".equals(e.getActionCommand())){
                 System.exit(0);
             }else if("Search".equals(e.getActionCommand())){
-                new posi.sys.all.inv.Search(){
+                new posi.sys.search.Search(){
                     @Override
                     public void setVisible(boolean b) {
                         if( b == false){
@@ -811,14 +815,39 @@ public class inventoryMngt extends javax.swing.JFrame {
             } else if("Applications".equals(e.getActionCommand())){
                 new posi.sys.expeditors.application.applications().setVisible(true);
             } else if("Settings".equals(e.getActionCommand())){
-                new posi.sys.all.inv.Settings().setVisible(true);
+                posi.sys.admin.admin admin = new posi.sys.admin.admin();
+                admin.settings();
+                admin.setVisible( true );
+            } else if("userManagement".equals(e.getActionCommand())){//userManagement
+                posi.sys.admin.admin admin = new posi.sys.admin.admin();
+                admin.user_management();
+                admin.setVisible( true );
             }  else if("Security".equals(e.getActionCommand())){
-                new posi.sys.all.inv.Security().setVisible(true);
+                posi.sys.admin.admin admin = new posi.sys.admin.admin();
+                admin.security();
+                admin.setVisible( true );
             }  else if("Warehouse".equals(e.getActionCommand())){
                 new posi.sys.all.inv.Warehouse().setVisible(true);
             }else if("pos".equals(e.getActionCommand())){
                 new posi.sys.all.pos.POS().setVisible(true);
-            } 
+            }else if("Customer".equals(e.getActionCommand())){
+                new posi.sys.search.SearchPersons("cust"){                    
+                    @Override
+                    public void setVisible(boolean b) {
+                        if( b == false){
+                             new posi.sys.customer.Customer( get_index() ).setVisible(true);
+                        }else {
+                            super.setVisible(b);
+                        }
+                    }
+                    
+                    @Override
+                    public void setTitle(String title){
+                        super.setTitle("Search customers");
+                    }
+                }.setVisible(true);
+                
+            }              
         }        
     }// 
     

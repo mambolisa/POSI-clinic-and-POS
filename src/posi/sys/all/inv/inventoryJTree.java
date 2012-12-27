@@ -106,27 +106,27 @@ public class inventoryJTree{
                 if("Recently removed".equals(node.toString())){
                     c = (java.awt.Component)new javax.swing.JButton("Recently removed");
                 }else if("Recently updated".equals(node.toString())){
-                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                    //javax.swing.JScrollPane scrollpane = new invTables().tableScrollPane();
                     //c = (java.awt.Component)scrollpane;
                     c = (java.awt.Component)new javax.swing.JButton("Recently updated");
                 }else if("Recently added".equals(node.toString())){
-                   // javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                   // javax.swing.JScrollPane scrollpane = new invTables().tableScrollPane();
                    // c = (java.awt.Component)scrollpane;
                     c = (java.awt.Component)new javax.swing.JButton("Recently added");
                 }else if("Show by category".equals(node.toString())){
-                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                    //javax.swing.JScrollPane scrollpane = new invTables().tableScrollPane();
                    // c = (java.awt.Component)scrollpane;
                     c = (java.awt.Component)new javax.swing.JButton("Cat");
                 }else if("Show by expiry".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable(data, columnNames).tableScrollPane();
+                    javax.swing.JScrollPane scrollpane = new invTables(data, columnNames).tableScrollPane();
                     c = (java.awt.Component)scrollpane;
                    // c = (java.awt.Component)new javax.swing.JButton("Cat");
                 }else if("Show by reorder".equals(node.toString())){
-                    javax.swing.JScrollPane scrollpane = new inventoryTable(data,columnNames).tableScrollPane();
+                    javax.swing.JScrollPane scrollpane = new invTables(data,columnNames).tableScrollPane();
                     c = (java.awt.Component)scrollpane;
                    // c = (java.awt.Component)new javax.swing.JButton("Cat");
                 }else if("Show all".equals(node.toString())){
-                    //javax.swing.JScrollPane scrollpane = new inventoryTable().tableScrollPane();
+                    //javax.swing.JScrollPane scrollpane = new invTables().tableScrollPane();
                     //c = (java.awt.Component)scrollpane;
                     c = (java.awt.Component)new javax.swing.JButton("All");
                 }

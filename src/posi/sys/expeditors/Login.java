@@ -4,6 +4,8 @@
  */
 package posi.sys.expeditors;
 
+import posi.sys.all.expeditors.database.db_connect;
+
 /**
  *
  * @author Aquarius
@@ -15,16 +17,16 @@ public class Login extends posi.sys.expeditors.popup{
     private javax.swing.JPasswordField passfield;
     private javax.swing.JButton button1, button2;
     private javax.swing.JComboBox combo;
-            
+     
+    private db_connect db = new db_connect();
     public Login(){
-        super(new java.awt.Dimension(400, 400), "Login form");                
+        super(new java.awt.Dimension(600, 400), "Login form");                
         initComponents();
         
         setVisible(true);
     }
     
     private void initComponents() {
-
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -46,7 +48,7 @@ public class Login extends posi.sys.expeditors.popup{
         jLabel3.setFont(new java.awt.Font("Palatino Linotype", 0, 14)); // NOI18N
         jLabel3.setText("User type");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel( db.getColData("SELECT employee_role_name FROM employee_roles;")));
 
         jButton2.setText("Login");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -58,7 +60,7 @@ public class Login extends posi.sys.expeditors.popup{
         jButton1.setText("Cancel");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                
+                setVisible(false);
             }
         });
 

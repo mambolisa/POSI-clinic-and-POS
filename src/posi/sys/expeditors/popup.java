@@ -73,4 +73,11 @@ public class popup extends javax.swing.JDialog {
         
         this.setIconImage(sundry.createImageIcon("images/Globe.gif", new java.awt.Dimension(20,20)).getImage());
     }
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        dispose();
+    }
+    
 }

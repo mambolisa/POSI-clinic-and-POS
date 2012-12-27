@@ -11,20 +11,34 @@ package posi.sys.all.inv;
  * 
  */
 
-public class inventoryTable extends javax.swing.JTable{
+public class invTables extends javax.swing.JTable{
     private static javax.swing.JScrollPane scrollPane;
     private posi.sys.all.inv.ManageTabs r = new posi.sys.all.inv.ManageTabs();
 
-    private inventoryTable(){
+    private javax.swing.JTable table = this;
+    
+    private posi.sys.all.expeditors.database.db_connect db = new posi.sys.all.expeditors.database.db_connect();
+     
+    private invTables(){
  
     }
     
-    public inventoryTable(java.util.Vector data, java.util.Vector columnNames){
+    public void create(String sql, String [] columnNames){
+        Object [][] data = db.getData(sql);
+        table = new javax.swing.JTable(data, columnNames);
+        setTable();
+    }
+    
+    public void refresh(){
+        
+    }
+    
+    public invTables(java.util.Vector data, java.util.Vector columnNames){
         super(data, columnNames); 
         setTable();
     }
     
-    public inventoryTable(Object [][] data, String [] columnNames){
+    public invTables(Object [][] data, String [] columnNames){
         super(data, columnNames);        
         setTable();
     }
@@ -32,7 +46,7 @@ public class inventoryTable extends javax.swing.JTable{
     private void setTable(){
         setFillsViewportHeight(true);
         setAutoCreateRowSorter(true);
-        setRowHeight(25);
+        setRowHeight(28);
         setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     }
     

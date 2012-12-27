@@ -62,6 +62,25 @@ public class db_connect{
 		return rs;
 	}
         
+        public Object[] getColData(String sql){
+            java.util.List list = new java.util.ArrayList();
+            Object [] data = null;
+            try {
+                s=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+                rs=s.executeQuery(sql);
+                
+                while(rs.next()){
+                    list.add((rs.getObject(1) != null )? rs.getObject(1) : " " );
+                }
+                
+                data = (Object[]) list.toArray(new Object[list.size()]);
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(db_connect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        return data;             
+        }
         public Object[][] getData(String sql){
             java.util.List<Object[]> list = new java.util.ArrayList<Object[]>();
             Object [][] data = null;

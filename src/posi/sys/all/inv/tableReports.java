@@ -15,7 +15,7 @@ import posi.sys.expeditors.utilityFunctions;
 public class tableReports {
     private static db_connect db;
     private Object[][] data;
-    private inventoryTable inv;
+    private invTables inv;
     
     public javax.swing.JScrollPane InvAll(){
         db = new db_connect();
@@ -24,7 +24,7 @@ public class tableReports {
      
         final String [] columnNames = {"Item Id","Item code","Item name","Description","Item price","Item qty"};
          
-        inv = new inventoryTable(data,columnNames);
+        inv = new invTables(data,columnNames);
         inv.getTableHeader().setReorderingAllowed(false);
         inv.getTableHeader().setResizingAllowed(false);
         

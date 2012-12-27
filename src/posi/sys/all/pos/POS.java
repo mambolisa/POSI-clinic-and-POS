@@ -10,12 +10,11 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import posi.sys.all.expeditors.database.db_connect;
-import posi.sys.all.inv.inventoryTable;
+import posi.sys.all.inv.invTables;
 import posi.sys.expeditors.utilityFunctions;
 import posi.sys.expeditors.sundry;
 
@@ -36,7 +35,7 @@ public class POS extends posi.sys.expeditors.popup {
     private static javax.swing.JTextField textfield;
     private javax.swing.JLabel label,labelTime;
     
-    private static inventoryTable inv;
+    private static invTables inv;
    
     private static int default_num_rows = 15;
     
@@ -115,13 +114,13 @@ public class POS extends posi.sys.expeditors.popup {
         toolBar = new javax.swing.JToolBar();
         addToolbarContent_2(toolBar);        
         toolBar.setFloatable(false);
-        toolBar.setPreferredSize(new java.awt.Dimension(200, 40));
+        toolBar.setPreferredSize(new java.awt.Dimension(595, 40));
         panel.add(toolBar); 
         
-        toolBar = new javax.swing.JToolBar();
+        //toolBar = new javax.swing.JToolBar();
         addToolbarContent_3(toolBar);        
-        toolBar.setFloatable(false);
-        toolBar.setPreferredSize(new java.awt.Dimension(395, 40));
+        //toolBar.setFloatable(false);
+        //toolBar.setPreferredSize(new java.awt.Dimension(395, 40));
         panel.add(toolBar); 
         
         add(panel,BorderLayout.PAGE_START);
@@ -198,19 +197,19 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         }).start();        
         
         
-        labelTime.setPreferredSize(new java.awt.Dimension(150, 40));
+        labelTime.setPreferredSize(new java.awt.Dimension(200, 40));
         labelTime.setForeground(Color.black);
         labelTime.setText( dshow );
         toolbar.add(labelTime); 
         
         label = new javax.swing.JLabel();
-        label.setPreferredSize(new java.awt.Dimension(140, 40));
+        label.setPreferredSize(new java.awt.Dimension(220, 40));
         label.setText( "User: "+"Administrator");
         label.setForeground(Color.darkGray);
         toolbar.add(label); 
         
         label = new javax.swing.JLabel();
-        label.setPreferredSize(new java.awt.Dimension(140, 40));
+        label.setPreferredSize(new java.awt.Dimension(200, 40));
         label.setText( "Session: " + 1);
         label.setForeground(Color.BLUE);
         toolbar.add(label); 
@@ -304,7 +303,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         columnNames.addElement("Discount");
         columnNames.addElement("Total");
         
-        inv = new inventoryTable(data,columnNames){
+        inv = new invTables(data,columnNames){
             @Override
             public void setAutoCreateRowSorter(boolean autoCreateRowSorter) {
                 super.setAutoCreateRowSorter(false);
@@ -411,10 +410,12 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
     class Action implements java.awt.event.ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            if("scroll_left".equals( e.getActionCommand())){                
-                POS_scroll_items.scrollItems(panel2);
+            if("scroll_left".equals( e.getActionCommand())){ 
+                String prev = "prev";
+                POS_scroll_items.scrollItems(panel2, prev);
             }else if("scroll_right".equals( e.getActionCommand())){
-                POS_scroll_items.scrollItems(panel2);
+                String next = "next";
+                POS_scroll_items.scrollItems(panel2, next);
             }else if("scroll_left".equals( e.getActionCommand())){
                 
             }else if("close".equals( e.getActionCommand())){
@@ -423,7 +424,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
                 dispose();
                  new POS().setVisible(true);
             }else if("search_item".equals( e.getActionCommand())){
-                new posi.sys.all.inv.Search(){
+                new posi.sys.search.Search(){
                     @Override
                     public void setVisible(boolean b) {
                         if( b == false){
@@ -438,7 +439,28 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
             }else if("item_catalogue".equals( e.getActionCommand())){
                 
             }else if("Customer".equals( e.getActionCommand())){
-                
+                new posi.sys.search.SearchPersons("cust"){ 
+                    @Override
+                    public void hide_cust_add(){
+                        super.hide_cust_add();
+                    }
+                    
+                    @Override
+                    public void setVisible(boolean b) {
+                        if( b == false){
+                             cust_index = get_index();
+                             super.setVisible( true );
+                        }else {
+                            super.setVisible( true );
+                        }
+                    }
+                    
+                    @Override
+                    public void setTitle(String title){
+                        super.setTitle("Search customers");
+                    }
+                    
+                }.setVisible(true);
             }else if("Go".equals( e.getActionCommand())){
                 addRowItem(textfield.getText());
             }
@@ -602,6 +624,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         }
         return availRow;
     }
+    
     public static Object[] getItemQty(String item){
         String sql = "SELECT item_qty,item_min_qty FROM items WHERE item_default_bar_code = '"+item+"';";
         Object [][] row = db.getData(sql);
@@ -628,5 +651,5 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
     private javax.swing.JScrollPane scrollpane;
     private  java.text.SimpleDateFormat date;
     java.util.Date dt;
-    String dshow;
+    String dshow, cust_index;
 }
