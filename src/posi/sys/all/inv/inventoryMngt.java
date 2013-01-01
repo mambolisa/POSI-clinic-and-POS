@@ -42,6 +42,9 @@ public class inventoryMngt extends javax.swing.JFrame {
     private posi.sys.all.expeditors.database.db_connect db = null;
     
     private javax.swing.table.TableRowSorter<javax.swing.table.TableModel> sorter;
+    
+    private static String [] user_info;
+    
     public inventoryMngt(){ //System,Metal, Motif, GTK
         new posi.sys.expeditors.LooknFeel("Metal");
         
@@ -366,6 +369,12 @@ public class inventoryMngt extends javax.swing.JFrame {
         menubar.add(menu);
         
         logout = new javax.swing.JMenu("Go away");
+        menuitem = new javax.swing.JMenuItem("Lock",sundry.createImageIcon("images/Lock.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_9,ActionEvent.SHIFT_MASK| ActionEvent.CTRL_MASK));
+        menuitem.setActionCommand("Lock"); 
+        menuitem.addActionListener(new Action());
+        logout.add(menuitem);
+        
         menuitem = new javax.swing.JMenuItem("Logout",sundry.createImageIcon("images/Go out.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_L,ActionEvent.SHIFT_MASK| ActionEvent.CTRL_MASK));
         menuitem.setActionCommand("Logout"); 
@@ -617,11 +626,11 @@ public class inventoryMngt extends javax.swing.JFrame {
         button.setToolTipText("Manage settings");
         toolbar.add(button);
 
-        button = new javax.swing.JButton(sundry.createImageIcon("images/Security.gif", new java.awt.Dimension(28, 28)));
-        button.setActionCommand("Security");
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Woman.gif", new java.awt.Dimension(28, 28)));
+        button.setActionCommand("userManagement");
         button.addActionListener(new Action());
         button.setContentAreaFilled(false);
-        button.setToolTipText("Manage security");
+        button.setToolTipText("Manage users");
         toolbar.add(button);
         
         toolbar.addSeparator();
@@ -692,6 +701,14 @@ public class inventoryMngt extends javax.swing.JFrame {
         this.setLocation((screen.width - getWidth())/2,((screen.height-getHeight())/2));
         
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    }
+    
+    public static void set_user_info(String [] info){
+        user_info = info;
+    }
+    
+    public static String[] get_user_info(){
+        return user_info;
     }
     
     class itemListen implements java.awt.event.ItemListener{
@@ -789,9 +806,9 @@ public class inventoryMngt extends javax.swing.JFrame {
                     }
                 }.setVisible(true);
             } else if("Logout".equals(e.getActionCommand())){
-                new posi.sys.expeditors.Login();
+                new posi.sys.all.inv.Logout().re_login();
             } else if("warehouse".equals(e.getActionCommand())){
-                new posi.sys.expeditors.Login();
+                //new posi.sys.all.inv.Login();
             } else if("InvAllV".equals(e.getActionCommand())){
                 tabbedPane.addTabs("Inventory list", inv.InvAll(),"Close inventory");
                 
@@ -847,7 +864,30 @@ public class inventoryMngt extends javax.swing.JFrame {
                     }
                 }.setVisible(true);
                 
-            }              
+            } else if ("Clock".equals(e.getActionCommand()))  {
+                new posi.sys.expeditors.application.Clock().setVisible(true);
+            } else if ("Supplier".equals(e.getActionCommand()))  {
+                new posi.sys.search.SearchPersons("Supplier"){                    
+                    @Override
+                    public void setVisible(boolean b) {
+                        if( b == false){
+                             new posi.sys.supplier.Supplier( get_index() ).setVisible(true);
+                        }else {
+                            super.setVisible(b);
+                        }
+                    }
+                    
+                    @Override
+                    public void setTitle(String title){
+                        super.setTitle("Search supplier");
+                    }
+                }.setVisible(true);
+            }else if ( "Lock".equals(e.getActionCommand())){
+                
+            
+            }else if ( "normalpur".equals(e.getActionCommand())){
+                new posi.sys.all.inv.purchases.default_purchase().setVisible( true );
+            }
         }        
     }// 
     

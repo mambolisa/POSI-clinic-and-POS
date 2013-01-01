@@ -121,7 +121,7 @@ public class Warehouse extends posi.sys.expeditors.popup {
         panel.add(panel_1);
         
         
-        panel_1 = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER));
+       /* panel_1 = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER));
         panel_1.setPreferredSize(new java.awt.Dimension(80, 75));
         panel_1.setBackground(Color.white);
         label = new javax.swing.JLabel("Settings");
@@ -137,7 +137,8 @@ public class Warehouse extends posi.sys.expeditors.popup {
                 splitpane.setDividerLocation(80);
             }
         });
-        panel_1.add(button);
+        //panel_1.add(button);
+        */
         panel_1.add(label);
         
         panel.add(panel_1);

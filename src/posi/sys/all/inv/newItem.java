@@ -118,9 +118,9 @@ public class newItem extends posi.sys.expeditors.popup {
         ColorText.setText(""+rs.getString(17));
         MakeText.setText(""+rs.getString(16));
 
-        if(!"".equals(rs.getInt(15)) && !" ".equals(rs.getInt(15)) && QualityComboBox.getItemCount() > 0 ) {
-            QualityComboBox.setSelectedIndex(rs.getInt(15));
-        }
+   //    if(!"".equals(rs.getInt(15)) && !" ".equals(rs.getInt(15)) && QualityComboBox.getItemCount() > 0 ) {
+      //      QualityComboBox.setSelectedIndex(rs.getInt(15));
+    //    }
 
         if(!"".equals(rs.getInt(11)) && !" ".equals(rs.getInt(11)) && itemConversionCombo.getItemCount() > 0 ) {
             itemConversionCombo.setSelectedIndex(rs.getInt(11));

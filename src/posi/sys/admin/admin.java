@@ -18,7 +18,7 @@ public class admin extends posi.sys.expeditors.popup{
     javax.swing.JLabel label;
     
     public admin(){
-        super(new java.awt.Dimension(790,570),"Warehouse");
+        super(new java.awt.Dimension(850,570),"Warehouse");
         panel = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         panel.setBackground(java.awt.Color.white);
         panel1 = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
@@ -29,16 +29,19 @@ public class admin extends posi.sys.expeditors.popup{
         add_content();
     }
     
-    public void user_management(){
+    public static void user_management(){
         splitpane.setRightComponent(user_management.user_management());
         splitpane.setDividerLocation(80);        
     }
     
     public void security(){
-        splitpane.setRightComponent(security.security());
-        splitpane.setDividerLocation(80);        
+                
     }
     
+    public static void change_right_pane(javax.swing.JComponent comp){
+        splitpane.setRightComponent(comp);
+        splitpane.setDividerLocation(80);
+    }
     public void settings(){
         splitpane.setRightComponent(tool.tool());
         splitpane.setDividerLocation(80);        
@@ -56,7 +59,6 @@ public class admin extends posi.sys.expeditors.popup{
         splitpane.setDividerLocation(80);
     }
 
-   
     private void top_buttons(){
         panel_1 = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER));
         panel_1.setPreferredSize(new java.awt.Dimension(80, 75));

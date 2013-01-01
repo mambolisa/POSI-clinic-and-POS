@@ -25,7 +25,7 @@ public class SearchPersons extends posi.sys.expeditors.popup{
     
     public javax.swing.JButton add_cust;
     
-    private posi.sys.all.expeditors.database.db_connect db;
+    private db_connect db;
     
     private String search_type = "";
     private invTables inv;
@@ -121,12 +121,12 @@ public class SearchPersons extends posi.sys.expeditors.popup{
         db = new db_connect();
         String sql = "";
         String [] columnNames = null;
-        if( "cust".equals(search_type) ) {
+        if( "cust".equals(search_type.toLowerCase()) ) {
             sql = "SELECT customer_id, customer_fname,customer_lname, customer_idnum, customer_status_name FROM customers,customer_status WHERE customer_status_id=customer_status;";
             columnNames = new String[]{"Customer Num","First name","Last name","ID Num","Status"};            
-        }else if( "supplier".equals(search_type) ){
-            sql = "SELECT item_id, item_default_bar_code,item_name, item_description,item_default_price,item_qty FROM items, item_status WHERE item_status = item_status_id ";
-            columnNames = new String[]{"Item Num","Item code","Item name","Description","Item price","Item qty"};              
+        }else if( "supplier".equals(search_type.toLowerCase()) ){
+            sql = "SELECT item_supp_id,item_supp_name,item_supp_location, supplier_fax, supplier_phone_num FROM item_supplier ";
+            columnNames = new String[]{"Supplier ID","Supplier name","Supplier location", "Fax", "Phone number"};              
         }
         
         data = db.getData(sql);

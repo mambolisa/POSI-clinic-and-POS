@@ -2,9 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package posi.sys.expeditors;
+package posi.sys.all.inv;
 
+import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import posi.sys.admin.user_mng_en;
 import posi.sys.all.expeditors.database.db_connect;
+import posi.sys.expeditors.audit_trails_actions;
 
 /**
  *
@@ -18,9 +25,20 @@ public class Login extends posi.sys.expeditors.popup{
     private javax.swing.JButton button1, button2;
     private javax.swing.JComboBox combo;
      
-    private db_connect db = new db_connect();
-    public Login(){
+    private static db_connect db = new db_connect();
+    
+    private String error;
+    
+    private String [] user_info = new String[6];
+    
+    private int action; // 1 lock, 2 entry
+    
+    
+    public Login(int action){        
         super(new java.awt.Dimension(600, 400), "Login form");                
+        
+        this.action = action;
+        
         initComponents();
         
         setVisible(true);
@@ -50,10 +68,25 @@ public class Login extends posi.sys.expeditors.popup{
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel( db.getColData("SELECT employee_role_name FROM employee_roles;")));
 
+        jPasswordField1.addKeyListener(new java.awt.event.KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) { }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if ( e.getKeyCode() == 10){
+                    check_login();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) { }
+        });
         jButton2.setText("Login");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                
+                check_login();
             }
         });
         
@@ -137,8 +170,86 @@ public class Login extends posi.sys.expeditors.popup{
         pack();
     }// </editor-fold>
     
+    public void check_login(){
+        if( !login() ){
+            javax.swing.JOptionPane.showMessageDialog(null, error, "Login error!", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }else{
+            switch(action){
+               case 1: //lock
+                 inventoryMngt.set_user_info(user_info);
+                 setVisible( false );
+               break;
+               case 2: // entry                            
+                  setVisible ( true );
+                  inventoryMngt inv = new inventoryMngt(){
+                                
+                  };
+                  inv.set_user_info(user_info);
+                  inv.display("POSI Management system");
+                break;
+             }
+        }
+            
+    }
+    public boolean login(){
+        String sql = ""
+                + "SELECT "
+                + "employee_id,employee_fname,employee_lname,employee_idnum,employee_password,employee_role_id "
+                + "FROM employees "
+                + "WHERE "
+                + "employee_fname = '"+jTextField1.getText()+"' "
+                + "AND employee_password='"+jPasswordField1.getText()+"' "
+                + "AND employee_role_id = '"+ (jComboBox1.getSelectedIndex() + 1)+"';";
+        System.out.println(sql);
+        ResultSet rs = db.Query(sql);
+        boolean isLogedin= false;
+        int count = 0;
+        try {
+            while ( rs.next() ){
+                user_info[0] = rs.getString(1);//emp id
+                user_info[1] = rs.getString(2);// emp fname
+                user_info[2] = rs.getString(3);//emp lname
+                user_info[3] = rs.getString(4);//emp idnum
+                user_info[4] = rs.getString(5);//emp pass
+                user_info[5] = rs.getString(6);//emp role
+                count++;
+            }
+            
+            if ( count == 1 ){
+                isLogedin = true;
+                audit_trails(user_info[0],audit_trails_actions.LOGIN,sql);
+            }else if ( count > 1 ){
+                error = "You are not allowed to have more than one account, please consult admin";
+                isLogedin = false;
+            }else if ( count < 1 ){
+                isLogedin = false;
+                error = "Wrong username or passowrd";
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    return isLogedin;
+    }
+    
+    public static void audit_trails(String user_id, String action, String sql_stmnt){
+        java.text.SimpleDateFormat date = new java.text.SimpleDateFormat("k:m:s");
+        java.util.Date dt = new java.util.Date();
+        String dshow = date.format(dt);
+                
+        String sql = ""
+                + "INSERT INTO audit_trails "
+                + "(audit_trail_user_id,audit_trail_time_in,audit_trail_time_out,audit_trail_action,audit_trail_sql)"
+                + "VALUES('"+user_id+"','" + dshow + "','"+ dshow +"', '"+ action +"','');";
+        
+        System.out.println(sql);
+        
+        if( !db.addNew( sql ) ) {
+            //throw 
+        }
+    }
+    
     public static void main(String args[]){
-        new Login();
+        new Login(2);
     }
     
     private javax.swing.JButton jButton1;

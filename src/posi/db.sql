@@ -88,12 +88,27 @@ CREATE  TABLE IF NOT EXISTS `posi`.`employees` (
   `employee_date_enrolled` VARCHAR(254) NULL,
   `employee_rank` VARCHAR(254) NULL ,
   `employee_salary` VARCHAR(254) NULL,
-  `employee_role_id` INT(11) NOT NULL ,
+  `employee_password` VARCHAR(254),
+  `employee_role_id` INT(11) NOT NULL  
   PRIMARY KEY (`employee_id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
--- 
+-- -----------------------------------------------------
+-- Table `posi`.`audit_trails`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `posi`.`audit_trails` (
+  `audit_trail_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `audit_trail_user_id` INT(11) NOT NULL  ,
+  `audit_trail_time_in` VARCHAR(254) NULL DEFAULT NULL ,
+  `audit_trail_time_out` VARCHAR(254) NULL DEFAULT NULL ,
+  `audit_trail_action` VARCHAR(254) NULL DEFAULT NULL ,
+  `audit_trail_sql` TEXT  
+ )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
 -- -----------------------------------------------------
 -- Table `posi`.`item_conversions`
 -- -----------------------------------------------------
@@ -175,6 +190,20 @@ CREATE  TABLE IF NOT EXISTS `posi`.`item_supplier` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
+-- -----------------------------------------------------
+-- Table `posi`.`item_supplier_agent`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `posi`.`item_supplier_agent` (
+  `item_supplier_agent_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `item_supplier_id` INT(11) NOT NULL,
+  `item_supplier_agent_fname` VARCHAR(254) NULL DEFAULT NULL ,
+  `item_supplier_agent_mname` VARCHAR(254) NULL DEFAULT NULL ,
+  `item_supplier_agent_lname` VARCHAR(254) NULL DEFAULT NULL ,
+  `item_supplier_agent_nationalid` INT(11),
+  `item_supplier_agent_role` INT(11),
+  PRIMARY KEY (`item_supplier_agent_id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 -- -----------------------------------------------------
 -- Table `posi`.`items`

@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import posi.sys.all.expeditors.database.db_connect;
 import posi.sys.all.inv.invTables;
+import posi.sys.all.inv.inventoryMngt;
 import posi.sys.expeditors.utilityFunctions;
 import posi.sys.expeditors.sundry;
 
@@ -46,7 +47,7 @@ public class POS extends posi.sys.expeditors.popup {
     
     private boolean sellAll = false;
     public POS(){
-        super(new java.awt.Dimension(970,675),"Point of sale");
+        super(new java.awt.Dimension(990,675),"Point of sale");
          //System,Metal, Motif, GTK
         new posi.sys.expeditors.LooknFeel("Metal");
         
@@ -54,15 +55,21 @@ public class POS extends posi.sys.expeditors.popup {
         
         menu = new javax.swing.JMenu("Actions");
         
-        menuitem = new javax.swing.JMenuItem("New Sales ");
+        menuitem = new javax.swing.JMenuItem("New Sales ", sundry.createImageIcon("images/Document new.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_N, ActionEvent.CTRL_MASK ));
         menuitem.setActionCommand("new_sales");
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
         
-        menuitem = new javax.swing.JMenuItem("Search Item");
+        menuitem = new javax.swing.JMenuItem("Search Item", sundry.createImageIcon("images/Search.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_S, ActionEvent.CTRL_MASK ));
         menuitem.setActionCommand("search_item"); 
+        menuitem.addActionListener(new Action());
+        menu.add(menuitem);
+        
+        menuitem = new javax.swing.JMenuItem("Complete sale", sundry.createImageIcon("images/Cart.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_Q, ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("Sell"); 
         menuitem.addActionListener(new Action());
         menu.add(menuitem);
         
@@ -114,7 +121,7 @@ public class POS extends posi.sys.expeditors.popup {
         toolBar = new javax.swing.JToolBar();
         addToolbarContent_2(toolBar);        
         toolBar.setFloatable(false);
-        toolBar.setPreferredSize(new java.awt.Dimension(595, 40));
+        toolBar.setPreferredSize(new java.awt.Dimension(getWidth() - 350 - 20, 40));
         panel.add(toolBar); 
         
         //toolBar = new javax.swing.JToolBar();
@@ -181,6 +188,13 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         button.addActionListener( new Action());
 	button.setContentAreaFilled(false);
         toolbar.add(button);
+        
+        button = new javax.swing.JButton(sundry.createImageIcon("images/Cart.gif", new java.awt.Dimension(34, 32)));
+        button.setPreferredSize( new java.awt.Dimension(34, 32));        
+        button.setActionCommand("Sell");
+        button.addActionListener( new Action());
+	button.setContentAreaFilled(false);
+        toolbar.add(button);
    }    
     
     private void addToolbarContent_3(javax.swing.JToolBar toolbar){        
@@ -204,7 +218,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         
         label = new javax.swing.JLabel();
         label.setPreferredSize(new java.awt.Dimension(220, 40));
-        label.setText( "User: "+"Administrator");
+        label.setText( "User: "+ inventoryMngt.get_user_info()[1]);
         label.setForeground(Color.darkGray);
         toolbar.add(label); 
         
@@ -463,6 +477,19 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
                 }.setVisible(true);
             }else if("Go".equals( e.getActionCommand())){
                 addRowItem(textfield.getText());
+            }else if("Sell".equals( e.getActionCommand())){
+                //info -> amount,disc,qty,invoice_id,user_rep, session, time
+                //buttonQty,buttonTotal,buttonDisc
+                Object [] obj = new Object[]{
+                                                buttonTotal.getText(),//total
+                                                buttonDisc.getText(), //disc
+                                                buttonQty.getText(), // qty
+                                                "",//invoice_id
+                                                "",//user_rep
+                                                "",//session
+                                                dshow,//time
+                                            };
+                new PosSale( obj ).setVisible(true);
             }
             
         }
@@ -572,23 +599,6 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         buttonQty.setText(""+qtyAll);
         buttonDisc.setText(""+round2Decimal(discAll));
         buttonTotal.setText(""+round2Decimal(totalAll));
-    }
-    
-    private void scrollItem(int start){        
-        String sql = "SELECT ";
-        
-    }
-    
-    private void commitSales(){
-        
-    }
-    
-    private void printReciept(){
-        
-    }
-    
-    private void showQRCode(){
-        
     }
     
     private static double round2Decimal(double num){

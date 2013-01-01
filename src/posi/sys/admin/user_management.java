@@ -24,9 +24,11 @@ public class user_management {
     
     private static Object[][] data;
     
-    private static String index, item_bar_code;
+    private static String index;
     
-    private static javax.swing.JLabel label_list;
+    private static javax.swing.JLabel label_list, label;
+    
+    private static javax.swing.JComboBox combo;
     
     public static javax.swing.JPanel user_management(){
         panel_main = new javax.swing.JPanel();
@@ -40,13 +42,35 @@ public class user_management {
         label_list = new javax.swing.JLabel();
         label_list.setFont ( new java.awt.Font ( java.awt.Font.DIALOG_INPUT, java.awt.Font.BOLD, 24 ) );
         label_list.setText("User management");
-        label_list.setPreferredSize(new java.awt.Dimension(600,37));
+        label_list.setPreferredSize(new java.awt.Dimension(350,37));
         
         panel_top = new javax.swing.JPanel( new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-        panel_top.setPreferredSize(new java.awt.Dimension(780,37));
+        panel_top.setPreferredSize(new java.awt.Dimension(850,37));
         
         panel_btn = new javax.swing.JPanel( new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT) );
-        panel_btn.setPreferredSize(new java.awt.Dimension(150,37));
+        panel_btn.setPreferredSize(new java.awt.Dimension(490,37));
+        
+        label = new javax.swing.JLabel("User controls");
+        //label.setPreferredSize(new java.awt.Dimension(150,37));
+        panel_btn.add(label);
+        
+        combo = new javax.swing.JComboBox(new String[]{"-- Selection --","User priveledges","User reports","Audit trails"});
+        //combo.setPreferredSize(new java.awt.Dimension(400,37));
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                javax.swing.JComboBox cbox = (javax.swing.JComboBox) e.getSource();
+                if ( cbox.getSelectedIndex() == 1 ){
+                    new user_priv().setVisible(true);
+                }else if ( cbox.getSelectedIndex() == 2 ){
+                    
+                }else if ( cbox.getSelectedIndex() == 3 ){
+                    new auditTrails().setVisible(true);
+                }
+            }
+        });       
+        panel_btn.add(combo);
+        
         button = new javax.swing.JButton("Add user");
         button.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -57,7 +81,6 @@ public class user_management {
             }
         });
         panel_btn.add(button);
-        
         panel_top.add( label_list  );
         panel_top.add( panel_btn );
         
@@ -92,19 +115,17 @@ public class user_management {
                 int rowNum = inv.table().rowAtPoint(p);  
                 
                 if( rowNum != -1){                    
-                    Object itemCode =  data[rowNum][0];
-                    Object itemBarCode = data[rowNum][1];
+                    Object code =  data[rowNum][0];
 
                     if (javax.swing.SwingUtilities.isLeftMouseButton(e)){                    
                         if(e.getClickCount() >= 2){
-                            index = itemCode.toString();
-                            item_bar_code = itemBarCode.toString();  
+                            index = code.toString();
                             new user_mng_en( index ){
 
                             }.setVisible(true);
                         }
                     }else if (javax.swing.SwingUtilities.isRightMouseButton(e)){
-                       javax.swing.JPopupMenu popup = new utilityFunctions().user_mng_popup(Integer.parseInt(itemCode.toString()));
+                       javax.swing.JPopupMenu popup = new utilityFunctions().user_mng_popup(Integer.parseInt(index.toString()));
 
                        popup.show(e.getComponent(), e.getX(), e.getY());
                    }
@@ -112,7 +133,7 @@ public class user_management {
            }
        });
         javax.swing.JScrollPane scrollpanel = inv.tableScrollPane();
-        scrollpanel.setPreferredSize(new java.awt.Dimension(780, 390));
+        scrollpanel.setPreferredSize(new java.awt.Dimension(840, 390));
         panel_center.add(scrollpanel);
         
         return panel_center;
