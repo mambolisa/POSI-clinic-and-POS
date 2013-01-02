@@ -9,14 +9,12 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.text.MessageFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable.PrintMode;
-import posi.sys.expeditors.audit_trails_actions;
 import posi.sys.expeditors.sundry;
 
 /**
@@ -35,7 +33,8 @@ public class inventoryMngt extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuitem;
     private javax.swing.JCheckBoxMenuItem checkBoxMenuItemNav, checkBoxMenuItemTrasaction, checkBoxMenuItemSysControl, checkBoxMenuItemIControl;
     ////
-    private javax.swing.JPanel topToolBarPanel;
+    private static javax.swing.JLabel username, session, role;
+    private javax.swing.JPanel topToolBarPanel,topToolBarPanelMain, right_top_panel;
     
     private javax.swing.JTextField textfield;
     
@@ -47,6 +46,7 @@ public class inventoryMngt extends javax.swing.JFrame {
     
     private static String [] user_info = new String[7];
     
+    private static String user = "   Username: ", sess = "    Session: ", role_t = "     Role: ";
     public inventoryMngt(){ //System,Metal, Motif, GTK
         new posi.sys.expeditors.LooknFeel("Metal");
         
@@ -423,8 +423,11 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         this.add(splitPane,BorderLayout.CENTER);
         
+        topToolBarPanelMain = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
+        //topToolBarPanelMain.setPreferredSize(new java.awt.Dimension(getWidth() - 10, 50));
         topToolBarPanel = new javax.swing.JPanel(new java.awt.FlowLayout(FlowLayout.LEFT));
-       // topToolBarPanel;
+        //topToolBarPanel.setPreferredSize(new java.awt.Dimension(getWidth() - 200, 50));
+        // topToolBarPanel;
         toolBarTop_1 = new javax.swing.JToolBar();
         this.addToolbarContentTop_1(toolBarTop_1);
         toolBarTop_1.setName("Item Control");
@@ -450,7 +453,28 @@ public class inventoryMngt extends javax.swing.JFrame {
         toolBarTop_4.setPreferredSize(new java.awt.Dimension(300, 40));
         topToolBarPanel.add(toolBarTop_4);
         
-        this.add(topToolBarPanel,BorderLayout.PAGE_START);
+        topToolBarPanelMain.add(topToolBarPanel);
+        
+        right_top_panel = new javax.swing.JPanel();
+        session = new javax.swing.JLabel(sess+user_info[6], javax.swing.SwingConstants.RIGHT);
+        session.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.BOLD, 14));
+        //session.setPreferredSize(new java.awt.Dimension(180, 45));
+        
+        username = new javax.swing.JLabel(user+user_info[5], javax.swing.SwingConstants.RIGHT);
+        username.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.BOLD, 14));
+        //username.setPreferredSize(new java.awt.Dimension(200, 45));
+        
+        role = new javax.swing.JLabel(role_t+user_info[6], javax.swing.SwingConstants.RIGHT);
+        role.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.BOLD, 14));
+        //role.setPreferredSize(new java.awt.Dimension(100, 45));
+        
+        right_top_panel.add(session);
+        right_top_panel.add(username);
+        right_top_panel.add(role);
+        
+        topToolBarPanelMain.add(right_top_panel);
+        
+        this.add(topToolBarPanelMain,BorderLayout.PAGE_START);
         
         toolBarLeft = new javax.swing.JToolBar(javax.swing.JToolBar.VERTICAL);
         toolBarLeft.setFloatable(false);
@@ -462,6 +486,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         //toolBarTop.setPreferredSize(new java.awt.Dimension(200, 30));
         this.add(toolBarBottom,BorderLayout.PAGE_END);        
         
+        addWindowListener(new windowAdapter());
        /* toolBarBottom = new javax.swing.JToolBar();
         this.addToolbarContentBottom_2(toolBarBottom);        
         toolBarTop.setPreferredSize(new java.awt.Dimension(200, 30));
@@ -486,6 +511,34 @@ public class inventoryMngt extends javax.swing.JFrame {
  */
     }
 
+    class windowAdapter extends java.awt.event.WindowAdapter{
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            int option = javax.swing.JOptionPane.showConfirmDialog(null, ""
+                         + "Are you sure you want to close application", 
+                         "System exit warning!", 
+                         javax.swing.JOptionPane.YES_NO_OPTION, 
+                         javax.swing.JOptionPane.QUESTION_MESSAGE);
+                 
+                 if (option == javax.swing.JOptionPane.YES_OPTION){
+                     //session loggoff
+                     Login.logout();
+                     javax.swing.JOptionPane.showMessageDialog(null, ""
+                             + "User session closed", 
+                             "System exit", 
+                             javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                     System.exit(0);
+                 }else if ( option == javax.swing.JOptionPane.NO_OPTION){
+                     
+                 }
+        }
+    }
+    public static void updateUserDisplay(){
+        session.setText(sess+""+user_info[7]);
+        username.setText(user+user_info[1]);
+        role.setText(role_t+user_info[6]);
+        
+    }
     public void setsplitPaneRightComponent(java.awt.Component c){
         splitPane.setRightComponent(c);
     }
@@ -722,16 +775,21 @@ public class inventoryMngt extends javax.swing.JFrame {
     public void display(String title){
         this.setSize(screen.width, screen.height);
         this.setVisible(true);
-        this.setTitle(title+ " Current user:" + user_info[1] +" Session: "+ user_info[6]);
+        this.setTitle(title);
         this.setLocation((screen.width - getWidth())/2,((screen.height-getHeight())/2));
         
-        this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
     }
     
     public static void set_user_info(String [] info){
         user_info = info;
     }
     
+    public static void show_info(){
+        for (int i = 0 ; i < user_info.length;i++){
+            System.out.println(user_info[i]);
+        }
+    }
     public static String[] get_user_info(){
         return user_info;
     }

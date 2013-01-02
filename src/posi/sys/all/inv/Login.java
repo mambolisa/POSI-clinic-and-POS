@@ -29,13 +29,13 @@ public class Login extends posi.sys.expeditors.popup{
     
     private String error;
     
-    private String [] user_info = new String[7];
+    private String [] user_info = new String[8];
     
     private int action; // 1 lock, 2 entry
     
-    private static java.text.SimpleDateFormat date = new java.text.SimpleDateFormat("k:m:s");
+    private static java.text.SimpleDateFormat date = new java.text.SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
     private static java.util.Date dt = new java.util.Date();
-    private static String dShow = date.format(dt);
+    private static String in = date.format(dt),out = date.format(dt);
  
     private javax.swing.GroupLayout layout;
     
@@ -44,7 +44,7 @@ public class Login extends posi.sys.expeditors.popup{
         
         this.action = action;
         
-        logout(user);
+        logout();
         
         initComponents();
         
@@ -194,8 +194,10 @@ public class Login extends posi.sys.expeditors.popup{
             switch(action){
                case 1: //lock
                  inventoryMngt.set_user_info(user_info);
+                 inventoryMngt.updateUserDisplay();
                  setVisible( false );
                  dispose();
+                 inventoryMngt.show_info();
                break;
                case 2: // entry                            
                   setVisible ( true );
@@ -203,6 +205,7 @@ public class Login extends posi.sys.expeditors.popup{
                                 
                   };
                   inv.set_user_info(user_info);
+                  inv.updateUserDisplay();
                   inv.display("POSI Management system");
                   dispose();
                 break;
@@ -213,12 +216,13 @@ public class Login extends posi.sys.expeditors.popup{
     public boolean login(){
         String sql = ""
                 + "SELECT "
-                + "employee_id,employee_fname,employee_lname,employee_idnum,employee_password,employee_role_id "
-                + "FROM employees "
-                + "WHERE "
-                + "employee_fname = '"+jTextField1.getText()+"' "
-                + "AND employee_password='"+jPasswordField1.getText()+"' "
-                + "AND employee_role_id = '"+ (jComboBox1.getSelectedIndex() + 1)+"';";
+                + " e.employee_id,e.employee_fname,e.employee_lname,e.employee_idnum,e.employee_password,e.employee_role_id, er.employee_role_name "
+                + " FROM employees as e, employee_roles as er "
+                + " WHERE "
+                + " e.employee_role_id = er.employee_role_id "
+                + " AND e.employee_fname = '"+jTextField1.getText()+"' "
+                + " AND e.employee_password='"+jPasswordField1.getText()+"' "
+                + " AND e.employee_role_id = '"+ (jComboBox1.getSelectedIndex() + 1)+"';";
        // System.out.println(sql);
         ResultSet rs = db.Query(sql);
         boolean isLogedin= false;
@@ -231,6 +235,7 @@ public class Login extends posi.sys.expeditors.popup{
                 user_info[3] = rs.getString(4);//emp idnum
                 user_info[4] = rs.getString(5);//emp pass
                 user_info[5] = rs.getString(6);//emp role
+                user_info[6] = rs.getString(7);//emp role name
                 
                 set_session();
                 count++;
@@ -253,22 +258,32 @@ public class Login extends posi.sys.expeditors.popup{
     }
     
     private void set_session(){
+        refresh_time();
         String sql = ""
                 + "INSERT INTO sessions "
                 + "(sessions_id,sessions_user_id,session_time_in,session_time_out)"
-                + "VALUES(NULL,'"+user_info[0]+"','"+dShow+"','')";
+                + "VALUES(NULL,'"+user_info[0]+"','"+in+"','')";
         if(db.addNew(sql)){
-            Object [] sess = db.getRow("SELECT sessions_id FROM sessions "
-                    + "WHERE "
-                    + "sessions_user_id = '"+user_info[0]+"'"
-                    + "AND session_time_in = '"+dShow+"'");
+            String sql_l = "SELECT sessions_id FROM sessions "
+                    + " WHERE "
+                    + " sessions_user_id = '"+user_info[0]+"' "
+                    + " AND session_time_in = '"+in+"' ";
+            Object [] sess = db.getRow( sql_l );
             
-            user_info[6] = sess[0].toString();
+            System.out.println(sql_l);
+            user_info[7] = sess[0].toString();
         }        
     }
     
-    private void logout_session(){
-        String sql =" UPDATE sessions SET session_time_out= '"+dShow+"' "
+    private static void refresh_time(){
+        date = new java.text.SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+        dt = new java.util.Date();
+        in = date.format(dt);
+        out = date.format(dt);
+    }
+    private static void logout_session(){
+        refresh_time();
+        String sql =" UPDATE sessions SET session_time_out= '"+out+"' "
                 + " WHERE "
                 + " sessions_user_id = '"+inventoryMngt.get_user_info()[0]+"' "
                 + " AND sessions_id='"+inventoryMngt.get_user_info()[6]+"' ";
@@ -279,11 +294,12 @@ public class Login extends posi.sys.expeditors.popup{
         
     }
     public static void audit_trails(String user_id, String action, String sql_stmnt){ 
-                
+        refresh_time(); 
+        
         String sql = ""
                 + "INSERT INTO audit_trails "
                 + "(audit_trail_user_id,audit_trail_time_in,audit_trail_time_out,audit_trail_action,audit_trail_sql)"
-                + "VALUES('"+user_id+"','" + dShow + "','"+ dShow +"', '"+ action +"','');";
+                + "VALUES('"+user_id+"','" + in + "','"+ out +"', '"+ action +"','');";
         
         System.out.println(sql);
         
@@ -292,8 +308,8 @@ public class Login extends posi.sys.expeditors.popup{
         }
     }
     
-    public void logout(String user){
-        audit_trails(user, audit_trails_actions.LOGOUT, null);
+    public static void logout(){
+        audit_trails(inventoryMngt.get_user_info()[1], audit_trails_actions.LOGOUT, null);
         
         logout_session();
     }
