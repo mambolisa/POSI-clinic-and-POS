@@ -286,10 +286,11 @@ public class Login extends posi.sys.expeditors.popup{
         String sql =" UPDATE sessions SET session_time_out= '"+out+"' "
                 + " WHERE "
                 + " sessions_user_id = '"+inventoryMngt.get_user_info()[0]+"' "
-                + " AND sessions_id='"+inventoryMngt.get_user_info()[6]+"' ";
+                + " AND sessions_id='"+inventoryMngt.get_user_info()[7]+"' ";
         
+        System.out.println("Error!"+sql);
         if(!db.Update(sql)){
-            System.out.println(sql);
+            System.out.println("Error!"+sql);
         }
         
     }
