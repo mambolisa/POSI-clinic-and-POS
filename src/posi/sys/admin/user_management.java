@@ -125,7 +125,7 @@ public class user_management {
                             }.setVisible(true);
                         }
                     }else if (javax.swing.SwingUtilities.isRightMouseButton(e)){
-                       javax.swing.JPopupMenu popup = new utilityFunctions().user_mng_popup(Integer.parseInt(index.toString()));
+                       javax.swing.JPopupMenu popup = new utilityFunctions().user_mng_popup(index);
 
                        popup.show(e.getComponent(), e.getX(), e.getY());
                    }

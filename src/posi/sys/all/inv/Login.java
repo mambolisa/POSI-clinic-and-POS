@@ -29,10 +29,27 @@ public class Login extends posi.sys.expeditors.popup{
     
     private String error;
     
-    private String [] user_info = new String[6];
+    private String [] user_info = new String[7];
     
     private int action; // 1 lock, 2 entry
     
+    private static java.text.SimpleDateFormat date = new java.text.SimpleDateFormat("k:m:s");
+    private static java.util.Date dt = new java.util.Date();
+    private static String dShow = date.format(dt);
+ 
+    private javax.swing.GroupLayout layout;
+    
+    public Login(int action, String user){
+        super(new java.awt.Dimension(600, 400), "Login form");                
+        
+        this.action = action;
+        
+        logout(user);
+        
+        initComponents();
+        
+        setVisible(true);
+    }
     
     public Login(int action){        
         super(new java.awt.Dimension(600, 400), "Login form");                
@@ -150,7 +167,7 @@ public class Login extends posi.sys.expeditors.popup{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,6 +195,7 @@ public class Login extends posi.sys.expeditors.popup{
                case 1: //lock
                  inventoryMngt.set_user_info(user_info);
                  setVisible( false );
+                 dispose();
                break;
                case 2: // entry                            
                   setVisible ( true );
@@ -186,6 +204,7 @@ public class Login extends posi.sys.expeditors.popup{
                   };
                   inv.set_user_info(user_info);
                   inv.display("POSI Management system");
+                  dispose();
                 break;
              }
         }
@@ -200,7 +219,7 @@ public class Login extends posi.sys.expeditors.popup{
                 + "employee_fname = '"+jTextField1.getText()+"' "
                 + "AND employee_password='"+jPasswordField1.getText()+"' "
                 + "AND employee_role_id = '"+ (jComboBox1.getSelectedIndex() + 1)+"';";
-        System.out.println(sql);
+       // System.out.println(sql);
         ResultSet rs = db.Query(sql);
         boolean isLogedin= false;
         int count = 0;
@@ -212,6 +231,8 @@ public class Login extends posi.sys.expeditors.popup{
                 user_info[3] = rs.getString(4);//emp idnum
                 user_info[4] = rs.getString(5);//emp pass
                 user_info[5] = rs.getString(6);//emp role
+                
+                set_session();
                 count++;
             }
             
@@ -231,21 +252,60 @@ public class Login extends posi.sys.expeditors.popup{
     return isLogedin;
     }
     
-    public static void audit_trails(String user_id, String action, String sql_stmnt){
-        java.text.SimpleDateFormat date = new java.text.SimpleDateFormat("k:m:s");
-        java.util.Date dt = new java.util.Date();
-        String dshow = date.format(dt);
+    private void set_session(){
+        String sql = ""
+                + "INSERT INTO sessions "
+                + "(sessions_id,sessions_user_id,session_time_in,session_time_out)"
+                + "VALUES(NULL,'"+user_info[0]+"','"+dShow+"','')";
+        if(db.addNew(sql)){
+            Object [] sess = db.getRow("SELECT sessions_id FROM sessions "
+                    + "WHERE "
+                    + "sessions_user_id = '"+user_info[0]+"'"
+                    + "AND session_time_in = '"+dShow+"'");
+            
+            user_info[6] = sess[0].toString();
+        }        
+    }
+    
+    private void logout_session(){
+        String sql =" UPDATE sessions SET session_time_out= '"+dShow+"' "
+                + " WHERE "
+                + " sessions_user_id = '"+inventoryMngt.get_user_info()[0]+"' "
+                + " AND sessions_id='"+inventoryMngt.get_user_info()[6]+"' ";
+        
+        if(!db.Update(sql)){
+            System.out.println(sql);
+        }
+        
+    }
+    public static void audit_trails(String user_id, String action, String sql_stmnt){ 
                 
         String sql = ""
                 + "INSERT INTO audit_trails "
                 + "(audit_trail_user_id,audit_trail_time_in,audit_trail_time_out,audit_trail_action,audit_trail_sql)"
-                + "VALUES('"+user_id+"','" + dshow + "','"+ dshow +"', '"+ action +"','');";
+                + "VALUES('"+user_id+"','" + dShow + "','"+ dShow +"', '"+ action +"','');";
         
         System.out.println(sql);
         
         if( !db.addNew( sql ) ) {
             //throw 
         }
+    }
+    
+    public void logout(String user){
+        audit_trails(user, audit_trails_actions.LOGOUT, null);
+        
+        logout_session();
+    }
+    
+    public void re_login_interface(){
+        posi.sys.expeditors.popup p =  this;
+        
+        initComponents();
+        
+        p.getContentPane().setLayout(layout);
+        
+        setVisible(true);
     }
     
     public static void main(String args[]){

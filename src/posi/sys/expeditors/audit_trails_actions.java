@@ -11,4 +11,5 @@ package posi.sys.expeditors;
 public class audit_trails_actions {
     public static String LOGIN = "LOGIN" ;
     public static String LOGOUT = "LOGOUT";
+    public static String POPUP_OPEN = "POPUP_OPEN";
 }

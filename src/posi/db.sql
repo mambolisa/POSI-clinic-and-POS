@@ -108,7 +108,17 @@ CREATE  TABLE IF NOT EXISTS `posi`.`audit_trails` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
-
+-- -----------------------------------------------------
+-- Table `posi`.`sessions`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `posi`.`sessions` (
+  `sessions_id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `sessions_user_id` INT(11) NOT NULL  ,
+  `session_time_in` VARCHAR(254) NULL DEFAULT NULL ,
+  `session_time_out` VARCHAR(254) NULL DEFAULT NULL 
+ )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 -- Table `posi`.`item_conversions`
 -- -----------------------------------------------------

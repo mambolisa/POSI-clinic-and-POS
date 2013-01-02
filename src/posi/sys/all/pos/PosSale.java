@@ -24,7 +24,7 @@ public class PosSale  extends popup {
     
     private java.awt.Dimension textfield_dimensions;
     
-    private javax.swing.JButton button;
+    private javax.swing.JButton button, commit;
     
     private String [] user_info;
     
@@ -66,30 +66,33 @@ public class PosSale  extends popup {
                 if (e.getKeyCode() == 10){
                     final int cha = (int)(Double.parseDouble(recieved.getText()) - Double.parseDouble(info[0].toString()));
                     
-                    final popup p = new popup(new java.awt.Dimension(450, 150), "Change");
+                    final popup p = new popup(new java.awt.Dimension(625, 210), "Change");
                     javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER));
-                    
+                    p.setUndecorated(true);
                     javax.swing.JTextField text = new javax.swing.JTextField(  );
                     text.setText( ""+cha );
-                    text.setPreferredSize(new java.awt.Dimension(230, 100));
-                    text.setEditable(false);
-                    text.setFont(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.BOLD, 60));
+                    text.setPreferredSize(new java.awt.Dimension(300, 200));
+                    text.setEditable(true);
+                    text.setFont(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.BOLD, 80));
                     text.addKeyListener(new java.awt.event.KeyListener() {
                         @Override
-                        public void keyTyped(KeyEvent e) { }
+                        public void keyTyped(KeyEvent e) {}
                         @Override
                         public void keyPressed(KeyEvent e) {
                             if( e.getKeyCode() == 10){
                                 p.dispose();
                                 change.setText( ""+cha );
+                                commit.setFocusable(true);
+                            }else{
+                                e.consume();
                             }
                         }
                         @Override
                         public void keyReleased(KeyEvent e) { }
                     });
                     javax.swing.JLabel label = new javax.swing.JLabel("Change");
-                    label.setPreferredSize(new java.awt.Dimension(150,100));
-                    label.setFont(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.BOLD, 30));
+                    label.setPreferredSize(new java.awt.Dimension(300,200));
+                    label.setFont(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.BOLD, 50));
                     panel.add( label );
                     panel.add(text);
                     
@@ -221,16 +224,16 @@ public class PosSale  extends popup {
         pane = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER));
         pane.setPreferredSize( pane_dimension );
         
-        button = new javax.swing.JButton("Commit");
-        button.setPreferredSize(new java.awt.Dimension(150, 40));
-        button.addActionListener(new java.awt.event.ActionListener() {
+        commit = new javax.swing.JButton("Commit");
+        commit.setPreferredSize(new java.awt.Dimension(150, 40));
+        commit.addActionListener(new java.awt.event.ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 commitSales();
             }
         });
-        pane.add( button );
+        pane.add( commit );
                 
         button = new javax.swing.JButton("Print reciept");
         button.setPreferredSize(new java.awt.Dimension(150, 40));

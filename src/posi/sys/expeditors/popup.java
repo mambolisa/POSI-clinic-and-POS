@@ -5,6 +5,7 @@
 package posi.sys.expeditors;
 
 import java.awt.event.KeyEvent;
+import posi.sys.all.inv.inventoryMngt;
 
 /**
  *
@@ -43,10 +44,10 @@ public class popup extends javax.swing.JDialog {
     
     public popup(java.awt.Dimension d, String title) {
         super(new java.awt.Frame(), true);
-        
-        this.setPopup(d);
-        
+         
         this.setTitle(title);
+        
+        this.setPopup(d); 
     }
     
     public void setDimensions(int width, int height){
@@ -72,6 +73,8 @@ public class popup extends javax.swing.JDialog {
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
         
         this.setIconImage(sundry.createImageIcon("images/Globe.gif", new java.awt.Dimension(20,20)).getImage());
+        System.out.println(inventoryMngt.get_user_info()[0]);
+        posi.sys.all.inv.Login.audit_trails("",audit_trails_actions.POPUP_OPEN+" "+getTitle(),"");
     }
 
     @Override

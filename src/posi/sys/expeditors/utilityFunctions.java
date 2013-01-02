@@ -16,8 +16,8 @@ import posi.sys.all.inv.trackItem;
 public class utilityFunctions {
     private  int Id;
     
-    public javax.swing.JPopupMenu user_mng_popup(int userId){
-        Id = userId;
+    public javax.swing.JPopupMenu user_mng_popup(String userId){
+        Id = Integer.parseInt(userId);
         javax.swing.JPopupMenu popup = new javax.swing.JPopupMenu();
         javax.swing.JMenuItem menuitem;
         menuitem = new javax.swing.JMenuItem("Edit",new posi.sys.expeditors.sundry().createImageIcon("images/Write.gif", new java.awt.Dimension(23, 23)));

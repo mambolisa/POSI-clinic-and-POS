@@ -9,12 +9,14 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.text.MessageFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable.PrintMode;
+import posi.sys.expeditors.audit_trails_actions;
 import posi.sys.expeditors.sundry;
 
 /**
@@ -43,7 +45,7 @@ public class inventoryMngt extends javax.swing.JFrame {
     
     private javax.swing.table.TableRowSorter<javax.swing.table.TableModel> sorter;
     
-    private static String [] user_info;
+    private static String [] user_info = new String[7];
     
     public inventoryMngt(){ //System,Metal, Motif, GTK
         new posi.sys.expeditors.LooknFeel("Metal");
@@ -255,6 +257,13 @@ public class inventoryMngt extends javax.swing.JFrame {
         menu.add(menuitem);
         menubar.add(menu);
         
+        menuitem = new javax.swing.JMenuItem("Point of sale touch screen",sundry.createImageIcon("images/Cart2.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_T, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+        menuitem.setActionCommand("pos_touch"); 
+        menuitem.addActionListener(new Action());
+        menu.add(menuitem);
+        menubar.add(menu);
+        
         menu = new javax.swing.JMenu("Money matters");
         menuitem = new javax.swing.JMenuItem("Cash management",sundry.createImageIcon("images/Currency Dollar.gif", new java.awt.Dimension(20, 20)));
         menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke( KeyEvent.VK_C, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
@@ -458,7 +467,23 @@ public class inventoryMngt extends javax.swing.JFrame {
         toolBarTop.setPreferredSize(new java.awt.Dimension(200, 30));
         this.add(toolBarBottom,BorderLayout.AFTER_LAST_LINE);  
          */
-
+/*
+ * int option = javax.swing.JOptionPane.showConfirmDialog(null, ""
+                         + "Are you sure you want to close application", 
+                         "System exit warning!", 
+                         javax.swing.JOptionPane.YES_NO_OPTION, 
+                         javax.swing.JOptionPane.QUESTION_MESSAGE);
+                 
+                 if (option == 2){
+                     //session loggoff
+                     javax.swing.JOptionPane.showMessageDialog(null, ""
+                             + "User session closed", 
+                             "System exit", 
+                             javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                 }else{
+                     return;
+                 }
+ */
     }
 
     public void setsplitPaneRightComponent(java.awt.Component c){
@@ -697,7 +722,7 @@ public class inventoryMngt extends javax.swing.JFrame {
     public void display(String title){
         this.setSize(screen.width, screen.height);
         this.setVisible(true);
-        this.setTitle(title);
+        this.setTitle(title+ " Current user:" + user_info[1] +" Session: "+ user_info[6]);
         this.setLocation((screen.width - getWidth())/2,((screen.height-getHeight())/2));
         
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -743,6 +768,9 @@ public class inventoryMngt extends javax.swing.JFrame {
         
     }
     class Action implements java.awt.event.ActionListener{
+        public Action(){
+            
+        }
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(e.getActionCommand());
@@ -806,7 +834,11 @@ public class inventoryMngt extends javax.swing.JFrame {
                     }
                 }.setVisible(true);
             } else if("Logout".equals(e.getActionCommand())){
-                new posi.sys.all.inv.Logout().re_login();
+                Login l = new Login(1,user_info[0]){
+                    
+                };
+                //l.re_login_interface();
+                
             } else if("warehouse".equals(e.getActionCommand())){
                 //new posi.sys.all.inv.Login();
             } else if("InvAllV".equals(e.getActionCommand())){
@@ -883,7 +915,14 @@ public class inventoryMngt extends javax.swing.JFrame {
                     }
                 }.setVisible(true);
             }else if ( "Lock".equals(e.getActionCommand())){
-                
+                new posi.sys.all.inv.Login(1,user_info[0]){
+
+                    @Override
+                    public void dispose() {
+                        super.dispose();
+                        System.exit(0);
+                    }
+                };
             
             }else if ( "normalpur".equals(e.getActionCommand())){
                 new posi.sys.all.inv.purchases.default_purchase().setVisible( true );
@@ -894,6 +933,14 @@ public class inventoryMngt extends javax.swing.JFrame {
     public static void main(String [] args ){
        new inventoryMngt().display("POSI Management system");
     }
+   
+   public static void close(){
+       System.exit(0);
+   }
+   
+   public static void update_details(String title, String[] info){
+       //setTitle(title+ " Current user:" + user_info[1] +" Session: "+ user_info[6]);
+   }
    
    private javax.swing.JTable printer_helper(){
        java.awt.Component c = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
