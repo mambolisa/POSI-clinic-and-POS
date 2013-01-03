@@ -24,15 +24,27 @@ public class helper_utilites {
     }
     
     public static javax.swing.JComponent default_(){
-        javax.swing.JPanel panel = new javax.swing.JPanel();
+        javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         panel.setBackground(java.awt.Color.white);
+        panel.setPreferredSize(new java.awt.Dimension(200, 225));
         
-        javax.swing.JLabel label = new javax.swing.JLabel("Filter: ", javax.swing.SwingConstants.LEFT);
+        javax.swing.JLabel label_c = new javax.swing.JLabel("Filter category: ", javax.swing.SwingConstants.LEFT);
+        label_c.setPreferredSize(new java.awt.Dimension(200, 25));
+        
         javax.swing.JComboBox combo = new javax.swing.JComboBox( items() );
-        combo.setPreferredSize(new java.awt.Dimension(150, 30));
+        combo.setPreferredSize(new java.awt.Dimension(150, 25));
         
-        panel.add(label);
-        panel.add(combo);
+        panel.add( label_c );
+        panel.add( combo );
+        
+        javax.swing.JLabel label_d = new javax.swing.JLabel("Filter date: ", javax.swing.SwingConstants.LEFT);
+        label_d.setPreferredSize(new java.awt.Dimension(200, 25));
+        
+        javax.swing.JTextField text = new javax.swing.JTextField(  );
+        text.setPreferredSize(new java.awt.Dimension(150, 25));
+        
+        panel.add(label_d);
+        panel.add(text);
         
     return panel;
     }

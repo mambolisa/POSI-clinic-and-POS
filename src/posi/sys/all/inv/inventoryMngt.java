@@ -24,7 +24,7 @@ import posi.sys.expeditors.sundry;
 
 public class inventoryMngt extends javax.swing.JFrame {
     private javax.swing.JMenuBar menubar;
-    private javax.swing.JMenu file,/* edit,*/ view,/* options,*/ reports, logout,warehouse, transaction, submenu,menu , admin;
+    private javax.swing.JMenu file,/* edit,*/ view,/* options,*/ reports, logout,warehouse, transaction, submenu,menu , admin, help;
     private java.awt.Dimension screen;
     private javax.swing.JToolBar toolBarTop_1,toolBarTop_2,toolBarTop_3,toolBarTop_4,toolBarLeft, toolBarBottom;
     public static ManageTabs tabbedPane;
@@ -398,7 +398,20 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         menubar.add(logout);
         
-        menubar.add(new javax.swing.JMenu("Help"));
+        help = new javax.swing.JMenu("Help");
+        menuitem = new javax.swing.JMenuItem("Help & Information",sundry.createImageIcon("images/info2.gif", new java.awt.Dimension(20, 20)));
+        menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(KeyEvent.VK_H,ActionEvent.SHIFT_MASK | ActionEvent.CTRL_MASK));
+        menuitem.setActionCommand("help"); 
+        menuitem.addActionListener(new Action());
+        help.add(menuitem);
+        
+        menuitem = new javax.swing.JMenuItem("About",sundry.createImageIcon("images/Wizard.gif", new java.awt.Dimension(20, 20)));
+       // menuitem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(ActionEvent.SHIFT_MASK | ActionEvent.CTRL_MASK));
+        menuitem.setActionCommand("about"); 
+        menuitem.addActionListener(new Action());
+        help.add(menuitem);
+        
+        menubar.add(help);
         
         this.setJMenuBar(menubar);
         
@@ -418,9 +431,17 @@ public class inventoryMngt extends javax.swing.JFrame {
 
         splitPane.setDividerLocation(220);
         splitPane.setContinuousLayout(true);
-        splitPane.setEnabled(true);
-        splitPane.setDividerSize(2);
+        splitPane.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.GRAY));
+        splitPane.setEnabled(false);
+        splitPane.setDividerSize(4);
         splitPane.setRightComponent(tabbedPane);
+        
+        javax.swing.plaf.basic.BasicSplitPaneDivider divider = ((javax.swing.plaf.basic.BasicSplitPaneUI) splitPane.getUI())
+				.getDivider();
+
+        if (divider != null) {
+            divider.setBorder(null);
+	}
         
         this.add(splitPane,BorderLayout.CENTER);
         
@@ -458,15 +479,15 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         right_top_panel = new javax.swing.JPanel();
         session = new javax.swing.JLabel(sess+user_info[6], javax.swing.SwingConstants.RIGHT);
-        session.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.BOLD, 14));
+        session.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.PLAIN, 14));
         //session.setPreferredSize(new java.awt.Dimension(180, 45));
         
         username = new javax.swing.JLabel(user+user_info[5], javax.swing.SwingConstants.RIGHT);
-        username.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.BOLD, 14));
+        username.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.PLAIN, 14));
         //username.setPreferredSize(new java.awt.Dimension(200, 45));
         
         role = new javax.swing.JLabel(role_t+user_info[6], javax.swing.SwingConstants.RIGHT);
-        role.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.BOLD, 14));
+        role.setFont(new java.awt.Font(java.awt.Font.SERIF, java.awt.Font.PLAIN, 14));
         //role.setPreferredSize(new java.awt.Dimension(100, 45));
         
         right_top_panel.add(session);
@@ -534,7 +555,7 @@ public class inventoryMngt extends javax.swing.JFrame {
     
     public java.awt.Component splitpane_left_component(){        
         javax.swing.JPanel panel = new javax.swing.JPanel();
-        panel.setPreferredSize(new java.awt.Dimension(210, getHeight() - 100 ));
+        panel.setPreferredSize(new java.awt.Dimension(210, getHeight() - 200 ));
         
         javax.swing.JTabbedPane tab = new javax.swing.JTabbedPane();
         javax.swing.JPanel panel_top_tree = new javax.swing.JPanel();        
@@ -544,7 +565,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         javax.swing.JTabbedPane tab_1 = new javax.swing.JTabbedPane();
         javax.swing.JPanel panel_bottom_tree = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-        panel_bottom_tree.setPreferredSize(new java.awt.Dimension(210,230));
+        panel_bottom_tree.setPreferredSize(new java.awt.Dimension(210,220));
         panel_bottom_tree.setBackground(java.awt.Color.WHITE);
         panel_bottom_tree.add(helper_utilites.default_());
         tab_1.add("Helper utilities",panel_bottom_tree);
@@ -736,7 +757,7 @@ public class inventoryMngt extends javax.swing.JFrame {
         //button = new javax.swing.JButton(sundry.createImageIcon("images/Stats2.gif", new java.awt.Dimension(28, 28)));
         textfield = new javax.swing.JTextField();
         textfield.setActionCommand("SearchTextField");
-        
+        textfield.requestFocus();
         
         
         textfield.addKeyListener(new java.awt.event.KeyListener(){
@@ -918,8 +939,8 @@ public class inventoryMngt extends javax.swing.JFrame {
             } else if("trackItemV".equals(e.getActionCommand()) || "TrackItem".equals(e.getActionCommand())){
                 new posi.sys.all.inv.trackItem();
             } else if("mainAllV".equals(e.getActionCommand())){
-                splitPane.setLeftComponent(new inventoryJTree().getContent());
-                splitPane.setDividerLocation(220);                
+                splitPane.setLeftComponent(splitpane_left_component());
+                splitPane.setDividerLocation(220);
                // removeAllTab();
             } else if("Diminate".equals(e.getActionCommand())){
                 new posi.sys.all.inv.transaction.diminate().setVisible(true);

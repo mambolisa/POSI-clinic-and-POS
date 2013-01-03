@@ -42,6 +42,9 @@ public class Login extends posi.sys.expeditors.popup{
     public Login(int action, String user){
         super(new java.awt.Dimension(600, 400), "Login form");                
         
+        
+        new posi.sys.expeditors.LooknFeel("Metal");
+        
         this.action = action;
         
         logout();
@@ -53,6 +56,8 @@ public class Login extends posi.sys.expeditors.popup{
     
     public Login(int action){        
         super(new java.awt.Dimension(600, 400), "Login form");                
+        
+        new posi.sys.expeditors.LooknFeel("Metal");
         
         this.action = action;
         

@@ -4,6 +4,12 @@
  */
 package posi.sys.expeditors;
 
+import com.jgoodies.looks.FontPolicies;
+import com.jgoodies.looks.FontPolicy;
+import com.jgoodies.looks.FontSet;
+import com.jgoodies.looks.FontSets;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import java.awt.Font;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.DefaultMetalTheme;
@@ -27,9 +33,43 @@ public class LooknFeel {
         if(!LOOKANDFEEL.isEmpty()) {
             this.LOOKANDFEEL = LOOKANDFEEL;
         }
-        this.looknfeelenable();
+        initializeLookAndFeels();
     }
-    
+    public final void initializeLookAndFeels() {
+		// if in classpath thry to load JGoodies Plastic Look & Feel
+		try {
+			UIManager.LookAndFeelInfo[] lnfs = UIManager.getInstalledLookAndFeels();
+			boolean found = false;
+			for (int i = 0; i < lnfs.length; i++) {
+				if (lnfs[i].getName().equals("JGoodies Plastic 3D")) {
+					found = true;
+				}
+			}
+			if (!found) {
+				UIManager.installLookAndFeel("JGoodies Plastic 3D",
+						"com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+			}
+			String os = System.getProperty("os.name");
+			FontSet fontSet = null;
+			if (os.startsWith("Windows")) {
+				fontSet = FontSets.createDefaultFontSet(new Font(
+						"arial unicode MS", Font.PLAIN, 12));
+			} else {
+				fontSet = FontSets.createDefaultFontSet(new Font(
+						"arial unicode", Font.PLAIN, 12));				
+			}
+			FontPolicy fixedPolicy = FontPolicies.createFixedPolicy(fontSet);
+			PlasticLookAndFeel.setFontPolicy(fixedPolicy);
+
+			UIManager.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+		} catch (Throwable t) {
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
     private void looknfeelenable(){
         
         String lookAndFeel = null;
