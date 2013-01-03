@@ -116,10 +116,9 @@ public class user_management {
                 
                 if( rowNum != -1){                    
                     Object code =  data[rowNum][0];
-
+                    index = code.toString();
                     if (javax.swing.SwingUtilities.isLeftMouseButton(e)){                    
-                        if(e.getClickCount() >= 2){
-                            index = code.toString();
+                        if(e.getClickCount() >= 2){                            
                             new user_mng_en( index ){
 
                             }.setVisible(true);

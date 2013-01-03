@@ -32,6 +32,7 @@ public class inventoryJTree{
         tree.addTreeSelectionListener(new treeSelectionListener());
                 
         treeView = new javax.swing.JScrollPane(tree);
+        treeView.setPreferredSize(new java.awt.Dimension(210, 300));
     }
     
     public javax.swing.JScrollPane getContent(){

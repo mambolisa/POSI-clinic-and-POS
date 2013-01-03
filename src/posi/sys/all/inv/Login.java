@@ -281,7 +281,8 @@ public class Login extends posi.sys.expeditors.popup{
         in = date.format(dt);
         out = date.format(dt);
     }
-    private static void logout_session(){
+    private static boolean logout_session(){
+        boolean success = false;
         refresh_time();
         String sql =" UPDATE sessions SET session_time_out= '"+out+"' "
                 + " WHERE "
@@ -289,10 +290,10 @@ public class Login extends posi.sys.expeditors.popup{
                 + " AND sessions_id='"+inventoryMngt.get_user_info()[7]+"' ";
         
         System.out.println("Error!"+sql);
-        if(!db.Update(sql)){
-            System.out.println("Error!"+sql);
+        if(db.Update(sql)){
+            success = true;
         }
-        
+    return success;
     }
     public static void audit_trails(String user_id, String action, String sql_stmnt){ 
         refresh_time(); 
@@ -309,10 +310,10 @@ public class Login extends posi.sys.expeditors.popup{
         }
     }
     
-    public static void logout(){
+    public static boolean logout(){
         audit_trails(inventoryMngt.get_user_info()[1], audit_trails_actions.LOGOUT, null);
         
-        logout_session();
+        return logout_session();
     }
     
     public void re_login_interface(){

@@ -5,7 +5,8 @@
 package posi.sys.admin;
 
 import java.awt.event.ActionEvent;
-
+import posi.sys.all.expeditors.database.db_connect;
+import posi.sys.all.inv.inventoryMngt;
 /**
  *
  * @author Aquarius
@@ -18,8 +19,13 @@ public class changePass extends posi.sys.expeditors.popup{
     
     java.awt.Dimension label_dimension = new java.awt.Dimension(150, 30);
     
-    public changePass(){
+    db_connect db = new db_connect();
+    
+    private String index;
+    public changePass(String user){
         super ( new java.awt.Dimension(430,200), "Change password");
+        
+        index = user;
         
         content();
     }
@@ -72,16 +78,36 @@ public class changePass extends posi.sys.expeditors.popup{
         
         add( panel );
     }
-    
-    public static void main( String [] args){
-        new changePass().setVisible(true);
+        
+    private String get_old_password(){
+        String sql = ""
+                + " SELECT employee_password "
+                + " FROM employees "
+                + " WHERE employee_id='"+ index +"' LIMIT 1";
+        
+    return db.getRow(sql)[0].toString();
     }
+    
     class Action implements java.awt.event.ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if( e.getSource() == changePass ){
-                
+            if( e.getSource() == changePass ){ System.out.println(get_old_password()+ " "+old.getText());
+                if( old.getText().equals(get_old_password())){
+                    if( new_.getText().equals(new_repeat.getText())){
+                        String sql = ""
+                                + " UPDATE employees "
+                                + " SET employee_password='" + new_.getText() + "' "
+                                + " WHERE employee_id='"+ index +"' ";
+                        if(db.Update(sql)){
+                            javax.swing.JOptionPane.showMessageDialog(null,"Password successfully changed","Password change dialog!",javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                        }                            
+                    }else{
+                        javax.swing.JOptionPane.showMessageDialog(null,"Repeat password does not match","Password change dialog!",javax.swing.JOptionPane.ERROR_MESSAGE);
+                    }
+                }else{
+                   javax.swing.JOptionPane.showMessageDialog(null,"Old password does not match","Password change dialog!",javax.swing.JOptionPane.ERROR_MESSAGE);
+                }
             }else if( e.getSource() == cancel ){
                 dispose();
             }

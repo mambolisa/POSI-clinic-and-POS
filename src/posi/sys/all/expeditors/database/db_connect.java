@@ -108,8 +108,24 @@ public class db_connect{
         return data;            
         }
         
+        public boolean exists(String sql){
+            int test_count = 0;
+            try {
+                s=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+                rs=s.executeQuery(sql);
+                
+                while(rs.next() ){
+                    test_count++;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(db_connect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        return (test_count > 0) ? true : false ;
+        }
+        
         public Object[] getRow(String sql){
-            Object [] row = null;
+            Object [] row = {};
             try {
                 s=con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
                 rs=s.executeQuery(sql);

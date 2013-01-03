@@ -351,7 +351,7 @@ public class user_mng_en extends posi.sys.expeditors.popup {
             }else  if( e.getSource() == save || "update".equals(e.getActionCommand())){
                 update();
             }else if ( e.getSource() == change_pass ){
-                new changePass().setVisible(true);
+                new changePass(emp_id.getText()).setVisible(true);
             }
         }
         

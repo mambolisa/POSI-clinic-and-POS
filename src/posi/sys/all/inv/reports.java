@@ -53,7 +53,7 @@ public class reports extends posi.sys.expeditors.popup implements javax.swing.ev
         splitpanel.setEnabled(false);
        
         panel = new javax.swing.JPanel();
-        combo = new javax.swing.JComboBox(new Object[]{"---Choose report type---","Sales","Purchases","System reports"}){   };
+        combo = new javax.swing.JComboBox(new Object[]{"---Choose report type---","Sales","Purchases","System reports", "Users reports"}){   };
         combo.addActionListener(new java.awt.event.ActionListener() {
 
             @Override

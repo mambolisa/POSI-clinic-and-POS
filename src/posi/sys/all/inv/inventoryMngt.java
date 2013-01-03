@@ -414,11 +414,12 @@ public class inventoryMngt extends javax.swing.JFrame {
         
         tabbedPane.addTabs("Inventory list",table,"Close inventory");
 
-        splitPane.setLeftComponent(new posi.sys.all.inv.inventoryJTree().getContent());
+        splitPane.setLeftComponent( splitpane_left_component());
 
         splitPane.setDividerLocation(220);
         splitPane.setContinuousLayout(true);
-        splitPane.setEnabled(false);
+        splitPane.setEnabled(true);
+        splitPane.setDividerSize(2);
         splitPane.setRightComponent(tabbedPane);
         
         this.add(splitPane,BorderLayout.CENTER);
@@ -487,28 +488,6 @@ public class inventoryMngt extends javax.swing.JFrame {
         this.add(toolBarBottom,BorderLayout.PAGE_END);        
         
         addWindowListener(new windowAdapter());
-       /* toolBarBottom = new javax.swing.JToolBar();
-        this.addToolbarContentBottom_2(toolBarBottom);        
-        toolBarTop.setPreferredSize(new java.awt.Dimension(200, 30));
-        this.add(toolBarBottom,BorderLayout.AFTER_LAST_LINE);  
-         */
-/*
- * int option = javax.swing.JOptionPane.showConfirmDialog(null, ""
-                         + "Are you sure you want to close application", 
-                         "System exit warning!", 
-                         javax.swing.JOptionPane.YES_NO_OPTION, 
-                         javax.swing.JOptionPane.QUESTION_MESSAGE);
-                 
-                 if (option == 2){
-                     //session loggoff
-                     javax.swing.JOptionPane.showMessageDialog(null, ""
-                             + "User session closed", 
-                             "System exit", 
-                             javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                 }else{
-                     return;
-                 }
- */
     }
 
     class windowAdapter extends java.awt.event.WindowAdapter{
@@ -522,12 +501,18 @@ public class inventoryMngt extends javax.swing.JFrame {
                  
                  if (option == javax.swing.JOptionPane.YES_OPTION){
                      //session loggoff
-                     Login.logout();
-                     javax.swing.JOptionPane.showMessageDialog(null, ""
-                             + "User session closed", 
-                             "System exit", 
-                             javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                     System.exit(0);
+                     if(Login.logout()){
+                        javax.swing.JOptionPane.showMessageDialog(null, ""
+                                + "User session closed", 
+                                "System exit", 
+                                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                        System.exit(0);
+                     }else{
+                        javax.swing.JOptionPane.showMessageDialog(null, ""
+                                + "Error closing sessions, session does not exist", 
+                                "System exit", 
+                                javax.swing.JOptionPane.INFORMATION_MESSAGE); 
+                     }
                  }else if ( option == javax.swing.JOptionPane.NO_OPTION){
                      
                  }
@@ -545,6 +530,31 @@ public class inventoryMngt extends javax.swing.JFrame {
     
     public void setsplitPaneLeftComponent(java.awt.Component c){
         splitPane.setRightComponent(c);
+    }
+    
+    public java.awt.Component splitpane_left_component(){        
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setPreferredSize(new java.awt.Dimension(210, getHeight() - 100 ));
+        
+        javax.swing.JTabbedPane tab = new javax.swing.JTabbedPane();
+        javax.swing.JPanel panel_top_tree = new javax.swing.JPanel();        
+        panel_top_tree.add(new posi.sys.all.inv.inventoryJTree().getContent());
+        panel_top_tree.setPreferredSize(new java.awt.Dimension(210, 300));
+        tab.add("Query lists", panel_top_tree);
+        
+        javax.swing.JTabbedPane tab_1 = new javax.swing.JTabbedPane();
+        javax.swing.JPanel panel_bottom_tree = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        panel_bottom_tree.setPreferredSize(new java.awt.Dimension(210,230));
+        panel_bottom_tree.setBackground(java.awt.Color.WHITE);
+        panel_bottom_tree.add(helper_utilites.default_());
+        tab_1.add("Helper utilities",panel_bottom_tree);
+        panel.add(tab);
+        panel.add(tab_1);
+        
+        javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(panel);
+        scroll.setPreferredSize(new java.awt.Dimension(210, getHeight() - 150 ));
+        
+    return scroll;
     }
     
     private void addToolbarContentLeft(javax.swing.JToolBar toolbar){
@@ -935,6 +945,8 @@ public class inventoryMngt extends javax.swing.JFrame {
                 admin.setVisible( true );
             }  else if("Warehouse".equals(e.getActionCommand())){
                 new posi.sys.all.inv.Warehouse().setVisible(true);
+            }else if("pos_touch".equals(e.getActionCommand())){
+                new posi.sys.all.pos.pos_touch().setVisible(true);
             }else if("pos".equals(e.getActionCommand())){
                 new posi.sys.all.pos.POS().setVisible(true);
             }else if("Customer".equals(e.getActionCommand())){

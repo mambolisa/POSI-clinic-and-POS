@@ -19,8 +19,9 @@ public class Clock extends posi.sys.expeditors.popup {
         super(new java.awt.Dimension(500,100),"");
         
         if( isDigital ) {
+            setDimensions(600, 100);
             label = new javax.swing.JLabel();
-            label.setFont(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.BOLD, 60));
+            label.setFont(new java.awt.Font(java.awt.Font.SANS_SERIF, java.awt.Font.BOLD, 40));
             getContentPane().add(label);
         
             Digital();
@@ -36,10 +37,10 @@ public class Clock extends posi.sys.expeditors.popup {
         new javax.swing.Timer(1000,new java.awt.event.ActionListener() {
             @Override
              public void actionPerformed(java.awt.event.ActionEvent arg0) {
-                date = new java.text.SimpleDateFormat("     k:m:s a");
+                date = new java.text.SimpleDateFormat("     yyyy/MM/dd HH:mm:ss a");
                 dt = new java.util.Date();
                 dshow = date.format(dt);
-                label.setText( dshow );
+                label.setText( dshow  );
             }
         }).start();       
     }

@@ -198,12 +198,12 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
    }    
     
     private void addToolbarContent_3(javax.swing.JToolBar toolbar){        
-        labelTime = new javax.swing.JLabel();
+        labelTime = new javax.swing.JLabel(new java.text.SimpleDateFormat("     HH:mm:ss a").format(new java.util.Date()));
 
         new javax.swing.Timer(1000,new java.awt.event.ActionListener() {
             @Override
              public void actionPerformed(ActionEvent arg0) {
-                date = new java.text.SimpleDateFormat("     k:m:s a");
+                date = new java.text.SimpleDateFormat("     HH:mm:ss a");
                 dt = new java.util.Date();
                 dshow = date.format(dt);
                 labelTime.setText( dshow );
@@ -224,7 +224,7 @@ private void addToolbarContent_2(javax.swing.JToolBar toolbar){
         
         label = new javax.swing.JLabel();
         label.setPreferredSize(new java.awt.Dimension(200, 40));
-        label.setText( "Session: " + 1);
+        label.setText( "Session: " + inventoryMngt.get_user_info()[7]);
         label.setForeground(Color.BLUE);
         toolbar.add(label); 
    } 
