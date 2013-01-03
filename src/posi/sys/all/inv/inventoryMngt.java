@@ -809,6 +809,8 @@ public class inventoryMngt extends javax.swing.JFrame {
         this.setTitle(title);
         this.setLocation((screen.width - getWidth())/2,((screen.height-getHeight())/2));
         
+        setExtendedState(getExtendedState() | javax.swing.JFrame.MAXIMIZED_BOTH);
+        
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
     }
     

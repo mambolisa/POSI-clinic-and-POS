@@ -30,6 +30,8 @@ public class inventoryJTree{
         tree.getSelectionModel().setSelectionMode(javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION);
         
         tree.addTreeSelectionListener(new treeSelectionListener());
+             
+        expand_all();
                 
         treeView = new javax.swing.JScrollPane(tree);
         treeView.setPreferredSize(new java.awt.Dimension(210, 300));
@@ -39,6 +41,17 @@ public class inventoryJTree{
         return treeView;
     }
     
+    public void expand_all(){
+        for (int i = 0; i < tree.getRowCount(); i++) {
+            tree.expandRow(i);
+        }     
+    }
+    
+    public void collapse_all(){
+        for (int i = 0; i < tree.getRowCount(); i++) {
+            tree.collapseRow(i);
+        }    
+    }
     public static javax.swing.JScrollPane updateTree(){
         top = new javax.swing.tree.DefaultMutableTreeNode("Reports");
         createNodes("Stock",new String [] {"Recent","Recently ","Recently added"});

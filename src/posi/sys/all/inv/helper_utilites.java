@@ -48,4 +48,18 @@ public class helper_utilites {
         
     return panel;
     }
+    /*
+     * I suggest that you do this
+to remove:
+jpanel.remove(component); //remove component from your jpanel in this case i used jpanel
+jpanel.revalidate();
+jframe.repaint();//repaint a JFrame jframe in this case
+
+to add:
+jpanel.add(component); //add component to jpanel in this case i used jpanel
+jpanel.revalidate();
+jframe.repaint();//repaint a JFrame jframe in this case
+
+//my reson for diong this is because if you intend to remove then add again then remove this is best 
+     */
 }
